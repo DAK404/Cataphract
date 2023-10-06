@@ -23,7 +23,7 @@ public class Loader
     public static void main(String[] args)throws Exception
     {
         Build.viewBuildInfo();
-
+        
         switch(args[0])
         {
             case "probe":
@@ -31,9 +31,11 @@ public class Loader
             break;
 
             case "normal":
+            IOStreams.println("Starting Kernel...");
             break;
 
             default:
+            IOStreams.printError("Invalid Boot Mode. Aborting...\n");
             System.exit(3);
         }
 

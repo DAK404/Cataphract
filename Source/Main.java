@@ -97,7 +97,7 @@ public class Main
     private static final String KERNEL_NOT_FOUND = """
     [ ERROR ] : KERNEL NOT FOUND.
 
-    Description: The specified kernel in the arguments used is not found.
+    Description: The specified kernel in the arguments is not found.
     Please try to probe the Kernel to check if the Kernel exists and can be
     booted into.
     """;
@@ -169,10 +169,7 @@ public class Main
         try
         {
             if(!new File(parameters[0]).exists()) 
-            {
-                displayMessages(KERNEL_NOT_FOUND);
                 exitCode = 1024;
-            }
             else
             {
                 ProcessBuilder sessionMonitor=new ProcessBuilder("java", parameters[0]+".Core.Loader", parameters[1]);
@@ -202,6 +199,8 @@ public class Main
         {
             displayMessages(INVALID_SYNTAX);
         }
+
+        else
         while(true)
             switch(startKernelLogic(args))
             {
@@ -211,6 +210,7 @@ public class Main
 
                 case 1:
                 displayMessages(KERNEL_NOT_FOUND);
+                System.out.println(1234);
                 System.exit(0);
                 break;
 
@@ -258,7 +258,7 @@ public class Main
                 System.exit(0);
                 break;
 
-                case 8:
+                case 1024:
                 displayMessages(KERNEL_NOT_FOUND);
                 System.exit(0);
                 break;
