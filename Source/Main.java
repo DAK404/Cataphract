@@ -72,7 +72,7 @@ public class Main
 
     This kernel can be booted by the launcher program!
     Please do note that there is no way to enforce a kernel to utilize the Nion Kernel Specification.
-    If you are using a 3rd party kernel, please be cautious and unexpected behavior.
+    If you are using a 3rd party kernel, please be cautious and beware of unexpected behavior.
     """;
 
     /**

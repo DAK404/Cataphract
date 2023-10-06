@@ -40,8 +40,8 @@ clear
 echo ========================
 echo     Nion Tools Suite   
 echo ========================
-echo VERSION : 3.2
-echo DATE    : 13-JUNE-2023
+echo VERSION : 3.2.1
+echo DATE    : 06-OCT-2023
 echo ------------------------
 
 # Compile the launcher first
@@ -50,7 +50,7 @@ javac -d ../Binaries Main.java
 
 # Compile the program then
 echo [2] Compiling Program...
-javac -d ../Binaries ./Truncheon/Core/Loader.java
+javac -d ../Binaries ./Cataphract/Core/Loader.java
 
 # Sign the build binaries for use
 #echo [3] Signing Build...

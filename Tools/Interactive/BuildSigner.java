@@ -15,17 +15,16 @@ public class BuildSigner
     private static List<String> filePaths = new  ArrayList<String>();
     private static String fileSeparator = System.getProperty("file.separator");
 
-    //////////////////////////////////////////////////////////
-    //                                                      //
-    // NON EXECUTABLE LOGICS - METHODS WITH NO ENTRY POINTS //
-    //                                                      //
-    //////////////////////////////////////////////////////////
-
     public static void main(String[] args)throws Exception
     {
         new BuildSigner().debug();
     }
 
+    //////////////////////////////////////////////////////////
+    //                                                      //
+    // NON EXECUTABLE LOGICS - METHODS WITH NO ENTRY POINTS //
+    //                                                      //
+    //////////////////////////////////////////////////////////
 
     /**
     * Enumerate all the files and subdirectory in the specified directory.
