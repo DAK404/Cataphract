@@ -23,9 +23,9 @@ import java.io.Console;
 /**
  * A class implementing console output with prefixes, colors, and a "Press Enter To Continue" functionality
  * 
- * @author: DAK404 (https://github.com/DAK404)
- * @version: 0.0.1
- * @since: 0.0.1 [Truncheon: Katana Update v1.1.0]
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 1.2.0
+ * @since 1.1.0 (Truncheon Katana)
  */
 public class IOStreams
 {

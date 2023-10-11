@@ -18,8 +18,9 @@ import java.io.File;
 /**
  * A program to launch kernels that follow the Nion Directory Specification and Nion Kernel Specification
  *
- * @author: DAK404 (https://github.com/DAK404)
- * @version: 4.24.0
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 4.24.0
+ * @since 0.0.1 (Zen Quantum 1.0)
  */
 public class Main
 {

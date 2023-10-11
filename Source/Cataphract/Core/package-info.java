@@ -22,9 +22,9 @@
  * https://dak404.github.io/Cataphract   <WEBSITE YET TO BE UPDATED>
  * </pre>
  *
- * @author: DAK404 (https://github.com/DAK404)
- * @since: v0.0.1 (10-April-2020, Zen Quantum)
- * @version: v1.0.0 (11-October-2023, Cataphract)
+ * @author DAK404 (https://github.com/DAK404)
+ * @version v1.0.0 (11-October-2023, Cataphract)
+ * @since v0.0.1 (10-April-2020, Zen Quantum)
  */
 
 package Cataphract.Core;
