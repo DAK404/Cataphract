@@ -134,8 +134,32 @@ The directory structure should look something like this:
 Once the SourceCompileDocs_Internal is copied into the Source directory, you can either just
 run the tool in in the Terminal/Console or simply double click it if the OS supports it.
 
-The tool will display the status of the actions undertaken, and will spew out the Dev_Doc.log
+The tool will display the status of the actions undertaken, and will spew out the Internal_Doc.log
 file. This log contains any possible errors and warnings produced by running the tool. This
 is helpful to make the Documentation more readable and efficient.
+
+SUPER BUILD COMPILE INSTRUCTIONS:
+
+To compile the program and all documentation, copy the SourceSuperBuild file from the Tools 
+directory to the Source directory.
+
+The directory structure should look something like this:
+
+./ ProjectRoot
+|- .vscode/
+|- docs/
+|- Source/
+    |- Cataphract/
+    |- Main.java
+    |- SourceSuperBuild
+|- Tools/
+
+The tool will display the status of the actions undertaken, and will spew out ALL log files.
+This log contains any possible errors and warnings produced by running the tool.
+
+
+The Documentation should be present in the docs directory present in the ProjectRoot directory.
+The program binaries should be present in the Binaries directory present in the ProjectRoot
+directory.
 
 ============================================================================================
