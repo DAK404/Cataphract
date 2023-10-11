@@ -16,13 +16,19 @@
 import java.io.File;
 
 /**
- * A program to launch programs that follow the Nion Directory Specification and Nion Kernel Specification
+ * A program to launch kernels that follow the Nion Directory Specification and Nion Kernel Specification
  *
  * @author: DAK404 (https://github.com/DAK404)
  * @version: 4.24.0
  */
 public class Main
 {
+    /**
+    * Sole constructor. (For invocation by subclass constructors, typically implicit.)
+    */
+    public Main()
+    {
+    }
 
     /************************************************************
      *             MESSAGE HEADER AND FOOTER SECTION
@@ -138,7 +144,7 @@ public class Main
     """;
 
     /**
-     * A critical information notifying the user that the kernel is restarting fatally.
+     * A critical information notifying the user that the kernel is restarting after exiting fatally.
      */
     private static final String FATAL_ERROR_RESTART = """
     [ CRITICAL ] : FATAL ERROR RESTART
@@ -197,8 +203,8 @@ public class Main
     /**
      * A method that has the logic to start or probe a kernel. The kernel needs to follow the Nion Directory Specification to be booted from this launcher.
      *
-     * @param parameters: the boot parameters that is passed on to the kernel.
-     * @return exitCode: the exit code returned after executing the logic in the kernel booted.
+     * @param parameters: The boot parameters that is passed on to the kernel.
+     * @return exitCode: The exit code returned after executing the logic in the kernel booted.
      */
     private static int startKernelLogic(String[] parameters)
     {

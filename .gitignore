@@ -1,4 +1,5 @@
 
+docs/*
 Source/*.bat
 Source/*.cmd
 Source/*.log
