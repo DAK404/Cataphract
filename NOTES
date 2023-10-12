@@ -29,3 +29,7 @@ test.cmd admin P@55w0rd > test-log.txt
 
 In this case, %1 will be replaced with admin, and %2 will be replaced with P@55w0rd. You can use these variables in your batch file to perform operations based on the passed arguments 1.
 If you want to pass more than nine arguments to a batch file, you can use %* variable. This variable represents all the command-line arguments passed to the batch file after the ninth argument 1.
+
+ABRAXIS LOGIC:
+
+s = s.replaceAll("/", Matcher.quoteReplacement(File.separator));

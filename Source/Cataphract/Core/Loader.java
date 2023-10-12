@@ -22,8 +22,6 @@ public class Loader
 {
     public static void main(String[] args)throws Exception
     {
-        Build.viewBuildInfo();
-        
         switch(args[0])
         {
             case "probe":
@@ -39,6 +37,17 @@ public class Loader
             System.exit(3);
         }
 
+        Build.viewBuildInfo();
         IOStreams.println("Hello World!");
+    }
+
+    private void abraxisLogic()
+    {
+
+    }
+
+    private void guestShell()
+    {
+        
     }
 }

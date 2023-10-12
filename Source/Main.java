@@ -333,6 +333,7 @@ public class Main
                 System.exit(0);
                 break;
 
+                //Kernel not found
                 default:
                 displayMessages(UNDEFINED_EXIT_CODE);
                 System.exit(0);
