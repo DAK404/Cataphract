@@ -8,24 +8,41 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.regex.Matcher;
 
+
+/**
+* An Application to sign the build files, to ensure the program integrity
+*
+* @author: DAK
+* @version: 1.0
+*/
 public class BuildSigner
 {
-
     private static List<String> filePaths = new  ArrayList<String>();
     private static String fileSeparator = System.getProperty("file.separator");
-
-    public static void main(String[] args)throws Exception
+    
+    /**
+    * Logic to sign the build
+    *
+    * @param Args
+    */
+    public static void main(String[] Args)
     {
-        new BuildSigner().debug();
+        try
+        {
+            new File("./.Manifest/Truncheon").mkdirs();
+            new BuildSigner().enumerateFiles(new File("./"));
+            new BuildSigner().hashFiles();
+            new BuildSigner().kernelFileList();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        }
     }
-
-    //////////////////////////////////////////////////////////
-    //                                                      //
-    // NON EXECUTABLE LOGICS - METHODS WITH NO ENTRY POINTS //
-    //                                                      //
-    //////////////////////////////////////////////////////////
-
+    
     /**
     * Enumerate all the files and subdirectory in the specified directory.
     *
@@ -54,10 +71,7 @@ public class BuildSigner
                 //Check if the entry is a file
                 else if (f.isFile())
                 //If true, add the file to the list of files to be signed
-                //filePaths.add(f.getPath());
-                {
-                    filePaths.add((f.getPath()).replaceAll(fileSeparator, ">"));
-                }
+                filePaths.add(f.getPath());
             }
         }
         catch(Exception e)
@@ -66,7 +80,26 @@ public class BuildSigner
             e.printStackTrace();
         }
     }
-
+    
+    private void kernelFileList()throws Exception
+    {
+        Properties props = new Properties();
+        FileOutputStream output = new FileOutputStream("./.Manifest/Truncheon/KernelFiles.m2");
+        
+        for(String fileName: filePaths)
+        {
+            if(fileName.endsWith(".class"))
+            {
+                String temp =  fileName.replaceAll(Matcher.quoteReplacement(fileSeparator), "|");
+                props.setProperty(temp, String.valueOf(new File(fileName).length()));
+                System.out.println("Adding File: " + temp);
+            }
+        }
+        props.storeToXML(output, "FileSizes");
+        output.close();
+        System.gc();
+    }
+    
     /**
     * Logic to ignore a few files/directories
     *
@@ -92,7 +125,33 @@ public class BuildSigner
         }
         return status;
     }
-
+    
+    private void hashFiles()
+    {
+        try
+        {
+            Properties props = new Properties();
+            FileOutputStream output = new FileOutputStream("./.Manifest/Truncheon/KernelFilesHashes.m1");
+            //System.out.println(filePaths);
+            
+            for(String fileName: filePaths)
+            {
+                String temp =  fileName.replaceAll(Matcher.quoteReplacement(fileSeparator), "|");
+                props.setProperty(temp, fileToMD5(fileName));
+                System.out.println("Signing File: " + temp);
+            }
+            
+            props.storeToXML(output, "FileManifest");
+            output.close();
+            System.gc();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        }
+    }
+    
     private final String fileToMD5(String fileName) throws Exception
     {
         return hashFile(new File(fileName), "MD5");
@@ -135,23 +194,4 @@ public class BuildSigner
         }
         return result;
     }
-
-    private void convertFileSeparators()
-    {
-        //run this method only once.
-        for(String tempPath: filePaths)
-        {
-            
-        }
-    }
-
-    private void debug()throws Exception
-    {
-        enumerateFiles(new File("./"));
-        for(String fileName: filePaths)
-        {
-            System.out.println("Signing File: " + fileName);
-        }
-    }
-
 }

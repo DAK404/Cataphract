@@ -57,9 +57,9 @@ ECHO [2] Compiling Program...
 javac -d ../Binaries ./Cataphract/Core/Loader.java
 
 :: Sign the build binaries for use
-@REM ECHO [3] Signing Build...
-@REM cd  ../Binaries/
-@REM java BuildSigner.java
+ECHO [3] Signing Build...
+cd  ../Binaries/
+java BuildSigner.java
 
 :: Confirm the status
 ECHO [ ATTENTION ] Build complete.
