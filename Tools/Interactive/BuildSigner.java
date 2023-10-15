@@ -31,7 +31,7 @@ public class BuildSigner
     {
         try
         {
-            new File("./.Manifest/Truncheon").mkdirs();
+            new File("./.Manifest/Cataphract").mkdirs();
             new BuildSigner().enumerateFiles(new File("./"));
             new BuildSigner().hashFiles();
             new BuildSigner().kernelFileList();
@@ -84,7 +84,7 @@ public class BuildSigner
     private void kernelFileList()throws Exception
     {
         Properties props = new Properties();
-        FileOutputStream output = new FileOutputStream("./.Manifest/Truncheon/KernelFiles.m2");
+        FileOutputStream output = new FileOutputStream("./.Manifest/Cataphract/KernelFiles.m2");
         
         for(String fileName: filePaths)
         {
@@ -131,13 +131,13 @@ public class BuildSigner
         try
         {
             Properties props = new Properties();
-            FileOutputStream output = new FileOutputStream("./.Manifest/Truncheon/KernelFilesHashes.m1");
+            FileOutputStream output = new FileOutputStream("./.Manifest/Cataphract/KernelFilesHashes.m1");
             //System.out.println(filePaths);
             
             for(String fileName: filePaths)
             {
                 String temp =  fileName.replaceAll(Matcher.quoteReplacement(fileSeparator), "|");
-                props.setProperty(temp, fileToMD5(fileName));
+                props.setProperty(temp, fileToSHA3_256(fileName));
                 System.out.println("Signing File: " + temp);
             }
             
@@ -152,9 +152,9 @@ public class BuildSigner
         }
     }
     
-    private final String fileToMD5(String fileName) throws Exception
+    private final String fileToSHA3_256(String fileName) throws Exception
     {
-        return hashFile(new File(fileName), "MD5");
+        return hashFile(new File(fileName), "SHA3-256");
     }
     
     private final String convertByteArrayToHexString(byte[] arrayBytes)

@@ -297,14 +297,14 @@ public class Loader
                 try
                 {
                     //Store the hash of the file present in the manifest.
-                    String manifestHash = manifestM1Entries.getProperty(convertFileSeparator(fileName), kernelFileHash);
+                    String manifestHash = manifestM1Entries.getProperty(convertToNionSeparator(fileName));
 
                     //Check if the manifest and the file hashes are equal
                     if(!manifestHash.equals(kernelFileHash))
                     {
                         //If not equal, set Kernel Integrity status to false, and alert the user on the same.
                         kernelIntegrity = false;
-                        IOStreams.printError("Integrity Check Failure at " + fileHash + "\t" + fileName + "\n");
+                        IOStreams.printError("Integrity Check Failure at " + kernelFileHash + "\t" + fileName + "\n");
                     }
                 }
                 //Catch error for the specified file that is not found, and present it to the user as an unknown file.
