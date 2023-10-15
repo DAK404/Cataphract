@@ -24,12 +24,27 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public record Cryptography()
+/**
+* A class implementing cryptographic hashing methods for files and literals
+* 
+* @author DAK404 (https://github.com/DAK404)
+* @version 1.3.6 (11-October-2023, Cataphract)
+* @since 0.0.1 (Zen Quantum 1.0)
+*/
+public class Cryptography
 {
+    
+    /**
+    * Sole constructor. (For invocation by subclass constructors, typically implicit.)
+    */
+    public Cryptography()
+    {
+    }
+    
     // ------------------------------------------------------------------------------------ //
     //                                  PUBLIC API METHODS                                  //
     // ------------------------------------------------------------------------------------ //
-
+    
     /**
     * Hashing API which will convert a string to an MD5 hash
     *
@@ -41,7 +56,7 @@ public record Cryptography()
     {
         return hashString(input, "MD5");
     }
-
+    
     /**
     * Hashing API which will convert a string to an SHA3-256 hash
     *
@@ -53,7 +68,7 @@ public record Cryptography()
     {
         return hashString(input, "SHA-256");
     }
-
+    
     /**
     * Hashing API which will convert a string to an SHA3-256 hash
     *
@@ -65,7 +80,7 @@ public record Cryptography()
     {
         return hashString(input, "SHA3-256");
     }
-
+    
     /**
     * Hashing API which will return the MD5 hash value of a given file
     *
@@ -77,7 +92,7 @@ public record Cryptography()
     {
         return hashFile(new File(fileName), "MD5");
     }
-
+    
     /**
     * Hashing API which will return the SHA3-256 hash value of a given file
     *
@@ -89,7 +104,7 @@ public record Cryptography()
     {
         return hashFile(new File(fileName), "SHA-256");
     }
-
+    
     /**
     * Hashing API which will return the SHA3-256 hash value of a given file
     *
@@ -101,11 +116,11 @@ public record Cryptography()
     {
         return hashFile(new File(fileName), "SHA3-256");
     }
-
+    
     // ------------------------------------------------------------------------------------ //
     //                                   API BACKEND CODE                                   //
     // ------------------------------------------------------------------------------------ //
-
+    
     /**
     * Convert the byte array to a Hex String
     *
@@ -119,35 +134,35 @@ public record Cryptography()
         stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16).substring(1));
         return stringBuffer.toString();
     }
-
+    
     /**
     * The logic to hash a file.
     *
     * @param file : The input file object
     * @param algorithm : The algorithm to be used to hash the file
-    * @return String : The hashed string
+    * @return String result : The hashed string
     * @throws Exception : Handle exceptions thrown during program runtime.
     */
     private final String hashFile(File file, String algorithm)throws Exception
     {
         String result = null;
-
+        
         if(file.exists())
         {
             try (FileInputStream inputStream = new FileInputStream(file))
             {
                 MessageDigest digest = MessageDigest.getInstance(algorithm);
-
+                
                 byte[] bytesBuffer = new byte[1024];
                 int bytesRead = -1;
-
+                
                 while ((bytesRead = inputStream.read(bytesBuffer)) != -1)
                 {
                     digest.update(bytesBuffer, 0, bytesRead);
                 }
-
+                
                 byte[] hashedBytes = digest.digest();
-
+                
                 result = convertByteArrayToHexString(hashedBytes);
             }
             catch (NoSuchAlgorithmException E)
@@ -158,13 +173,13 @@ public record Cryptography()
         }
         return result;
     }
-
+    
     /**
     * Logic to hash a string
     *
     * @param message : The string to be hashed
     * @param algorithm : The algorithm to be used to hash the string
-    * @return String : The hashed string
+    * @return String result : The hashed string
     * @throws Exception : Handle exceptions thrown during program runtime.
     */
     private final String hashString(String message, String algorithm)throws Exception
@@ -176,7 +191,7 @@ public record Cryptography()
             {
                 MessageDigest digest = MessageDigest.getInstance(algorithm);
                 byte[] hashedBytes = digest.digest(message.getBytes("UTF-8"));
-
+                
                 result =  convertByteArrayToHexString(hashedBytes);
             }
             catch (NoSuchAlgorithmException | UnsupportedEncodingException E)

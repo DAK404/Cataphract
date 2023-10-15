@@ -12,7 +12,7 @@
 
 /**
  * The Core package contains the essential kernel files for the kernel to boot and function correctly.
- * 
+ *
  * <pre>
  * Cataphract uses Sycorax Kernel, which adheres to the Nion Directory Specification and Nion Kernel Specification.
  * The specifications is present in the EasyGuide documentation.

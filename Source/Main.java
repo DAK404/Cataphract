@@ -16,12 +16,12 @@
 import java.io.File;
 
 /**
- * A program to launch kernels that follow the Nion Directory Specification and Nion Kernel Specification
- *
- * @author DAK404 (https://github.com/DAK404)
- * @version 4.24.0
- * @since 0.0.1 (Zen Quantum 1.0)
- */
+* A program to launch kernels that follow the Nion Directory Specification and Nion Kernel Specification
+*
+* @author DAK404 (https://github.com/DAK404)
+* @version 4.24.0 (11-October-2023, Cataphract)
+* @since 0.0.1 (Zen Quantum 1.0)
+*/
 public class Main
 {
     /**
@@ -32,39 +32,39 @@ public class Main
     }
 
     /************************************************************
-     *             MESSAGE HEADER AND FOOTER SECTION
-     ************************************************************/
+    *             MESSAGE HEADER AND FOOTER SECTION
+    ************************************************************/
 
     /**
-     * A header used for messages, displayed right before the message.
-     */
+    * A header used for messages, displayed right before the message.
+    */
     private static final String messageHeader = """
     *********************************
-           NION PROGRAM LOADER
+    NION PROGRAM LOADER
     *********************************
     Version : 7.247
 
     """;
 
     /**
-     * A footer used for messages, displayed right after the message.
-     */
+    * A footer used for messages, displayed right after the message.
+    */
     private static final String messageFooter = """
     *********************************
     """;
 
     /************************************************************
-     *           END MESSAGE HEADER AND FOOTER SECTION
-     ************************************************************/
+    *           END MESSAGE HEADER AND FOOTER SECTION
+    ************************************************************/
 
 
     /************************************************************
-     *                  MESSAGE STRINGS SECTION
-     ************************************************************/
+    *                  MESSAGE STRINGS SECTION
+    ************************************************************/
 
     /**
-     * A quick help for the launcher, if the user does not know how to boot a Kernel.
-     */
+    * A quick help for the launcher, if the user does not know how to boot a Kernel.
+    */
     private static final String launcherHelp = """
     This program helps in launching Sycorax Kernel, and
     any other Kernel that follows the Nion Directory Specification.
@@ -74,15 +74,15 @@ public class Main
     Quick Help:
 
     * Command to boot the Kernel:
-        java <arguments> Main <Kernel_Name> <Boot_Mode>
+    java <arguments> Main <Kernel_Name> <Boot_Mode>
 
     * Command to probe a Kernel:
-        java <arguments> Main <Kernel_Name> probe
+    java <arguments> Main <Kernel_Name> probe
     """;
 
     /**
-     * Message informing the user that the kernel probe was successful.
-     */
+    * Message informing the user that the kernel probe was successful.
+    */
     private static final String KERNEL_FOUND = """
     [ INFORMATION ] : KERNEL FOUND
 
@@ -92,8 +92,8 @@ public class Main
     """;
 
     /**
-     * An error notifying the user that the launcher syntax is invalid
-     */
+    * An error notifying the user that the launcher syntax is invalid
+    */
     private static final String INVALID_SYNTAX = """
     [ ERROR ] : INVALID LAUNCHER SYNTAX.
 
@@ -111,8 +111,8 @@ public class Main
     """;
 
     /**
-     * An error notifying the user that the kernel probe was unsuccessful.
-     */
+    * An error notifying the user that the kernel probe was unsuccessful.
+    */
     private static final String KERNEL_NOT_FOUND = """
     [ ERROR ] : KERNEL NOT FOUND.
 
@@ -121,8 +121,8 @@ public class Main
     """;
 
     /**
-     * An error notifying the user that the provided boot mode is not found
-     */
+    * An error notifying the user that the provided boot mode is not found
+    */
     private static final String UNDEFINED_BOOTMODE = """
     [ ERROR ] : UNDEFINED BOOT MODE
 
@@ -132,8 +132,8 @@ public class Main
     """;
 
     /**
-     * A critical information notifying the user that the kernel exited fatally.
-     */
+    * A critical information notifying the user that the kernel exited fatally.
+    */
     private static final String FATAL_ERROR_EXIT = """
     [ CRITICAL ] : FATAL ERROR EXIT
 
@@ -145,8 +145,8 @@ public class Main
     """;
 
     /**
-     * A critical information notifying the user that the kernel is restarting after exiting fatally.
-     */
+    * A critical information notifying the user that the kernel is restarting after exiting fatally.
+    */
     private static final String FATAL_ERROR_RESTART = """
     [ CRITICAL ] : FATAL ERROR RESTART
 
@@ -158,8 +158,8 @@ public class Main
     """;
 
     /**
-     * An information that the kernel is restarting after an update installation.
-     */
+    * An information that the kernel is restarting after an update installation.
+    */
     private static final String RESTART_UPDATE = """
     [ INFORMATION ] : SYSTEM UPDATE
 
@@ -168,8 +168,8 @@ public class Main
     """;
 
     /**
-     * A Warning displayed to the user that the kernel exited with an undefined exit code.
-     */
+    * A Warning displayed to the user that the kernel exited with an undefined exit code.
+    */
     private static final String UNDEFINED_EXIT_CODE = """
     [ WARNING ] : UNDEFINED EXIT CODE
 
@@ -186,15 +186,15 @@ public class Main
     """;
 
     /************************************************************
-     *                END MESSAGE STRINGS SECTION
-     ************************************************************/
+    *                END MESSAGE STRINGS SECTION
+    ************************************************************/
 
 
     /**
-     * A method that displays messages with the specified header and footer.
-     *
-     * @param message: The message to be displayed.
-     */
+    * A method that displays messages with the specified header and footer.
+    *
+    * @param message: The message to be displayed.
+    */
     private static void displayMessages(String message)
     {
         System.out.println(messageHeader + message + messageFooter);
@@ -202,11 +202,11 @@ public class Main
 
 
     /**
-     * A method that has the logic to start or probe a kernel. The kernel needs to follow the Nion Directory Specification to be booted from this launcher.
-     *
-     * @param parameters: The boot parameters that is passed on to the kernel.
-     * @return exitCode: The exit code returned after executing the logic in the kernel booted.
-     */
+    * A method that has the logic to start or probe a kernel. The kernel needs to follow the Nion Directory Specification to be booted from this launcher.
+    *
+    * @param parameters: The boot parameters that is passed on to the kernel.
+    * @return int exitCode: The exit code returned after executing the logic in the kernel booted.
+    */
     private static int startKernelLogic(String[] parameters)
     {
         //Initialize an exit code with a default value of 999
@@ -216,8 +216,8 @@ public class Main
         {
             //Check if the kernel exists before booting
             if(!new File(parameters[0]).exists())
-                //If it does not exist, the exit code is set to 1024
-                exitCode = 1024;
+            //If it does not exist, the exit code is set to 1024
+            exitCode = 1024;
 
             //If the kernel exists, boot the kernel
             else
@@ -244,11 +244,11 @@ public class Main
     }
 
     /**
-     * Entry point of the Launcher program. Will boot any kernels that follow the Nion Directory Specification and Nion Kernel Specification.
-     *
-     * @param args : Parameters, such as Kernel name and Kernel parameters are stored here.
-     * @throws Exception : Handles any thrown Exceptions during runtime.
-     */
+    * Entry point of the Launcher program. Will boot any kernels that follow the Nion Directory Specification and Nion Kernel Specification.
+    *
+    * @param args : Parameters, such as Kernel name and Kernel parameters are stored here.
+    * @throws Exception : Handles any thrown Exceptions during runtime.
+    */
     public static void main(String[] args)throws Exception
     {
         //An assert created to check if the arguments provided are less than 2
@@ -262,82 +262,82 @@ public class Main
 
         //execute the logic infinitely
         while(true)
-            //logic to handle the exit codes by the kernel
-            switch(startKernelLogic(args))
-            {
-                //Normal exit mode
-                case 0:
-                System.exit(0);
-                break;
+        //logic to handle the exit codes by the kernel
+        switch(startKernelLogic(args))
+        {
+            //Normal exit mode
+            case 0:
+            System.exit(0);
+            break;
 
-                //Kernel not found
-                case 1:
-                displayMessages(KERNEL_NOT_FOUND);
-                System.out.println(1234);
-                System.exit(0);
-                break;
+            //Kernel not found
+            case 1:
+            displayMessages(KERNEL_NOT_FOUND);
+            System.out.println(1234);
+            System.exit(0);
+            break;
 
-                //Normal Restart mode (for legacy compatibility)
-                case 100:
-                //Normal Restart mode (New implementation)
-                case 211:
-                args[1] = "normal";
-                break;
+            //Normal Restart mode (for legacy compatibility)
+            case 100:
+            //Normal Restart mode (New implementation)
+            case 211:
+            args[1] = "normal";
+            break;
 
-                //Force repair mode
-                case 212:
-                args[1] = "repair";
-                break;
+            //Force repair mode
+            case 212:
+            args[1] = "repair";
+            break;
 
-                /*
-                 * DEBUG OPTION!
-                 *
-                 * case 213:
-                 * args[1] = "debug";
-                 * break;
-                 */
+            /*
+            * DEBUG OPTION!
+            *
+            * case 213:
+            * args[1] = "debug";
+            * break;
+            */
 
-                //Boot mode not found
-                case 3:
-                displayMessages(UNDEFINED_BOOTMODE);
-                System.exit(0);
-                break;
+            //Boot mode not found
+            case 3:
+            displayMessages(UNDEFINED_BOOTMODE);
+            System.exit(0);
+            break;
 
-                //Fatal error exit
-                case 4:
-                displayMessages(FATAL_ERROR_EXIT);
-                System.exit(0);
-                break;
+            //Fatal error exit
+            case 4:
+            displayMessages(FATAL_ERROR_EXIT);
+            System.exit(0);
+            break;
 
-                //Fatal error restart
-                case 5:
-                displayMessages(FATAL_ERROR_RESTART);
-                System.in.read();
-                break;
+            //Fatal error restart
+            case 5:
+            displayMessages(FATAL_ERROR_RESTART);
+            System.in.read();
+            break;
 
-                //Restart after update
-                case 6:
-                displayMessages(RESTART_UPDATE);
-                System.exit(0);
-                break;
+            //Restart after update
+            case 6:
+            displayMessages(RESTART_UPDATE);
+            System.exit(0);
+            break;
 
-                //PROBE: Kernel found
-                case 7:
-                displayMessages(KERNEL_FOUND);
-                System.exit(0);
-                break;
+            //PROBE: Kernel found
+            case 7:
+            displayMessages(KERNEL_FOUND);
+            System.exit(0);
+            break;
 
-                //PROBE: Kernel not found
-                case 1024:
-                displayMessages(KERNEL_NOT_FOUND);
-                System.exit(0);
-                break;
+            //PROBE: Kernel not found
+            case 1024:
+            displayMessages(KERNEL_NOT_FOUND);
+            System.exit(0);
+            break;
 
-                //Kernel not found
-                default:
-                displayMessages(UNDEFINED_EXIT_CODE);
-                System.exit(0);
-            }
+            //Kernel not found
+            default:
+            displayMessages(UNDEFINED_EXIT_CODE);
+            System.exit(0);
+        }
 
     }
 }
