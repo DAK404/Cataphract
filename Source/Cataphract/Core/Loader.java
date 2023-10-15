@@ -310,7 +310,7 @@ public class Loader
                 //Catch error for the specified file that is not found, and present it to the user as an unknown file.
                 catch(Exception e)
                 {
-                    IOStreams.printWarning("Unknown File at " + fileHash + "\t" + fileName + "\n");
+                    IOStreams.printWarning("Unknown File at " + kernelFileHash + "\t" + fileName + "\n");
                 }
             }
         }
