@@ -33,3 +33,5 @@ If you want to pass more than nine arguments to a batch file, you can use %* var
 ABRAXIS LOGIC:
 
 s = s.replaceAll("/", Matcher.quoteReplacement(File.separator));
+
+Using JDBC driver 3.43.0.0 -> newer ones require an extra lib to be present

@@ -29,6 +29,8 @@ import java.io.Console;
 */
 public class IOStreams
 {
+    private static Console console = System.console();
+
     /**
     * Array that holds the text foreground values
     */
@@ -129,7 +131,17 @@ public class IOStreams
     */
     public static void confirmReturnToContinue()
     {
-        Console console = System.console();
         console.readLine("Press RETURN to Continue...");
+    }
+
+    /**
+    * [ OVERLOAD ] Provide a method that will ask the user to press the RETURN key, with a prefix text and a suffix text.
+    *
+    * Useful when someone wants to insert text before or after the default "Press RETURN to Continue..." string
+    * You might want to use a unicode escape character \u00A0 to essentially add a non breaking space to multiline Strings.
+    */
+    public static void confirmReturnToContinue(String prefix, String suffix)
+    {
+        console.readLine(prefix + "Press RETURN to Continue" + suffix);
     }
 }

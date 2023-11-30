@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Cataphract.API"},{"l":"Cataphract.API.Minotaur"},{"l":"Cataphract.Core"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Cataphract"},{"l":"Cataphract.API"},{"l":"Cataphract.API.Minotaur"},{"l":"Cataphract.Core"}];updateSearchResults();

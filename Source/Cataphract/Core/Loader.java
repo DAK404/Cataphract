@@ -99,7 +99,43 @@ public class Loader
     */
     private void loaderLogic()
     {
-        System.out.println("Abraxis result: " + abraxisLogic());
+        switch(abraxisLogic())
+        {
+            case 1:
+                IOStreams.printError("Unable to locate or parse Manifest Files! Aborting boot...");
+                System.exit(4);
+            break;
+
+            case 2:
+                IOStreams.printError("Unable to populate the Kernel files! Aborting boot...");
+                System.exit(4);
+            break;
+
+            case 3:
+                IOStreams.printError("File Signature verification failed! Aborting boot...");
+                System.exit(4);
+            break;
+
+            case 4:
+                IOStreams.printError("File verification failed: Found File Size Discrepancy! Aborting boot...");
+                System.exit(4);
+            break;
+
+            case 5:
+                new Setup().setupCataphract();
+                System.exit(100);
+            break;
+
+            case 55:
+                IOStreams.printError("Could not initialize Abraxis! Aborting boot...");
+                System.exit(4);
+            break;
+
+            default:
+                IOStreams.printError("Generic Failure. Cannot Boot.");
+                System.exit(4);
+            break;
+        }
     }
 
     /**
@@ -436,6 +472,258 @@ public class Loader
     */
     private void guestShell()
     {
+        console.readLine("Guest Shell> ");
+    }
+}
 
+/**
+ * A class to setup the files and directories of Cataphract for it to work as expected.
+ */
+class Setup
+{
+    /**
+     * String to display if the user has accepted EULA.
+     */
+    private String prereqInfoStatus = "PENDING";
+
+    /**
+     * String to display if the Cataphract directories are initialized successfully
+     */
+    private String initDirs = "PENDING";
+
+    /**
+     * String to display if the Database has been successfully initialized
+     */
+    private String initDB = "PENDING";
+
+    /**
+     * String to display if the Default Policies have been initialized
+     */
+    private String initPolicies = "PENDING";
+
+    /**
+     * String to display if the Administrator account has been created
+     */
+    private String initAdminAccount = "PENDING";
+
+    /**
+     * Instantiate Console to get user inputs
+     */
+    Console console = System.console();
+
+    /**
+    * Sole constructor. (For invocation by subclass constructors, typically implicit.)
+    */
+    protected Setup()
+    {
+
+    }
+
+    /**
+     * Display the progress of the setup to the user: what's pending and what's completed
+     */
+    private void displaySetupProgress()
+    {
+        Cataphract.API.Build.viewBuildInfo();
+        IOStreams.println("[ -- Program Setup Checklist -- ]");
+        IOStreams.println("[*] Show Program Prerequisites   : " + prereqInfoStatus);
+        IOStreams.println("[*] Initialize Directories       : " + initDirs);
+        IOStreams.println("[*] Initialize Database System   : " + initDB);
+        IOStreams.println("[*] Initialize Program Policies  : " + initPolicies);
+        IOStreams.println("[*] Create Administrator Account : " + initAdminAccount);
+        IOStreams.println("[ ----------------------------- ]\n");
+    }
+
+    /**
+     * The entry point to the setup. Sets the environment up to run Cataphract.
+     * 
+     * @return boolean returnValue - Returns if the setup was successful or not.
+     */
+    boolean setupCataphract()
+    {
+        boolean returnValue = false;
+
+        //A brief introduction to Cataphract and why it is being setup //
+        Cataphract.API.Build.clearScreen();
+
+        /**
+         * Display a message to give a brief introduction to Cataphract and the reason why it is being setup
+         */
+        String oobeIntroduction = Cataphract.API.Build._Branding + """
+        
+        Welcome to Cataphract!
+
+        As this is the first time the program is being run, several setup setup steps need to be completed for normal use.
+
+        [*] ACCEPT EULA: Agree to the End User License Agreement to begin the setup.
+        [*] CREATE SYSTEM DIRECTORIES: Create directories essential for Cataphract to function as expected.
+        [*] INITIALIZE DATABASE: Initialize the user database to store the user credentials.
+        [*] CREATE ADMINISTRATOR ACCOUNT: Create the administrator account to engage and maintain the functioning of the system.
+
+        These steps are required to be performed by the system administrator. If the current user is an end user,
+        please press [ CTRL + C ] keys and contact the System Administrator.
+
+        If the current user is a System Administrator,\u00A0""";
+
+        Cataphract.API.IOStreams.confirmReturnToContinue(oobeIntroduction, ".\nSetup> ");
+
+        //User needs to accept EULA
+        showAndAcceptEULA();
+
+        //Program will then setup required directories: /System and /Users
+        createSystemDirectories();
+
+        //Initialize the database to store the user credentials
+        initializeDatabase();
+
+        //TODO - IMPLEMENT POLICY INITIALIZATION
+
+        //TODO - IMPLEMENT ADMINISTRATOR ACCOUNT SETUP
+        
+        //Show the set of actions undertaken to the user before restarting
+        displaySetupProgress();
+        Cataphract.API.IOStreams.confirmReturnToContinue("Setup complete! ", ".\nSetup> ");
+
+        //force return false until Setup implementation is complete.
+        return false;
+    }
+
+    /**
+     * Logic to display the EULA to the user. User must accept it to complete the setup.
+     */
+    private void showAndAcceptEULA()
+    {
+        //Display the setup progress.
+        displaySetupProgress();
+        
+        //logic to read EULA; Omitted for now.
+        System.out.println("DUMMY TEXT: EULA");
+
+        //Check if the user accepts the EULA
+        if(! console.readLine("Do you accept the EULA? [ Y / N ]\nEULA?> ").equalsIgnoreCase("y"))
+            System.exit(0);
+
+        //Update the EULA completion status to COMPLETE.
+        prereqInfoStatus = "COMPLETE";
+    }
+
+    /**
+     * Logic to create directories required by Cataphract.
+     */
+    private void createSystemDirectories()
+    {
+        //Display the setup progress.
+        displaySetupProgress();
+        IOStreams.printInfo("Creating Directories...");
+
+        //Define a set of directories to be created by Cataphract Setup program.
+        String [] directoryNames = {"./System/Cataphract/Public/Logs", "./Users/Cataphract"};
+
+        //Iterate through the array and create the specified directories
+        for (String dirs: directoryNames)
+            new File(dirs).mkdirs();
+        
+        //Update the Directory Initialization to COMPLETE.
+        initDirs = "COMPLETE";
+    }
+
+    /**
+     * Logic to create MUD (Multi User Database) table to store user credentials.
+     */
+    private void initializeDatabase()
+    {
+        //Display the setup progress.
+        displaySetupProgress();
+
+        //Store the database creation status.
+        boolean initializeDatabaseStatus = false;
+
+        //Added a try-catch block for better error handling mechanism
+        try
+        {
+            //Create Backups directory to store the database backups
+            new File("./System/Cataphract/Private/Backups").mkdirs();
+
+            //Store the database path that the program will require to access the database
+            String databasePath = "jdbc:sqlite:./System/Cataphract/Private/Mud.dbx";
+
+            //Check if the Database already exists
+            IOStreams.printInfo("Checking for existing Master User Database...");
+            if(new File(databasePath).exists())
+                //Abort the creation of the database; since it already exists
+                IOStreams.printError("Master User Database already exists! Aborting...");
+            
+            //Else, continue to create the database table and file
+            else
+            {
+                //Initialize the database driver to be used by Cataphract Setup
+                Class.forName("org.sqlite.JDBC");
+
+                /**
+                 * String that contains the CREATE statement of the database table.
+                 */
+                String createMUDTable = "CREATE TABLE IF NOT EXISTS MUD (" +
+                "Username TEXT," +
+                "Name TEXT NOT NULL," +
+                "Password TEXT NOT NULL," +
+                "SecurityKey TEXT NOT NULL," +
+                "PIN TEXT NOT NULL," +
+                "Privileges TEXT NOT NULL," +
+                "PRIMARY KEY(Username));";
+
+                /**
+                 * Get the connection of the database using the given path
+                 */
+                Connection dbConnection = DriverManager.getConnection(databasePath);
+
+                /**
+                 * Build the statement using the createMUDTable string
+                 */
+                Statement statement = dbConnection.createStatement();
+
+                //Execute the SQL statement
+                statement.execute(createMUDTable);
+
+                //Close the statement
+                statement.close();
+
+                //Close the database connection
+                dbConnection.close();
+
+                //Run garbage collector to free any freeable spaces in memory
+                System.gc();
+
+                //Set the database initialization status as true
+                initializeDatabaseStatus = true;
+            }
+        }
+        catch(Exception e)
+        {
+            //Catch any exceptions caught during runtime and pass it on to the ExceptionHandler class
+            new Cataphract.API.ExceptionHandler().handleException(e);
+        }
+
+        //Update the Database Initialization to COMPLETE or failed
+        initDB = (initializeDatabaseStatus?"COMPLETE":"FAILED");
+    }
+
+    /**
+     * Logic to initialize the default policies for the users.
+     */
+    private void initializeDefaultPolicies()
+    {
+        //TODO - IMPLEMENT POLICY RELATED LOGICS
+
+        displaySetupProgress();
+        //new Cataphract.API.Minotaur.PolicyEdit();
+        initPolicies = "COMPLETE";
+    }
+
+    /**
+     * Logic to create a default administrator account
+     */
+    private void createAdministratorAccount()
+    {
+        //TODO - IMPLEMENT ADMINISTRATOR ACCOUNT CREATION LOGIC
     }
 }
