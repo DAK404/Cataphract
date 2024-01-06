@@ -12,7 +12,7 @@ public class ExceptionHandler
     Console console = System.console();
     public void handleException(Exception e)
     {
-        String errorLogFileName = "ExceptionLog";
+        //String errorLogFileName = "ExceptionLog";
         try
         {
             StringWriter sw = new StringWriter();

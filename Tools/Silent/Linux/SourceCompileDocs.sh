@@ -50,7 +50,7 @@ find . -type f -name "*.java" > DevDocumentationFileList.temp
 
 # Run the javadoc command to compile the documentation by parsing every file found in sources.txt
 # additionally, write the statuses to the compile log
-javadoc -d ../docs/DeveloperDocumentation -author -version @DevDocumentationFileList.temp > "Dev_Doc.log" 2>&1
+javadoc -author -version -d ../docs/DeveloperDocumentation @SuperFileList.temp > "Dev_Doc.log" 2>&1
 
 # Delete the sources.txt file after use
 rm DevDocumentationFileList.temp

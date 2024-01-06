@@ -64,8 +64,8 @@ find . -type f -name "*.java" > SuperFileList.temp
 # Run the javadoc command to compile the documentation by parsing every file found in sources.txt
 # additionally, write the statuses to the compile log
 echo [4] Creating Javadoc documentation...
-javadoc -d ../docs/InternalDocumentation -author -version -subpackages --show-members private @SuperFileList.temp > "Internal_Docs.log" 2>&1
-javadoc -d ../docs/DeveloperDocumentation -author -version @SuperFileList.temp > "Dev_Doc.log" 2>&1
+javadoc -private -author -version -d ../docs/InternalDocumentation @SuperFileList.temp > "Internal_Docs.log" 2>&1
+javadoc -author -version -d ../docs/DeveloperDocumentation @SuperFileList.temp > "Dev_Doc.log" 2>&1
 
 # Delete SuperFileList after use
 rm SuperFileList.temp
@@ -76,4 +76,4 @@ cd  ../Binaries/
 java BuildSigner.java
 
 # Confirm the status
-echo [ ATTENTION ] Build (Super) complete.
+echo [ ATTENTION ] Super Build complete.

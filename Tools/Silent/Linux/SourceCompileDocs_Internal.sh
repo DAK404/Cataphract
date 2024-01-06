@@ -50,7 +50,7 @@ find . -type f -name "*.java" > IntDocumentationFileList.temp
 
 # Run the javadoc command to compile the documentation by parsing every file found in sources.txt
 # additionally, write the statuses to the compile log
-javadoc -d ../docs/InternalDocumentation -author -version --show-members private @IntDocumentationFileList.temp > "Internal_Docs.log" 2>&1
+javadoc -private -author -version -d ../docs/InternalDocumentation @SuperFileList.temp > "Internal_Docs.log" 2>&1
 
 # Delete the sources.txt file after use
 rm IntDocumentationFileList.temp

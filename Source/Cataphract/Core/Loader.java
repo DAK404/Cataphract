@@ -97,10 +97,13 @@ public class Loader
     /**
     * Logic that will load the kernel after checking the kernel integrity
     */
-    private void loaderLogic()
+    private void loaderLogic()throws Exception
     {
         switch(abraxisLogic())
         {
+            case 0:
+            break;
+
             case 1:
                 IOStreams.printError("Unable to locate or parse Manifest Files! Aborting boot...");
                 System.exit(4);
@@ -122,8 +125,14 @@ public class Loader
             break;
 
             case 5:
-                new Setup().setupCataphract();
-                System.exit(100);
+                if(new Setup().setupCataphract())
+                    System.exit(100);
+                else
+                {
+                    IOStreams.printError("Setup Failed! Reverting changes...");
+                    
+                    //TODO: Delete /System and /Users directories
+                }
             break;
 
             case 55:
@@ -136,6 +145,8 @@ public class Loader
                 System.exit(4);
             break;
         }
+
+        while(! guestShell().equalsIgnoreCase("exit"));
     }
 
     /**
@@ -451,10 +462,10 @@ public class Loader
     * @param nionPath String that contains the file path in Nion File Separator format
     * @return String - The value of the String converted to the OS dependent file separator format
     */
-    private String convertFileSeparator(String nionPath)
-    {
-        return nionPath.replaceAll("|", Matcher.quoteReplacement(File.separator));
-    }
+    // private String convertFileSeparator(String nionPath)
+    // {
+    //     return nionPath.replaceAll("|", Matcher.quoteReplacement(File.separator));
+    // }
 
     /**
     * Logic to convert from an OS dependent file separator format of file paths to Nion File Separator format.
@@ -470,9 +481,9 @@ public class Loader
     /**
     * Logic to provide the user with a guest shell: a shell with limited functionality to be used before login
     */
-    private void guestShell()
+    private String guestShell()
     {
-        console.readLine("Guest Shell> ");
+        return console.readLine("Guest Shell> ");
     }
 }
 
@@ -482,29 +493,29 @@ public class Loader
 class Setup
 {
     /**
-     * String to display if the user has accepted EULA.
+     * Boolean to store status if the user has accepted EULA.
      */
-    private String prereqInfoStatus = "PENDING";
+    private boolean prereqInfoStatus = false;
 
     /**
-     * String to display if the Cataphract directories are initialized successfully
+     * Boolean to store status if the Cataphract directories are initialized successfully
      */
-    private String initDirs = "PENDING";
+    private boolean initDirs = false;
 
     /**
-     * String to display if the Database has been successfully initialized
+     * Boolean to store status if the Database has been successfully initialized
      */
-    private String initDB = "PENDING";
+    private boolean initDB = false;
 
     /**
-     * String to display if the Default Policies have been initialized
+     * Boolean to store status if the Default Policies have been initialized
      */
-    private String initPolicies = "PENDING";
+    private boolean initPolicies = false;
 
     /**
-     * String to display if the Administrator account has been created
+     * Boolean to store status if the Administrator account has been created
      */
-    private String initAdminAccount = "PENDING";
+    private boolean initAdminAccount = false;
 
     /**
      * Instantiate Console to get user inputs
@@ -526,11 +537,11 @@ class Setup
     {
         Cataphract.API.Build.viewBuildInfo();
         IOStreams.println("[ -- Program Setup Checklist -- ]");
-        IOStreams.println("[*] Show Program Prerequisites   : " + prereqInfoStatus);
-        IOStreams.println("[*] Initialize Directories       : " + initDirs);
-        IOStreams.println("[*] Initialize Database System   : " + initDB);
-        IOStreams.println("[*] Initialize Program Policies  : " + initPolicies);
-        IOStreams.println("[*] Create Administrator Account : " + initAdminAccount);
+        IOStreams.println("[*] Show Program Prerequisites   : " + (prereqInfoStatus?"COMPLETED":"PENDING"));
+        IOStreams.println("[*] Initialize Directories       : " + (initDirs?"COMPLETED":"PENDING"));
+        IOStreams.println("[*] Initialize Database System   : " + (initDB?"COMPLETED":"PENDING"));
+        IOStreams.println("[*] Initialize Program Policies  : " + (initPolicies?"COMPLETED":"PENDING"));
+        IOStreams.println("[*] Create Administrator Account : " + (initAdminAccount?"COMPLETED":"PENDING"));
         IOStreams.println("[ ----------------------------- ]\n");
     }
 
@@ -539,7 +550,7 @@ class Setup
      * 
      * @return boolean returnValue - Returns if the setup was successful or not.
      */
-    boolean setupCataphract()
+    boolean setupCataphract()throws Exception
     {
         boolean returnValue = false;
 
@@ -576,16 +587,21 @@ class Setup
         //Initialize the database to store the user credentials
         initializeDatabase();
 
-        //TODO - IMPLEMENT POLICY INITIALIZATION
+        //Initialize the default policy values.
+        initializeDefaultPolicies();
 
-        //TODO - IMPLEMENT ADMINISTRATOR ACCOUNT SETUP
+        //Initialize a default administrator account.
+        createAdministratorAccount();
         
         //Show the set of actions undertaken to the user before restarting
         displaySetupProgress();
         Cataphract.API.IOStreams.confirmReturnToContinue("Setup complete! ", ".\nSetup> ");
 
+
+        returnValue = prereqInfoStatus & initAdminAccount & initDB & initDirs & initPolicies;
+
         //force return false until Setup implementation is complete.
-        return false;
+        return returnValue;
     }
 
     /**
@@ -604,7 +620,7 @@ class Setup
             System.exit(0);
 
         //Update the EULA completion status to COMPLETE.
-        prereqInfoStatus = "COMPLETE";
+        prereqInfoStatus = true;
     }
 
     /**
@@ -624,7 +640,7 @@ class Setup
             new File(dirs).mkdirs();
         
         //Update the Directory Initialization to COMPLETE.
-        initDirs = "COMPLETE";
+        initDirs = true;
     }
 
     /**
@@ -704,7 +720,7 @@ class Setup
         }
 
         //Update the Database Initialization to COMPLETE or failed
-        initDB = (initializeDatabaseStatus?"COMPLETE":"FAILED");
+        initDB = (initializeDatabaseStatus?true:false);
     }
 
     /**
@@ -712,18 +728,17 @@ class Setup
      */
     private void initializeDefaultPolicies()
     {
-        //TODO - IMPLEMENT POLICY RELATED LOGICS
-
         displaySetupProgress();
-        //new Cataphract.API.Minotaur.PolicyEdit();
-        initPolicies = "COMPLETE";
+        new Cataphract.API.Minotaur.PolicyManager();
+        initPolicies = true;
     }
 
     /**
      * Logic to create a default administrator account
      */
-    private void createAdministratorAccount()
+    private void createAdministratorAccount()throws Exception
     {
-        //TODO - IMPLEMENT ADMINISTRATOR ACCOUNT CREATION LOGIC
+        new Cataphract.API.Dragon.AccountCreate().createDefaultAdministratorAccount();
+        initAdminAccount = true;
     }
 }

@@ -35,3 +35,9 @@ ABRAXIS LOGIC:
 s = s.replaceAll("/", Matcher.quoteReplacement(File.separator));
 
 Using JDBC driver 3.43.0.0 -> newer ones require an extra lib to be present
+
+TODO
+
+-> Add the option of an administrator account able to delete a normal user account
+-> Add the option of Administrator account being able to delete ANY kind of user
+-> Reuse the file management system methods for file deletion than to keep reimplementing the same code over and over again.

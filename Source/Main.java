@@ -251,8 +251,12 @@ public class Main
     */
     public static void main(String[] args)throws Exception
     {
+        //Display the help message if the "help" argument is used
+        if(args[0].equalsIgnoreCase("help"))
+                displayMessages(launcherHelp);
+        
         //An assert created to check if the arguments provided are less than 2
-        if(args.length < 2)
+        else if(args.length < 2)
         {
             displayMessages(INVALID_SYNTAX);
         }

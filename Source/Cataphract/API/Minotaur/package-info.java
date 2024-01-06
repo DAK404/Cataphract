@@ -11,7 +11,7 @@
 */
 
 /**
-* The Minotaur package contains tools relating to cryptography for checking hashes for files and literals.
+* The Minotaur package contains tools relating to policy management and cryptography for checking hashes for files and literals.
 *
 * <pre>
 * Currently, the following algorithms are deemed necessary to hash files and literals:
