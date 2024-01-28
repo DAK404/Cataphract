@@ -10,19 +10,11 @@ import java.sql.PreparedStatement;
 import Cataphract.API.Build;
 import Cataphract.API.IOStreams;
 
+/**
+ * 
+ */
 public final class AccountCreate 
 {
-    /*
-    ----------------------------------------------------------------------------------
-    SECTION NAME : VARIABLE DECLARATION
-    OBJECTIVE    : Set all the dependent variable values that shall help in creating a
-    user account. The variables here store the current user data and the new user data
-    which will be written to the database. Each variable is a string datatype and is
-    assigned to a null value. This ensures that if the account creation data has not
-    conformed to the policies, the user account creation cannot proceed.
-    AUTHOR       : Deepak Anil Kumar (@DAK404)
-    ----------------------------------------------------------------------------------
-    */
 
     protected final static String _accountNamePolicy = """
     Account Name Policy Information
@@ -81,12 +73,6 @@ public final class AccountCreate
 
     private Console console = System.console();
 
-    /*
-    ----------------------------------------------------------------------------------
-    END OF VARIABLE DECLARATION
-    ----------------------------------------------------------------------------------
-    */
-
     public final void accountCreateLogic(String username)throws Exception
     {
         _currentUsername = username;
@@ -136,18 +122,6 @@ public final class AccountCreate
 
         return authenticationStatus;
     }
-
-    /*
-    ----------------------------------------------------------------------------------
-    SECTION NAME : ACCOUNT CREDENTIAL VALIDATION LOGIC
-    OBJECTIVE    : A set of methods which will check if the credentials entered are
-    conforming to the rules of the system. Should any of the rules are not followed,
-    the program shall ask to re-enter the credential that is violating the guideline.
-    This also means that if the password rules are not followed, the user will need
-    to re-enter the password that conforms to the guidelines.
-    AUTHOR       : Deepak Anil Kumar (@DAK404)
-    ----------------------------------------------------------------------------------
-    */
 
     //Displays a dashboard to the user, pertaining to the details entered.
     private final void credentialDashboard()
@@ -282,27 +256,6 @@ public final class AccountCreate
         return _status;
     }
 
-    /*
-    ----------------------------------------------------------------------------------
-    END OF ACCOUNT CREDENTIAL VALIDATION LOGIC
-    ----------------------------------------------------------------------------------
-    */
-
-    /*
-    ----------------------------------------------------------------------------------
-    SECTION NAME : ADD ACCOUNT TO DATABASE LOGIC
-    OBJECTIVE    : This logic shall help in setting the account credentials to the MUD
-    database file. This shall commit the fields of Name, Username, Password, 
-    SecurityKey, PIN and the Administrator status to the database file, which can later
-    be used for authentication and credential validation. The credentials, excluding
-    Account Name, will be Hashed in SHA3-256 format to help in keeping the credentials
-    secure in the event of a data breach. By following the specified policies, the
-    credentials will be harder to break from the hashed format. Although the system is
-    may have areas to strengthen the robustness and the security, this will be looked 
-    into in a future point of time.
-    AUTHOR       : Deepak Anil Kumar (@DAK404)
-    ----------------------------------------------------------------------------------
-    */
     private final void addAccountToDatabase()
     {
         try
@@ -339,23 +292,6 @@ public final class AccountCreate
         }
     }
 
-    /*
-    ----------------------------------------------------------------------------------
-    END OF ADD ACCOUNT TO DATABASE LOGIC
-    ----------------------------------------------------------------------------------
-    */
-
-    /*
-    ----------------------------------------------------------------------------------
-    SECTION NAME : SETUP DEFAULT ADMINISTRATOR ACCOUNT LOGIC
-    OBJECTIVE    : A logic dedicated to make sure that a default administrator account
-    can be created during setup. This is the equivalent of a "root" account in Linux.
-    Other user accounts can be created by the administrator as a standard user or an
-    administrator user account.
-    AUTHOR       : Deepak Anil Kumar (@DAK404)
-    ----------------------------------------------------------------------------------
-    */
-
     public final void createDefaultAdministratorAccount()throws Exception
     {
         _newAccountAdmin = true;
@@ -374,10 +310,4 @@ public final class AccountCreate
         
         Cataphract.API.IOStreams.confirmReturnToContinue();
     }
-
-    /*
-    ----------------------------------------------------------------------------------
-    END OF SETUP DEFAULT ADMINISTRATOR ACCOUNT LOGIC
-    ----------------------------------------------------------------------------------
-    */
 }
