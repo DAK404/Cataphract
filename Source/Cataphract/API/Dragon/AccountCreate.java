@@ -11,11 +11,14 @@ import Cataphract.API.Build;
 import Cataphract.API.IOStreams;
 
 /**
- * 
+ * A class to create new user accounts on the system. Can be restricted by policy "account_create"
  */
 public final class AccountCreate 
 {
 
+    /**
+     * String to display rules for setting the account names
+     */
     protected final static String _accountNamePolicy = """
     Account Name Policy Information
     -------------------------------
@@ -26,6 +29,9 @@ public final class AccountCreate
     -------------------------------
     """;
 
+    /**
+     * String to display rules for setting the account usernames
+     */
     protected final static String _accountUsernamePolicy = """
     Account Username Policy Information
     -----------------------------------
@@ -34,6 +40,9 @@ public final class AccountCreate
     -----------------------------------
     """;
 
+    /**
+     * String to display rules for setting the account passwords
+     */
     protected final static String _accountPasswordPolicy = """
     Account Password Policy Information
     -----------------------------------
@@ -42,6 +51,9 @@ public final class AccountCreate
     -----------------------------------
     """;
     
+    /**
+     * String to display rules for setting the account Security Key
+     */
     protected final static String _accountSecurityKeyPolicy = """
     Account Security Key Policy Information
     -----------------------------------
@@ -50,6 +62,9 @@ public final class AccountCreate
     -----------------------------------
     """;
 
+    /**
+     * String to display rules for setting account PIN
+     */
     protected final static String _accountPINPolicy = """
     Account PIN Policy Information
     -------------------------------
@@ -58,30 +73,72 @@ public final class AccountCreate
     -------------------------------
     """;
 
-
-    private boolean _status = false;
-
+    /**
+     * String to store the current user
+     */
     private String _currentUsername = "DEFAULT";
+
+    /**
+     * Boolean to store whether the current account is an admin
+     */
     private boolean _currentAccountAdmin = false;
 
+    /**
+     * String to store the new account name
+     */
     private String _newAccountName = "";
+
+    /**
+     * String to store the new account username
+     */
     private String _newAccountUsername = "";
+
+    /**
+     * String to store the new account password
+     */
     private String _newAccountPassword = "";
+
+    /**
+     * String to store the new account Security Key
+     */
     private String _newAccountSecurityKey = "";
+
+    /**
+     * String to store the new account PIN
+     */
     private String _newAccountPIN = "";
+
+    /**
+     * Boolean to store whether the new account is an admin
+     */
     private boolean _newAccountAdmin = false;
 
+    /**
+    * Instantiate Console to get user inputs
+    */
     private Console console = System.console();
 
+    /**
+     * Logic that will help in creating a new user in Cataphract
+     * 
+     * @param username Value of the current username
+     * @throws Exception Throws any exceptions encountered during runtime.
+     */
     public final void accountCreateLogic(String username)throws Exception
     {
+        //Store the current username locally to _currentUsername
         _currentUsername = username;
 
+        //If the authentication check fails, exit from the module
         if(! authenticateCurrentUser())
             IOStreams.println("Failed to authenticate user. Exiting...");
+        //Else, continue with the user creation logic
         else
         {
+            //Clear the screen and view the build information
             Build.viewBuildInfo();
+
+            //If the current user has administrator rights, ask if the new accounts should have the administrator rights too
             if(_currentAccountAdmin)
             {
                 IOStreams.printAttention("The currently logged in user is an administrator.\nYou have the privileges to create other administrator accounts or standard user accounts.\n");
@@ -143,6 +200,7 @@ public final class AccountCreate
 
     private final boolean setAccountName()throws Exception
     {
+        boolean status = false;
         credentialDashboard();
 
         _newAccountName = console.readLine(_accountNamePolicy + "Account Name> ");
@@ -150,17 +208,18 @@ public final class AccountCreate
         if(_newAccountName == null | _newAccountName.contains(" ") | _newAccountName.equals("") | !(_newAccountName.matches("^[a-zA-Z0-9]*$")) | _newAccountName.equalsIgnoreCase("Administrator") | _newAccountName.length() < 2)
         {
             _newAccountName = "";
-            _status = false;
+            status = false;
             console.readLine("Invalid Account Name. Press ENTER to try again.");
         }
         else
-            _status = true;
+            status = true;
 
-        return _status;
+        return status;
     }
 
     private final boolean setAccountUsername()throws Exception
     {
+        boolean status = false;
         credentialDashboard();
 
         _newAccountUsername = (console.readLine(_accountUsernamePolicy + "Account Username> "));
@@ -168,27 +227,26 @@ public final class AccountCreate
         if(new Cataphract.API.Dragon.Login(_newAccountUsername).checkUserExistence())
         {
             IOStreams.printError("Username has already been enrolled! Please try again with another username.");
-            _status = false;
             _newAccountUsername = "";
             console.readLine();
         }
         else if(_newAccountUsername == null | _newAccountUsername.equals("") | _newAccountUsername.equalsIgnoreCase("Administrator"))
         {
             _newAccountUsername = "";
-            _status = false;
             console.readLine("Invalid Account Username. Press ENTER to try again.");
         }
         else
         {
-            _status = true;
+            status = true;
             _newAccountUsername = new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(_newAccountUsername);
         }
         
-        return _status;
+        return status;
     }
 
     private final boolean setAccountPassword()throws Exception
     {
+        boolean status = false;
         credentialDashboard();
         
         _newAccountPassword = String.valueOf(console.readPassword(_accountPasswordPolicy + "Account Password> "));
@@ -198,20 +256,19 @@ public final class AccountCreate
         {
             _newAccountPassword = "";
             confirmPassword = "";
-            _status = false;
             console.readLine("Invalid Account Password. Press ENTER to try again.");
         }
         else
         {
-            _status = true;
             _newAccountPassword = new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(_newAccountPassword);
         }
 
-        return _status;
+        return status;
     }
 
     private final boolean setAccountSecurityKey()throws Exception
     {
+        boolean status = false;
         credentialDashboard();
 
         _newAccountSecurityKey = String.valueOf(console.readPassword(_accountSecurityKeyPolicy + "Account Security Key> "));
@@ -221,20 +278,20 @@ public final class AccountCreate
         {
             _newAccountSecurityKey = "";
             confirmKey = "";
-            _status = false;
             console.readLine("Invalid Account Security Key. Press ENTER to try again.");
         }
         else
         {
-            _status = true;
+            status = true;
             _newAccountSecurityKey = new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(_newAccountSecurityKey);
         }
 
-        return _status;
+        return status;
     }
 
     private final boolean setAccountPIN()throws Exception
     {
+        boolean status = false;
         credentialDashboard();
 
         _newAccountPIN = String.valueOf(console.readPassword(_accountPINPolicy + "Account PIN> "));
@@ -244,16 +301,15 @@ public final class AccountCreate
         {
             _newAccountPIN = "";
             confirmPIN = "";
-            _status = false;
             console.readLine("Invalid Account PIN. Press ENTER to try again.");
         }
         else
         {
-            _status = true;
+            status = true;
             _newAccountPIN = new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(_newAccountPIN);
         }
 
-        return _status;
+        return status;
     }
 
     private final void addAccountToDatabase()
