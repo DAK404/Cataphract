@@ -34,6 +34,7 @@ import java.sql.Statement;
 //Import the required Cataphract APIs
 import Cataphract.API.IOStreams;
 import Cataphract.API.Build;
+import Cataphract.API.ExceptionHandler;
 
 /**
 * Entry point to the kernel loader. Checks conditions and loads the kernel.
@@ -69,29 +70,39 @@ public class Loader
     */
     public static void main(String[] args)throws Exception
     {
-        //Check the boot parameters received and perform an action based on the parameters.
-        switch(args[0])
+        try
         {
-            //Probe mode: exit with status 7 to notify that the kernel exists
-            case "probe":
-            System.exit(7);
-            break;
+            //Check the boot parameters received and perform an action based on the parameters.
+            switch(args[0])
+            {
+                //Probe mode: exit with status 7 to notify that the kernel exists
+                case "probe":
+                System.exit(7);
+                break;
 
-            //Boot to the normal mode, no changes made here
-            case "normal":
-            IOStreams.println("Starting Kernel...");
-            break;
+                //Boot to the normal mode, no changes made here
+                case "normal":
+                IOStreams.println("Starting Kernel...");
+                break;
 
-            //Rejects boot if the mode is not specified
-            default:
-            IOStreams.printError("Invalid Boot Mode. Aborting...\n");
-            System.exit(3);
+                case "crash":
+                throw new Exception();
+
+                //Rejects boot if the mode is not specified
+                default:
+                IOStreams.printError("Invalid Boot Mode. Aborting...\n");
+                System.exit(3);
+            }
+
+            //Display the build information
+            Build.viewBuildInfo();
+            //Instantiate and start the loader logic
+            new Loader().loaderLogic();
         }
-
-        //Display the build information
-        Build.viewBuildInfo();
-        //Instantiate and start the loader logic
-        new Loader().loaderLogic();
+        catch(Exception e)
+        {
+            new ExceptionHandler().handleException(e);
+        }
     }
 
     /**
