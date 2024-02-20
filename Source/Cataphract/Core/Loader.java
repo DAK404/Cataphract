@@ -88,6 +88,12 @@ public class Loader
                 case "crash":
                 throw new Exception();
 
+                case "astaroth":
+                IOStreams.println(String.valueOf(new Cataphract.API.Astaroth.Time().getUnixEpoch()));
+                IOStreams.println(String.valueOf(new Cataphract.API.Astaroth.Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy \nEEEE HH:mm:ss")));
+                new Cataphract.API.Astaroth.Calendar().printCalendar(8, 2077);
+                System.exit(0);
+
                 //Rejects boot if the mode is not specified
                 default:
                 IOStreams.printError("Invalid Boot Mode. Aborting...\n");
