@@ -17,15 +17,14 @@
 
 package Cataphract.API;
 
-//Import the Java Console class
 import java.io.Console;
 
 /**
-* A class implementing console output with prefixes, colors, and a "Press Enter To Continue" functionality
+* A class implementing console output with prefixes, colors, and a "Press RETURN To Continue" functionality
 *
 * @author DAK404 (https://github.com/DAK404)
 * @version 1.2.0 (11-October-2023, Cataphract)
-* @since 1.1.0 (Truncheon Katana)
+* @since 1.1.0 (Truncheon Katana 1.2.0)
 */
 public class IOStreams
 {
@@ -126,22 +125,27 @@ public class IOStreams
 
     /**
     * Provide a method that will ask the user to press the RETURN key.
-    *
     * Useful when there is a long text to be read by the user.
+    * 
+    * @return String The value provided to the input
     */
-    public static void confirmReturnToContinue()
+    public static String confirmReturnToContinue()
     {
-        console.readLine("Press RETURN to Continue...");
+        return console.readLine("Press RETURN to Continue.");
     }
 
     /**
     * [ OVERLOAD ] Provide a method that will ask the user to press the RETURN key, with a prefix text and a suffix text.
     *
     * Useful when someone wants to insert text before or after the default "Press RETURN to Continue..." string
-    * You might want to use a unicode escape character \u00A0 to essentially add a non breaking space to multiline Strings.
-    */
-    public static void confirmReturnToContinue(String prefix, String suffix)
+    * You might want to use a unicode escape character \u00A0 to essentially add a non breaking space to multiline Strings.     * 
+     * 
+     * @param prefix The prefix to be added before displaying the "Press RETURN to Continue" message
+     * @param suffix The suffix to be added after displaying the "Press RETURN to Continue" message
+     * @return String The value provided to the input
+     */
+    public static String confirmReturnToContinue(String prefix, String suffix)
     {
-        console.readLine(prefix + "Press RETURN to Continue" + suffix);
+        return console.readLine(prefix + "Press RETURN to Continue" + suffix);
     }
 }

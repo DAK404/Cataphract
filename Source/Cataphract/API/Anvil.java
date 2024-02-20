@@ -1,12 +1,26 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
 package Cataphract.API;
 
-//Scripting featureset
-
-// COMMON COMPONENTS LIKE WAIT, INPUT, ECHO ARE HERE. NO REDUNDANCY
-//ANY EXTRA FEATURES ARE PASSED BACK TO THE PROGRAM AND ARE PROCESSED BY THE CALLING PROGRAM
-
 /**
+ * A class that provides a set of built in commands for all classes. Also provides a utility to split a string into an array for processing.
  * 
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 2.1.0 (20-February-2024, Cataphract)
+ * @since 0.0.1 (Truncheon 1.0.1)
  */
 public class Anvil
 {
@@ -20,9 +34,9 @@ public class Anvil
     /**
      * Module implementing the interpreter for common commands. Also helps in scripting and reduces code duplication.
      *
-     * @param command : Command String that the interpreter shall... Interpret
+     * @param command Command String that the interpreter shall... Interpret
      * @return boolean status: Returns true if the command entered is found, else returns false
-     * @throws Exception : Throws any exceptions encountered during runtime.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public static boolean anvilInterpreter(String command)throws Exception
     {
@@ -104,8 +118,8 @@ public class Anvil
     /**
      * Method to split an input string to individual words by at the occurrence of a blank space.
      * 
-     * @param command : String that will need to be split into an array.
-     * @return String[] : The string split into an array.
+     * @param command String that will need to be split into an array.
+     * @return String[] The string split into an array.
      */
     public static String[] splitStringToArray(String command)
     {

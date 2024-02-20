@@ -1,3 +1,18 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
 package Cataphract.API.Dragon;
 
 import java.io.Console;
@@ -12,8 +27,12 @@ import Cataphract.API.IOStreams;
 
 /**
  * A class to create new user accounts on the system. Can be restricted by policy "account_create"
+ *
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 3.9.7 (20-February-2024, Cataphract)
+ * @since 0.0.1 (Zen Quantum 0.0.1)
  */
-public final class AccountCreate 
+public final class AccountCreate
 {
 
     /**
@@ -50,7 +69,7 @@ public final class AccountCreate
     * Password is recommended to have special characters and numbers
     -----------------------------------
     """;
-    
+
     /**
      * String to display rules for setting the account Security Key
      */
@@ -120,7 +139,7 @@ public final class AccountCreate
 
     /**
      * Logic that will help in creating a new user in Cataphract
-     * 
+     *
      * @param username Value of the current username
      * @throws Exception Throws any exceptions encountered during runtime.
      */
@@ -168,7 +187,7 @@ public final class AccountCreate
         try
         {
             IOStreams.println("Username: " + new Cataphract.API.Dragon.Login(_currentUsername).getNameLogic());
-            
+
             authenticationStatus = new Cataphract.API.Dragon.Login(_currentUsername).authenticationLogic(new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(String.valueOf(console.readPassword("Password: "))), new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(String.valueOf(console.readPassword("SecurityKey: "))));
             _currentAccountAdmin = new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic();
         }
@@ -240,7 +259,7 @@ public final class AccountCreate
             status = true;
             _newAccountUsername = new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(_newAccountUsername);
         }
-        
+
         return status;
     }
 
@@ -248,7 +267,7 @@ public final class AccountCreate
     {
         boolean status = false;
         credentialDashboard();
-        
+
         _newAccountPassword = String.valueOf(console.readPassword(_accountPasswordPolicy + "Account Password> "));
         String confirmPassword = String.valueOf(console.readPassword("Confirm Password> "));
 
@@ -363,7 +382,7 @@ public final class AccountCreate
         while(!setAccountPIN());
 
         addAccountToDatabase();
-        
+
         Cataphract.API.IOStreams.confirmReturnToContinue();
     }
 }
