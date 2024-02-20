@@ -1,21 +1,33 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
 package Cataphract.API.Minotaur;
 
-//Import the required Java IO classes
 import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 
-//Import the required Java Util classes
 import java.util.Properties;
 
-//Import the required Cataphract classes
 import Cataphract.API.Build;
 import Cataphract.API.IOStreams;
 
 /**
  * A class implementing policy management system.
- * 
+ *
  * @author DAK404 (https://github.com/DAK404)
  * @version 2.0.1 (11-October-2023, Cataphract)
  * @since 0.2.4.6 (Mosaic)
@@ -26,22 +38,22 @@ public class PolicyManager
      * Stores the value if the user is an administrator or not.
      */
     private boolean _userIsAdmin = false;
-    
+
     /**
      * Stores the default Cataphract values in an array.
      */
     public final String [] resetValues = {"auth", "update", "download", "script", "filemgmt", "read", "edit", "usermgmt", "policy"};
-    
+
     /**
      * Stores the path of the policy file.
      */
     private final String policyFileName = "./System/Cataphract/Private/Policy.burn";
-    
+
     /**
      * Provide a set of applicable commands to the users.
      */
     private String suggestedInputs = "";
-    
+
     /**
      * Instantiate Console to get user inputs
      */
@@ -51,7 +63,7 @@ public class PolicyManager
      * Instantiate Properties to load and write to the policy file.
      */
     private Properties props = null;
-    
+
     /**
      * Sole constructor. Checks if the policy file exists. Will reset if the file does not exist.
      */
@@ -67,10 +79,10 @@ public class PolicyManager
             e.printStackTrace();
         }
     }
-    
+
     /**
     * Logic to edit the policy file with the policy name and its corresponding values.
-    * 
+    *
     * @throws Exception : Handle exceptions thrown during program runtime.
     */
     public final void policyEditorLogic()throws Exception
@@ -89,7 +101,7 @@ public class PolicyManager
 
         System.gc();
     }
-    
+
     /**
     * Logic to authenticate a user to access the policy management system
     *
@@ -106,13 +118,13 @@ public class PolicyManager
             //Clear the screen and display build information
             Build.viewBuildInfo();
             IOStreams.printAttention("This module requires the user to authenticate to continue. Please enter the user credentials.");
-            
+
             //Store the username, will be required to check if the user has administrator privileges.
             String username = new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(console.readLine("Username: "));
-            
+
             //Use the Login API to check if the entered credentials are valid or not
             challengeStatus = (new Cataphract.API.Dragon.Login(username).authenticationLogic(new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(String.valueOf(console.readPassword("Password: "))), new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(String.valueOf(console.readPassword("Security Key: ")))));
-            
+
             //Update the value to check if the user has administrator privileges.
             _userIsAdmin = new Cataphract.API.Dragon.Login(username).checkPrivilegeLogic();
         }
@@ -124,7 +136,7 @@ public class PolicyManager
         }
         return challengeStatus;
     }
-    
+
     /**
     * Logic containing the implementation to edit policies.
     *
@@ -144,19 +156,19 @@ public class PolicyManager
 
         //Display the policies.
         viewPolicyInfo();
-        
+
         //A string to hold the inputs provided by the user.
         String input;
-        
+
         //Loop the logic until the user wants to exit the module.
         do
         {
             //Store the user input command in variable "input"
             input = console.readLine("PolicyEditor)> ");
-            
+
             //Split the contents of "input" at the occurrence of a blank space and store it in an array.
             String[] policyCommandArray = Cataphract.API.Anvil.splitStringToArray(input);
-            
+
             //Logic to decide which command needs to be executed, and converting the input to lowercase to avoid any discrepancies.
             switch(policyCommandArray[0].toLowerCase())
             {
@@ -169,7 +181,7 @@ public class PolicyManager
                 else
                     savePolicy(policyCommandArray[1], policyCommandArray[2]);
                 break;
-                
+
                 //Logic to reset the policy file.
                 case "reset":
                 //Reset can be performed by Administrators only. Restrict normal users from using this command.
@@ -179,17 +191,17 @@ public class PolicyManager
                     resetPolicyFile();
                 }
                 break;
-                
+
                 //Logic to reload and display the policy file
                 case "refresh":
                 viewPolicyInfo();
                 break;
-                
+
                 //logic to handle the exiting of program. NOTE: the while loop shall take care of the exit, therefore, a break is suitable here.
                 case "exit":
                 case "":
                 break;
-                
+
                 //Default string when a command is not found.
                 default:
                 IOStreams.printError("Invalid command. Please try again.");
@@ -199,10 +211,10 @@ public class PolicyManager
         }
         while(! input.equalsIgnoreCase("exit"));
     }
-    
+
     /**
      * Display the policies and the required data.
-     * 
+     *
      * @throws Exception
      */
     private final void viewPolicyInfo()throws Exception
@@ -210,7 +222,7 @@ public class PolicyManager
         displaySettings();
         IOStreams.println(suggestedInputs + "\n");
     }
-    
+
     /**
     * Display the details of the policy file and the policies itself.
     */
@@ -230,7 +242,7 @@ public class PolicyManager
         IOStreams.println("\n--------------------------------------------\n");
         System.gc();
     }
-    
+
     /**
     * Saves a policy to the file, with the key and value structure
     *
@@ -243,7 +255,7 @@ public class PolicyManager
     {
         //Set the policy name and the policy value specified in the arguments.
         props.setProperty(policyName, policyValue);
-        
+
         //Write the data out to the file.
         FileOutputStream output = new FileOutputStream(policyFileName);
 
@@ -254,7 +266,7 @@ public class PolicyManager
         output.close();
         System.gc();
     }
-    
+
     /**
     * Resets all the policies to its default values.
     *
@@ -264,14 +276,14 @@ public class PolicyManager
     {
         //force delete the policy file
         new File(policyFileName).delete();
-        
+
         //Instantiate the Properties class.
         props = new Properties();
-        
+
         //Set the policy name and values.
         for(int i = 0; i < resetValues.length; ++i)
         savePolicy(resetValues[i], "on");
-        
+
         //Generate a random system name and store it in the policy file
         savePolicy("sysname", "SYSTEM" + ((int)(Math.random() * (999999 - 100000 + 1)) + 100000));
 

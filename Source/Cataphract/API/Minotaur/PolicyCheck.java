@@ -1,3 +1,18 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
 package Cataphract.API.Minotaur;
 
 //Import the required Java IO classes
@@ -7,10 +22,13 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 /**
- * An API that helps to check the policy for a given module.
- * 
+ * A class that helps to check the policy for a given module.
+ *
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 2.0.6 (11-October-2023, Cataphract)
+ * @since 0.0.1 (Mosaic 1.0)
  */
-public class PolicyCheck 
+public class PolicyCheck
 {
 
     /**
@@ -55,10 +73,10 @@ public class PolicyCheck
             //Set the string value to "error" if the given property is not found, unreadable or is misconfigured
             policyValue = "error";
         }
-        
+
         if(policyValue == null)
             policyValue = "Error";
-            
+
         //return the policy value in the string format
         return policyValue;
     }
