@@ -33,12 +33,12 @@ public class IOStreams
     /**
     * Array that holds the text foreground values
     */
-    final static String[] _textColorForeground = {"[30", "[31", "[32", "[33", "[34", "[35", "[36", "[37", "[39"};
+    private final static String[] _textColorForeground = {"[30", "[31", "[32", "[33", "[34", "[35", "[36", "[37", "[39"};
 
     /**
     * Array that holds the text background values
     */
-    final static String[] _textColorBackground = {"40", "41", "42", "43", "44", "45", "46", "47", "49"};
+    private final static String[] _textColorBackground = {"40", "41", "42", "43", "44", "45", "46", "47", "49"};
 
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
@@ -98,18 +98,18 @@ public class IOStreams
     }
 
     /**
-    * Text that can have a formatted background and foreground color to make a piece of text distinct from the rest.
+    * Text that can have a formatted background and foreground color to make a piece of text distinct from the rest. Prints the line and moves the curson to the next line.
     *
     * @param foregroundIndex Index value for the foreground color
     * @param backgroundIndex Index value for the background color
     * @param message The intended message that needs to be printed on the screen
     */
-    public static void println(int foregroundIndex, int backgroundIndex, String message)
+    public static void print(int foregroundIndex, int backgroundIndex, String message)
     {
         try
         {
             //Print the text with the specified indices correlating with the table specified
-            System.out.println((char)27 + _textColorForeground[foregroundIndex] + ";" + _textColorBackground[backgroundIndex] + "m" + message + (char)27 + "[0m");
+            System.out.print((char)27 + _textColorForeground[foregroundIndex] + ";" + _textColorBackground[backgroundIndex] + "m" + message + (char)27 + "[0m");
         }
         catch(ArrayIndexOutOfBoundsException e)
         {
@@ -121,6 +121,18 @@ public class IOStreams
             //Catch any generic errors
             System.out.println(e);
         }
+    }
+
+     /**
+    * Text that can have a formatted background and foreground color to make a piece of text distinct from the rest.
+    *
+    * @param foregroundIndex Index value for the foreground color
+    * @param backgroundIndex Index value for the background color
+    * @param message The intended message that needs to be printed on the screen
+    */
+    public static void println(int foregroundIndex, int backgroundIndex, String message)
+    {
+        print(foregroundIndex, backgroundIndex, message + "\n");
     }
 
     /**

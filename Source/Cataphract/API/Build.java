@@ -53,7 +53,8 @@ public class Build
         //clear the screen before printing the branding.
         clearScreen();
         //print the branding string.
-        IOStreams.println(_Branding);
+        IOStreams.println(_Branding + "\n");
+        IOStreams.printWarning("Features disabled until integration tests are complete.\n\nIntegration test ongoing.\nCore features are almost complete.\n");
     }
 
     /**

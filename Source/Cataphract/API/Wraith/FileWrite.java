@@ -165,7 +165,7 @@ public class FileWrite
      *
      * @param fileName The name of the file to be checked.
      * @return true if the file name is valid, otherwise false.
-     * @throws Exception If an error occurs during the validation process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private static final boolean checkFileValidity(String fileName) throws Exception
     {

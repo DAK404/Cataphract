@@ -26,7 +26,7 @@ import Cataphract.API.Build;
 import Cataphract.API.IOStreams;
 
 /**
- * A class to delete user accounts on the system. Can be restricted by policy "account_create" Can be restricted by policy "account_delete"
+ * A class to delete user accounts on the system. Can be restricted by policy "account_delete".
  *
  * @author DAK404 (https://github.com/DAK404)
  * @version 3.9.7 (20-February-2024, Cataphract)
@@ -48,7 +48,7 @@ public class AccountDelete
      * Constructor for AccountDelete class.
      *
      * @param currentUsername The current username.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public AccountDelete(String currentUsername) throws Exception
     {
@@ -59,30 +59,37 @@ public class AccountDelete
     /**
      * Performs user deletion logic.
      *
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public void userDeletionLogic() throws Exception
     {
         // Display build information
         Build.viewBuildInfo();
-        // Check login credentials
-        if (!login())
-            IOStreams.printError("Invalid Login Credentials. Please Try Again.");
-        // If login successful, proceed to check privileges and perform actions accordingly
-        else
+
+        // Check the policy to see if the account deletion is allowed for the current user
+        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_delete").equals("on") || new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic())
         {
-            if (new Login(_currentUsername).checkPrivilegeLogic())
-                administratorSession();
-            // If not administrator, proceed with account deletion
+            // Check login credentials
+            if (!login())
+                IOStreams.printError("Invalid Login Credentials. Please Try Again.");
+            // If login successful, proceed to check privileges and perform actions accordingly
             else
-                accountDeletionLogic(_currentUsername);
+            {
+                if (new Login(_currentUsername).checkPrivilegeLogic())
+                    administratorSession();
+                // If not administrator, proceed with account deletion
+                else
+                    accountDeletionLogic(_currentUsername);
+            }
         }
+        else
+            IOStreams.printError("Policy Configuration Error!");
     }
 
     /**
      * Administrator session for account deletion. Administrators can delete other user accounts.
      *
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private void administratorSession() throws Exception
     {
@@ -124,7 +131,7 @@ public class AccountDelete
      *
      * @param username The username to be deleted.
      * @return true if the deletion is successful, otherwise false.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private boolean accountDeletionLogic(String username) throws Exception {
         boolean status = false;
@@ -161,7 +168,7 @@ public class AccountDelete
      * Login method.
      *
      * @return true if login is successful, otherwise false.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private boolean login() throws Exception {
         boolean status = false;
@@ -219,7 +226,7 @@ public class AccountDelete
      *
      * @param delFile The file to be deleted.
      * @return true if the deletion is successful, otherwise false.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private boolean deleteDirectories(File delFile) throws Exception
     {

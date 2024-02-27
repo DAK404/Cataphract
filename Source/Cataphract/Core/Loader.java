@@ -94,6 +94,23 @@ public class Loader
                 new Cataphract.API.Astaroth.Calendar().printCalendar(8, 2077);
                 System.exit(0);
 
+                case "iostreams":
+                IOStreams.printError("This is an error message.");
+                IOStreams.printWarning("This is a warning message.");
+                IOStreams.printAttention("This is an attention message.");
+                IOStreams.printInfo("This is an information message.");
+                IOStreams.println("This is a normal printline message. Printing the same with colors");
+                for(int i = 0; i < 9; i++)
+                {
+                    for(int j = 0; j < 9; j++)
+                    {
+                        IOStreams.print(i, j, "testing IOStreams");
+                        System.out.print(" ");
+                    }
+                    System.out.println();
+                }
+                System.exit(0);
+
                 //Rejects boot if the mode is not specified
                 default:
                 IOStreams.printError("Invalid Boot Mode. Aborting...\n");
@@ -466,7 +483,7 @@ public class Loader
     /**
     * Logic to check if Cataphract has been setup on the system.
     *
-    * @return boolean - Returns if the "System" and "User" directories have been initialized
+    * @return boolean Returns if the "System" and "User" directories have been initialized
     */
     private boolean setupStatusCheck()
     {
@@ -477,7 +494,7 @@ public class Loader
     * Logic to convert from an OS dependent file separator format of file paths to Nion File Separator format.
     *
     * @param nionPath String that contains the file path in Nion File Separator format
-    * @return String - The value of the String converted to the OS dependent file separator format
+    * @return String The value of the String converted to the OS dependent file separator format
     */
     // private String convertFileSeparator(String nionPath)
     // {
@@ -488,7 +505,7 @@ public class Loader
     * Logic to convert from an OS dependent file separator format of file paths to Nion File Separator format.
     *
     * @param filePath String that contains the file path in OS dependent file separator format.
-    * @return String - The value of the String converted to Nion File Separator format.
+    * @return String The value of the String converted to Nion File Separator format.
     */
     private String convertToNionSeparator(String filePath)
     {

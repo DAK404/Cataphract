@@ -25,7 +25,7 @@ public class BuildSigner
     /**
     * Logic to sign the build
     *
-    * @param Args
+    * @param Args arguments passed during invokation 
     */
     public static void main(String[] Args)
     {
@@ -103,8 +103,8 @@ public class BuildSigner
     /**
     * Logic to ignore a few files/directories
     *
-    * @param fileName: The file name to be checked
-    * @return status: True if the file/directory is to be ignored, false otherwise
+    * @param fileName The file name to be checked
+    * @return status True if the file/directory is to be ignored, false otherwise
     */
     private boolean ignoreFiles(String fileName)
     {

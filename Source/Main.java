@@ -193,7 +193,7 @@ public class Main
     /**
     * A method that displays messages with the specified header and footer.
     *
-    * @param message: The message to be displayed.
+    * @param message The message to be displayed.
     */
     private static void displayMessages(String message)
     {
@@ -204,7 +204,7 @@ public class Main
     /**
     * A method that has the logic to start or probe a kernel. The kernel needs to follow the Nion Directory Specification to be booted from this launcher.
     *
-    * @param parameters: The boot parameters that is passed on to the kernel.
+    * @param parameters The boot parameters that is passed on to the kernel.
     * @return int exitCode: The exit code returned after executing the logic in the kernel booted.
     */
     private static int startKernelLogic(String[] parameters)
@@ -246,8 +246,8 @@ public class Main
     /**
     * Entry point of the Launcher program. Will boot any kernels that follow the Nion Directory Specification and Nion Kernel Specification.
     *
-    * @param args : Parameters, such as Kernel name and Kernel parameters are stored here.
-    * @throws Exception : Handles any thrown Exceptions during runtime.
+    * @param args Parameters, such as Kernel name and Kernel parameters are stored here.
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public static void main(String[] args)throws Exception
     {

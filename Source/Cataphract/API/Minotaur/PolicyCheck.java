@@ -42,9 +42,9 @@ public class PolicyCheck
     /**
     * Retrieves the policy value in a string format, to the program requesting the value
     *
-    * @param policyParameter : The policy that must be checked against the policy file
-    * @return String : The value of the value retrieved from the file
-    * @throws Exception : Handle exceptions thrown during program runtime
+    * @param policyParameter The policy that must be checked against the policy file
+    * @return String The value of the value retrieved from the file
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final String retrievePolicyValue(String policyParameter)throws Exception
     {
@@ -75,7 +75,9 @@ public class PolicyCheck
         }
 
         if(policyValue == null)
-            policyValue = "Error";
+            policyValue = "error";
+
+        System.gc();
 
         //return the policy value in the string format
         return policyValue;

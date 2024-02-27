@@ -46,9 +46,9 @@ public class Cryptography
     /**
     * Hashing API which will convert a string to an MD5 hash
     *
-    * @param input : The string that is to be encoded
-    * @return String : Returns the MD5 hash
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param input The string that is to be encoded
+    * @return String Returns the MD5 hash
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final String stringToMD5(String input)throws Exception
     {
@@ -58,9 +58,9 @@ public class Cryptography
     /**
     * Hashing API which will convert a string to an SHA3-256 hash
     *
-    * @param input : The String that is to be encoded
-    * @return String : Returns the SHA3-256 hash
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param input The String that is to be encoded
+    * @return String Returns the SHA3-256 hash
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final String stringToSHA_256(String input) throws Exception
     {
@@ -70,9 +70,9 @@ public class Cryptography
     /**
     * Hashing API which will convert a string to an SHA3-256 hash
     *
-    * @param input : The String that is to be encoded
-    * @return String : Returns the SHA3-256 hash
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param input The String that is to be encoded
+    * @return String Returns the SHA3-256 hash
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final String stringToSHA3_256(String input) throws Exception
     {
@@ -82,9 +82,9 @@ public class Cryptography
     /**
     * Hashing API which will return the MD5 hash value of a given file
     *
-    * @param fileName : The name of the file to be hashed
-    * @return String : Returns the MD5 hash
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param fileName The name of the file to be hashed
+    * @return String Returns the MD5 hash
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final String fileToMD5(String fileName) throws Exception
     {
@@ -94,9 +94,9 @@ public class Cryptography
     /**
     * Hashing API which will return the SHA3-256 hash value of a given file
     *
-    * @param fileName : The name of the file to be hashed
-    * @return String : Returns the SHA3-256 hash
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param fileName The name of the file to be hashed
+    * @return String Returns the SHA3-256 hash
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final String fileToSHA_256(String fileName) throws Exception
     {
@@ -106,9 +106,9 @@ public class Cryptography
     /**
     * Hashing API which will return the SHA3-256 hash value of a given file
     *
-    * @param fileName : The name of the file to be hashed
-    * @return String : Returns the SHA3-256 hash
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param fileName The name of the file to be hashed
+    * @return String Returns the SHA3-256 hash
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final String fileToSHA3_256(String fileName) throws Exception
     {
@@ -122,8 +122,8 @@ public class Cryptography
     /**
     * Convert the byte array to a Hex String
     *
-    * @param arrayBytes : The input byte array
-    * @return String : The Hex String
+    * @param arrayBytes The input byte array
+    * @return String The Hex String
     */
     private final String convertByteArrayToHexString(byte[] arrayBytes)
     {
@@ -136,10 +136,10 @@ public class Cryptography
     /**
     * The logic to hash a file.
     *
-    * @param file : The input file object
-    * @param algorithm : The algorithm to be used to hash the file
-    * @return String result : The hashed string
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param file The input file object
+    * @param algorithm The algorithm to be used to hash the file
+    * @return String result The hashed string
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     private final String hashFile(File file, String algorithm)throws Exception
     {
@@ -175,10 +175,10 @@ public class Cryptography
     /**
     * Logic to hash a string
     *
-    * @param message : The string to be hashed
-    * @param algorithm : The algorithm to be used to hash the string
-    * @return String result : The hashed string
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param message The string to be hashed
+    * @param algorithm The algorithm to be used to hash the string
+    * @return String result The hashed string
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     private final String hashString(String message, String algorithm)throws Exception
     {

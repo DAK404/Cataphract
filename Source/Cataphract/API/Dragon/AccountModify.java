@@ -58,7 +58,7 @@ public class AccountModify
      * Constructor to store details about the current user to global variables
      *
      * @param user Name of the user currently logged in
-     * @throws Exception Any exceptions thrown during the execution of the program
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public AccountModify(String user)throws Exception
     {
@@ -70,29 +70,35 @@ public class AccountModify
     /**
      * Method to execute account modification logic
      *
-     * @throws Exception Any exceptions thrown during the execution of the program
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public final void accountModifyLogic()throws Exception
     {
-        // Trigger garbage collection
-        System.gc();
+        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_modify").equals("on") || new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic())
+        {
+            // Check login credentials
+            if(!login())
+                IOStreams.printError("Incorrect Credentials! Aborting...");
+            else
+                // Proceed to account management menu
+                accountManagementMenu();
 
-        // Check login credentials
-        if(!login())
-            IOStreams.printError("Incorrect Credentials! Aborting...");
+            // Trigger garbage collection
+            System.gc();
+        }
         else
-            // Proceed to account management menu
-            accountManagementMenu();
+            IOStreams.printError("Policy Configuration Error!");
 
         // Trigger garbage collection
         System.gc();
+
     }
 
     /**
      * Method to handle user authentication
      *
      * @return true if authentication is successful, false otherwise
-     * @throws Exception Any exceptions thrown during the execution of the program
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private boolean login()throws Exception
     {
@@ -112,7 +118,7 @@ public class AccountModify
     /**
      * Method to display and manage account modification menu
      *
-     * @throws Exception Any exceptions thrown during the execution of the program
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private void accountManagementMenu()throws Exception
     {
@@ -259,7 +265,7 @@ public class AccountModify
     /**
      * Method to change account password
      *
-     * @throws Exception Any exceptions thrown during the execution of the program
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private void changeAccountPassword()throws Exception
     {
@@ -278,7 +284,7 @@ public class AccountModify
     /**
      * Method to change account security key
      *
-     * @throws Exception Any exceptions thrown during the execution of the program
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private void changeAccountSecurityKey()throws Exception
     {
@@ -297,7 +303,7 @@ public class AccountModify
     /**
      * Method to change account PIN
      *
-     * @throws Exception Any exceptions thrown during the execution of the program
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private void changeAccountPIN()throws Exception
     {

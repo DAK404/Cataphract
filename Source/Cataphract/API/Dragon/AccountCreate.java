@@ -147,34 +147,40 @@ public final class AccountCreate
     {
         //Store the current username locally to _currentUsername
         _currentUsername = username;
+        _currentAccountAdmin = new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic();
 
-        //If the authentication check fails, exit from the module
-        if(! authenticateCurrentUser())
-            IOStreams.println("Failed to authenticate user. Exiting...");
-        //Else, continue with the user creation logic
-        else
+        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_create").equals("on") || _currentAccountAdmin)
         {
-            //Clear the screen and view the build information
-            Build.viewBuildInfo();
-
-            //If the current user has administrator rights, ask if the new accounts should have the administrator rights too
-            if(_currentAccountAdmin)
+            //If the authentication check fails, exit from the module
+            if(! authenticateCurrentUser())
+                IOStreams.println("Failed to authenticate user. Exiting...");
+            //Else, continue with the user creation logic
+            else
             {
-                IOStreams.printAttention("The currently logged in user is an administrator.\nYou have the privileges to create other administrator accounts or standard user accounts.\n");
-                IOStreams.printWarning("Administrative rights have additional privileges over standard users! Beware on who the administrative privileges are granted to!\n");
-                IOStreams.println("Would you like to grant administrative privileges to the new user account? [ Y | N ]");
-                if(console.readLine("Grant Administrator Privileges?> ").equalsIgnoreCase("Y"))
-                    _newAccountAdmin = true;
-            }
+                //Clear the screen and view the build information
+                Build.viewBuildInfo();
 
-            while(!setAccountName());
-            while(!setAccountUsername());
-            while(!setAccountPassword());
-            while(!setAccountSecurityKey());
-            while(!setAccountPIN());
-            addAccountToDatabase();
-            IOStreams.confirmReturnToContinue();
+                //If the current user has administrator rights, ask if the new accounts should have the administrator rights too
+                if(_currentAccountAdmin)
+                {
+                    IOStreams.printAttention("The currently logged in user is an administrator.\nYou have the privileges to create other administrator accounts or standard user accounts.\n");
+                    IOStreams.printWarning("Administrative rights have additional privileges over standard users! Beware on who the administrative privileges are granted to!\n");
+                    IOStreams.println("Would you like to grant administrative privileges to the new user account? [ Y | N ]");
+                    if(console.readLine("Grant Administrator Privileges?> ").equalsIgnoreCase("Y"))
+                        _newAccountAdmin = true;
+                }
+
+                while(!setAccountName());
+                while(!setAccountUsername());
+                while(!setAccountPassword());
+                while(!setAccountSecurityKey());
+                while(!setAccountPIN());
+                addAccountToDatabase();
+                IOStreams.confirmReturnToContinue();
+            }
         }
+        else
+            IOStreams.printError("Policy Configuration Error!");
         System.gc();
     }
 
@@ -189,7 +195,6 @@ public final class AccountCreate
             IOStreams.println("Username: " + new Cataphract.API.Dragon.Login(_currentUsername).getNameLogic());
 
             authenticationStatus = new Cataphract.API.Dragon.Login(_currentUsername).authenticationLogic(new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(String.valueOf(console.readPassword("Password: "))), new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(String.valueOf(console.readPassword("SecurityKey: "))));
-            _currentAccountAdmin = new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic();
         }
         catch(Exception e)
         {
