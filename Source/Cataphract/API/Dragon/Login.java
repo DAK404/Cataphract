@@ -40,7 +40,7 @@ public class Login
      * Constructor for Login class.
      *
      * @param username The username to be used for login.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public Login(String username) throws Exception
     {
@@ -54,7 +54,7 @@ public class Login
      * @param psw The password for authentication.
      * @param key The security key for authentication.
      * @return true if authentication is successful, otherwise false.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public final boolean authenticationLogic(String psw, String key) throws Exception
     {
@@ -67,7 +67,7 @@ public class Login
      * Method to check user privileges.
      *
      * @return true if the user has privileges, otherwise false.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public final boolean checkPrivilegeLogic() throws Exception
     {
@@ -79,7 +79,7 @@ public class Login
      * Method to retrieve user name.
      *
      * @return The name of the user.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public final String getNameLogic() throws Exception
     {
@@ -91,7 +91,7 @@ public class Login
      * Method to retrieve user PIN.
      *
      * @return The PIN of the user.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public final String getPINLogic() throws Exception
     {
@@ -103,7 +103,7 @@ public class Login
      * Method to check if the user account exists.
      *
      * @return true if the user account exists, otherwise false.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public final boolean checkUserExistence() throws Exception
     {
@@ -117,7 +117,7 @@ public class Login
      * @param sqlCommand The SQL command to execute.
      * @param parameter The parameter to retrieve.
      * @return The retrieved data.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private final String retrieveDatabaseEntry(String sqlCommand, String parameter) throws Exception
     {
@@ -171,7 +171,7 @@ public class Login
      * Method to check for an existing user account in the database.
      *
      * @return true if the user account exists, otherwise false.
-     * @throws Exception If an error occurs during the process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private boolean checkForExistingAccount() throws Exception
     {

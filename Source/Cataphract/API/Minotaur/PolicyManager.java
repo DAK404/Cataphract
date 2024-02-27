@@ -42,7 +42,7 @@ public class PolicyManager
     /**
      * Stores the default Cataphract values in an array.
      */
-    public final String [] resetValues = {"auth", "update", "download", "script", "filemgmt", "read", "edit", "usermgmt", "policy"};
+    public final String [] resetValues = {"auth", "update", "download", "script", "filemgmt", "read", "edit", "policy", "account_create", "account_delete", "account_modify"};
 
     /**
      * Stores the path of the policy file.
@@ -83,7 +83,7 @@ public class PolicyManager
     /**
     * Logic to edit the policy file with the policy name and its corresponding values.
     *
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     public final void policyEditorLogic()throws Exception
     {
@@ -105,7 +105,7 @@ public class PolicyManager
     /**
     * Logic to authenticate a user to access the policy management system
     *
-    * @return boolean : returns the Authentication status.
+    * @return boolean Returns the Authentication status.
     */
     private final boolean authenticationLogic()
     {
@@ -140,7 +140,7 @@ public class PolicyManager
     /**
     * Logic containing the implementation to edit policies.
     *
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     private final void policyEditor()throws Exception
     {
@@ -215,7 +215,7 @@ public class PolicyManager
     /**
      * Display the policies and the required data.
      *
-     * @throws Exception
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private final void viewPolicyInfo()throws Exception
     {
@@ -247,9 +247,9 @@ public class PolicyManager
     * Saves a policy to the file, with the key and value structure
     *
     * The policies are stored in an XML structured file
-    * @param policyName
-    * @param policyValue
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @param policyName Name of the policy that needs to be stored.
+    * @param policyValue Value of the policy that needs to be stored.
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     private final void savePolicy(String policyName, String policyValue)throws Exception
     {
@@ -270,7 +270,7 @@ public class PolicyManager
     /**
     * Resets all the policies to its default values.
     *
-    * @throws Exception : Handle exceptions thrown during program runtime.
+    * @throws Exception Throws any exceptions encountered during runtime.
     */
     private final void resetPolicyFile()throws Exception
     {

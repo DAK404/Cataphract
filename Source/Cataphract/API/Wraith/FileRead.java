@@ -46,9 +46,9 @@ public class FileRead
      * Checks the validity of the file name.
      *
      * @return true if the file name is valid, otherwise false.
-     * @throws Exception If an error occurs during the validation process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
-    private static final boolean checkFileValidity() throws Exception
+    private final boolean checkFileValidity() throws Exception
     {
         // Return false if the file name is null, empty, or starts with a space; otherwise, return true
         return !(fileName.getName() == null || fileName.getName().equals("") || fileName.getName().startsWith(" "));
@@ -57,7 +57,7 @@ public class FileRead
     /**
      * Handles the logic for reading the file.
      *
-     * @throws Exception If an error occurs during the file reading process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     private void readFileLogic() throws Exception
     {
@@ -153,7 +153,7 @@ public class FileRead
      * Reads a file specified by the user.
      *
      * @param userFileName The name of the user's file to be read.
-     * @throws Exception If an error occurs during the file reading process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public void readUserFile(String userFileName) throws Exception
     {
@@ -167,7 +167,7 @@ public class FileRead
      * Reads a help file.
      *
      * @param helpFile The name of the help file to be read.
-     * @throws Exception If an error occurs during the file reading process.
+     * @throws Exception Throws any exceptions encountered during runtime.
      */
     public void readHelpFile(String helpFile) throws Exception
     {

@@ -41,7 +41,6 @@ public class Time
      *
      * @param format The desired format (e.g., "yyyy-MM-dd HH:mm:ss").
      * @return A string representing the current date and time in the specified format.
-     * @throws DateTimeParseException If the input format is invalid.
      */
     public String getDateTimeUsingSpecifiedFormat(String format)
     {
