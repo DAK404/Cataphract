@@ -151,8 +151,9 @@ public class AccountDelete
                     // Delete account from database and directories
                     status = deleteFromDatabase() & deleteDirectories(new File("./Users/Cataphract/" + _currentUsername));
                     // Print success message and exit
-                    IOStreams.printAttention("Account Successfully Deleted. Press ENTER to continue.");
-                    console.readLine();
+                    IOStreams.printAttention("Account Successfully Deleted.");
+                    //wait for 5 seconds and then restart
+                    Thread.sleep(5000);
                     System.exit(211);
                 }
             } catch (Exception e) {
