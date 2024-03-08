@@ -1,3 +1,18 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
 package Cataphract.API.Wraith.Archive;
 
 import java.io.FileInputStream;
@@ -11,9 +26,14 @@ import java.util.zip.ZipInputStream;
 import Cataphract.API.IOStreams;
 import Cataphract.API.Dragon.Login;
 import Cataphract.API.Minotaur.PolicyCheck;
+import Cataphract.API.Wraith.FileWrite;
 
 /**
  * A utility class for unzipping files.
+ * 
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 1.0.0 (11-October-2023, Cataphract)
+ * @since 0.0.1 (Cataphract 0.0.1)
  */
 public class FileUnzip
 {
@@ -21,6 +41,11 @@ public class FileUnzip
      * Store value of user privileges
      */
     private boolean isUserAdmin = false;
+    
+    /**
+     * Store value of the update mode; True if program is updating, False if program is not
+     */
+    private boolean updateMode = false;
 
     /**
      * Constructor to check if the current user is an administrator or not.
@@ -56,6 +81,7 @@ public class FileUnzip
      */
     public void installUpdate()throws Exception
     {
+        updateMode = true;
         if(new PolicyCheck().retrievePolicyValue("update").equals("on") || isUserAdmin)
             unzipLogic("./Update.zip", "./");
         else
@@ -74,6 +100,7 @@ public class FileUnzip
         {
             // Open the zip file for reading
             FileInputStream fis = new FileInputStream(zipFilePath);
+            FileOutputStream fos = null;
             try (ZipInputStream zipIn = new ZipInputStream(fis))
             {
                 byte[] buffer = new byte[1024];
@@ -94,14 +121,26 @@ public class FileUnzip
                     {
                         // Create directories for file entries and write the file content
                         Files.createDirectories(entryPath.getParent());
-                        try (FileOutputStream fos = new FileOutputStream(entryPath.toFile()))
+                        try
                         {
+                            if(updateMode)
+                            {
+                                IOStreams.printInfo("Installing File: " + entryName);
+                                FileWrite.logger("Installing: " + entryName, "Update");
+                            }
+
+                            fos = new FileOutputStream(entryPath.toFile());
                             int bytesRead;
 
                             while ((bytesRead = zipIn.read(buffer)) != -1)
                                 fos.write(buffer, 0, bytesRead);
                         }
+                        catch(Exception e)
+                        {
+                            IOStreams.printError("File Error: " + entryName);
+                        }
                     }
+                    fos.close();
                     zipIn.closeEntry();
                 }
             }

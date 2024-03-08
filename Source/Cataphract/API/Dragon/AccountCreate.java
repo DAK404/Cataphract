@@ -284,6 +284,7 @@ public final class AccountCreate
         }
         else
         {
+            status = true;
             _newAccountPassword = new Cataphract.API.Minotaur.Cryptography().stringToSHA3_256(_newAccountPassword);
         }
 

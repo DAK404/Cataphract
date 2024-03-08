@@ -1,3 +1,18 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
 package Cataphract.API.Wraith.Archive;
 
 import java.io.File;
@@ -13,6 +28,10 @@ import java.util.zip.ZipEntry;
 
 /**
  * Utility class for zipping files and directories.
+ * 
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 1.0.0 (11-October-2023, Cataphract)
+ * @since 0.0.1 (Cataphract 0.0.1)
  */
 public class FileZip
 {
