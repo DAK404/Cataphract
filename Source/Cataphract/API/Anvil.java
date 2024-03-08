@@ -15,6 +15,9 @@
 
 package Cataphract.API;
 
+import Cataphract.API.Astaroth.Calendar;
+import Cataphract.API.Astaroth.Time;
+
 /**
  * A class that provides a set of built in commands for all classes. Also provides a utility to split a string into an array for processing.
  * 
@@ -49,14 +52,45 @@ public class Anvil
         //Logic to check which command was fed into the interpreter. Converted to lowercase for avoiding case sensitivity
         switch(commandArray[0].toLowerCase())
         {
+            //Time: Print the date/time in the specified format
+            case "time":
+                if(commandArray.length < 2)
+                    IOStreams.println("time <FORMAT>");
+                else
+                    new Time().getDateTimeUsingSpecifiedFormat(commandArray[1]);
+            break;
+
+            case "cal":
+            case "calendar":
+                int month = 0;
+                int year = 0;
+                try
+                {
+                    switch(commandArray.length)
+                    {
+                        case 3:
+                        year = Integer.parseInt(commandArray[2]);
+
+                        case 2:
+                        month = Integer.parseInt(commandArray[1]);
+                        break;
+                    }
+                    new Calendar().printCalendar(month, year);
+                }
+                catch(NumberFormatException e)
+                {
+                    IOStreams.printError("Please provide a numeric input for month and year!");
+                }
+
             //Clear: Clears the screen, calls the viewBuildInfo() to display the build info and clear the rest of the contents
-            //TO-DO: add a "force" option to not display even the branding
             case "clear":
-                Build.viewBuildInfo();
+                if(commandArray[1].equalsIgnoreCase("force"))
+                    Build.clearScreen();
+                else
+                    Build.viewBuildInfo();
             break;
 
             //Echo: Prints a string on the display
-            //TO-DO: Print options for error, warning, attention and information.
             case "echo":
                 //Display an error message if the entered syntax is incorrect
                 if(commandArray.length < 2)
@@ -75,9 +109,6 @@ public class Anvil
                 }
             break;
 
-            // case "about":
-            //     Build.aboutProgram();
-            // break;
 
             //Wait: Waits for the specified value (milliseconds) for the shell to wait for a second
             case "wait":

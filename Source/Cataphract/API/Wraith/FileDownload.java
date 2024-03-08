@@ -73,11 +73,10 @@ public class FileDownload
     /**
     * Downloads an update file based on the provided username.
     *
-    * @param username The username associated with the update request.
     * @return {@code true} if the update download was successful, {@code false} otherwise.
     * @throws Exception Throws any exceptions encountered during runtime.
     */
-    public final boolean downloadUpdate(String username) throws Exception
+    public final boolean downloadUpdate() throws Exception
     {
         boolean status = false;
 
