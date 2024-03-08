@@ -389,6 +389,8 @@ public final class AccountCreate
 
         addAccountToDatabase();
 
+        System.gc();
+
         Cataphract.API.IOStreams.confirmReturnToContinue();
     }
 }
