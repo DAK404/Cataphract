@@ -1,0 +1,142 @@
+IOStreams.java
+
+        +~~~~~~~+~~~~~~+~~~~~~+~~~~~~~~~~~+
+        | Index |  fg  |  bg  |  color    |
+        +~~~~~~~+~~~~~~+~~~~~~+~~~~~~~~~~~+
+        |   0   |  30  |  40  |  black    |
+        |   1   |  31  |  41  |  red      |
+        |   2   |  32  |  42  |  green    |
+        |   3   |  33  |  43  |  yellow   |
+        |   4   |  34  |  44  |  blue     |
+        |   5   |  35  |  45  |  magenta  |
+        |   6   |  36  |  46  |  cyan     |
+        |   7   |  37  |  47  |  white    |
+        |   8   |  39  |  49  |  default  |
+        +~~~~~~~+~~~~~~+~~~~~~+~~~~~~~~~~~+
+
+
+BuildSigner.java
+
+argument processing - enable logging of signing the files
+
+Tools
+
+argument processing - enable compile status logging and option to not sign the build
+
+To pass arguments to a batch file, you can use the %1, %2, %3, and so on, variables. These variables represent the first, second, third, and so on, command-line arguments passed to the batch file 1. For example, if you have a batch file named test.cmd and you want to pass two arguments admin and P@55w0rd to it, you can run the following command:
+
+test.cmd admin P@55w0rd > test-log.txt
+
+In this case, %1 will be replaced with admin, and %2 will be replaced with P@55w0rd. You can use these variables in your batch file to perform operations based on the passed arguments 1.
+If you want to pass more than nine arguments to a batch file, you can use %* variable. This variable represents all the command-line arguments passed to the batch file after the ninth argument 1.
+
+ABRAXIS LOGIC:
+
+s = s.replaceAll("/", Matcher.quoteReplacement(File.separator));
+
+Using JDBC driver 3.43.0.0 -> newer ones require an extra lib to be present
+
+TODO
+
+-> Add the option of an administrator account able to delete a normal user account
+-> Add the option of Administrator account being able to delete ANY kind of user
+-> Reuse the file management system methods for file deletion than to keep reimplementing the same code over and over again.
+
+
+Astaroth
+
+All letters 'A' to 'Z' and 'a' to 'z' are reserved as pattern letters. The following pattern letters are defined:
+
+  Symbol  Meaning                     Presentation      Examples
+  ------  -------                     ------------      -------
+   G       era                         text              AD; Anno Domini; A
+   u       year                        year              2004; 04
+   y       year-of-era                 year              2004; 04
+   D       day-of-year                 number            189
+   M/L     month-of-year               number/text       7; 07; Jul; July; J
+   d       day-of-month                number            10
+
+   Q/q     quarter-of-year             number/text       3; 03; Q3; 3rd quarter
+   Y       week-based-year             year              1996; 96
+   w       week-of-week-based-year     number            27
+   W       week-of-month               number            4
+   E       day-of-week                 text              Tue; Tuesday; T
+   e/c     localized day-of-week       number/text       2; 02; Tue; Tuesday; T
+   F       week-of-month               number            3
+
+   a       am-pm-of-day                text              PM
+   h       clock-hour-of-am-pm (1-12)  number            12
+   K       hour-of-am-pm (0-11)        number            0
+   k       clock-hour-of-am-pm (1-24)  number            0
+
+   H       hour-of-day (0-23)          number            0
+   m       minute-of-hour              number            30
+   s       second-of-minute            number            55
+   S       fraction-of-second          fraction          978
+   A       milli-of-day                number            1234
+   n       nano-of-second              number            987654321
+   N       nano-of-day                 number            1234000000
+
+   V       time-zone ID                zone-id           America/Los_Angeles; Z; -08:30
+   z       time-zone name              zone-name         Pacific Standard Time; PST
+   O       localized zone-offset       offset-O          GMT+8; GMT+08:00; UTC-08:00;
+   X       zone-offset 'Z' for zero    offset-X          Z; -08; -0830; -08:30; -083015; -08:30:15;
+   x       zone-offset                 offset-x          +0000; -08; -0830; -08:30; -083015; -08:30:15;
+   Z       zone-offset                 offset-Z          +0000; -0800; -08:00;
+
+   p       pad next                    pad modifier      1
+
+   '       escape for text             delimiter
+   ''      single quote                literal           '
+   [       optional section start
+   ]       optional section end
+   #       reserved for future use
+   {       reserved for future use
+   }       reserved for future useAll letters 'A' to 'Z' and 'a' to 'z' are reserved as pattern letters. The following pattern letters are defined:
+
+  Symbol  Meaning                     Presentation      Examples
+  ------  -------                     ------------      -------
+   G       era                         text              AD; Anno Domini; A
+   u       year                        year              2004; 04
+   y       year-of-era                 year              2004; 04
+   D       day-of-year                 number            189
+   M/L     month-of-year               number/text       7; 07; Jul; July; J
+   d       day-of-month                number            10
+
+   Q/q     quarter-of-year             number/text       3; 03; Q3; 3rd quarter
+   Y       week-based-year             year              1996; 96
+   w       week-of-week-based-year     number            27
+   W       week-of-month               number            4
+   E       day-of-week                 text              Tue; Tuesday; T
+   e/c     localized day-of-week       number/text       2; 02; Tue; Tuesday; T
+   F       week-of-month               number            3
+
+   a       am-pm-of-day                text              PM
+   h       clock-hour-of-am-pm (1-12)  number            12
+   K       hour-of-am-pm (0-11)        number            0
+   k       clock-hour-of-am-pm (1-24)  number            0
+
+   H       hour-of-day (0-23)          number            0
+   m       minute-of-hour              number            30
+   s       second-of-minute            number            55
+   S       fraction-of-second          fraction          978
+   A       milli-of-day                number            1234
+   n       nano-of-second              number            987654321
+   N       nano-of-day                 number            1234000000
+
+   V       time-zone ID                zone-id           America/Los_Angeles; Z; -08:30
+   z       time-zone name              zone-name         Pacific Standard Time; PST
+   O       localized zone-offset       offset-O          GMT+8; GMT+08:00; UTC-08:00;
+   X       zone-offset 'Z' for zero    offset-X          Z; -08; -0830; -08:30; -083015; -08:30:15;
+   x       zone-offset                 offset-x          +0000; -08; -0830; -08:30; -083015; -08:30:15;
+   Z       zone-offset                 offset-Z          +0000; -0800; -08:00;
+
+   p       pad next                    pad modifier      1
+
+   '       escape for text             delimiter
+   ''      single quote                literal           '
+   [       optional section start
+   ]       optional section end
+   #       reserved for future use
+   {       reserved for future use
+   }       reserved for future use

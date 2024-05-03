@@ -1,0 +1,45 @@
+name: Build From Main
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  DevBuild:
+    name: Build From main Branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Path
+        run: echo ${{ github.workspace }}
+    
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: Development
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '21'
+
+      - name: Copy SourceCompileProgram.sh to Source Directory
+        run: cp ./Tools/Silent/Linux/SourceCompileProgram.sh ./Source/
+
+      - name: Create Binaries directory
+        run: mkdir ./Binaries
+
+      - name: Copy BuildSigner to Binaries Directory
+        run: cp ./Tools/Interactive/BuildSigner.java ./Binaries/
+
+      - name: Run SourceCompileProgram.sh to compile program
+        working-directory: ./Source
+        run: sh ./SourceCompileProgram.sh
+
+      - name: Upload the Build Artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cataphract
+          path: ${{ github.workspace }}/Binaries/
