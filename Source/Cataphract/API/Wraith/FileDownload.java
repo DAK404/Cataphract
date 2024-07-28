@@ -37,7 +37,7 @@ import Cataphract.API.Minotaur.PolicyCheck;
 public class FileDownload
 {
     /** Variable to store if the current user has administrator privileges */
-    private boolean isUserAdmin = false;
+    private boolean _isUserAdmin = false;
 
     /**
     * Constructor to check if the current user is an administrator or not.
@@ -47,7 +47,7 @@ public class FileDownload
     */
     public FileDownload(String username)throws Exception
     {
-        isUserAdmin = new Login(username).checkPrivilegeLogic();
+        _isUserAdmin = new Login(username).checkPrivilegeLogic();
     }
 
     /**
@@ -63,7 +63,7 @@ public class FileDownload
         boolean status = false;
 
         // Attempt to download the file using NIO only if the policy is configured to "on"
-        if (new PolicyCheck().retrievePolicyValue("download").equals("on") || isUserAdmin)
+        if (new PolicyCheck().retrievePolicyValue("download").equals("on") || _isUserAdmin)
         status = downloadUsingNIO(URL, fileName);
 
         // Check for an invalid URL
@@ -83,7 +83,7 @@ public class FileDownload
     {
         boolean status = false;
 
-        if (new PolicyCheck().retrievePolicyValue("update").equals("on") || isUserAdmin)
+        if (new PolicyCheck().retrievePolicyValue("update").equals("on") || _isUserAdmin)
         {
             // Define the URL for the update file.
             String updateFileURL = "https://github.com/DAK404/Cataphract/releases/download/TestBuilds/Cataphract.zip";

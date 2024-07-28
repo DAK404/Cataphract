@@ -78,10 +78,11 @@ public class Anvil
 
             //Clear: Clears the screen, calls the viewBuildInfo() to display the build info and clear the rest of the contents
             case "clear":
-            if(commandArray[1].equalsIgnoreCase("force"))
-            Build.clearScreen();
+            if(commandArray.length < 2)
+                Build.viewBuildInfo();
             else
-            Build.viewBuildInfo();
+                if(commandArray[1].equalsIgnoreCase("force"))
+                    Build.clearScreen();
             break;
 
             //Echo: Prints a string on the display

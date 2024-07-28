@@ -27,7 +27,7 @@ public class SycoraxKernel
     private String _userUnlockPIN = "";
     private String _systemName = "DEFAULT_SYSNAME";
     
-    private boolean _isUserAdministrator = false;
+    private boolean _isUserAdmin = false;
     private boolean _scriptMode = false;
 
     private char _prompt = '?';
@@ -88,6 +88,12 @@ public class SycoraxKernel
 
                 case "lock":
                 lockConsole();
+                break;
+
+                case "grinch":
+                case "filemanagement":
+                case "files":
+                //new Cataphract.API.Wraith.FileManagement(_username).fileManagerLogic();
                 break;
 
                 // case "clear":
@@ -155,11 +161,11 @@ public class SycoraxKernel
     private void fetchUserDetails()throws Exception
     {
         _accountName = new Login(_username).getNameLogic();
-        _isUserAdministrator = new Login(_username).checkPrivilegeLogic();
+        _isUserAdmin = new Login(_username).checkPrivilegeLogic();
         _userUnlockPIN = new Login(_username).getPINLogic();
         _systemName = new PolicyCheck().retrievePolicyValue("sysname");
 
-        _prompt = _isUserAdministrator?'!':'*';
+        _prompt = _isUserAdmin?'!':'*';
     }
 
     private void viewSycoraxInformation()
@@ -201,7 +207,7 @@ public class SycoraxKernel
     {
         boolean status = false;
 
-        if(! _isUserAdministrator && ! new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("script").equals("on"))
+        if(! _isUserAdmin && ! new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("script").equals("on"))
         {
             //to process the anvil script files
             try

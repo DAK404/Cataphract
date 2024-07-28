@@ -37,25 +37,25 @@
 clear
 
 # Display the build information
-echo ========================
-echo     Nion Tools Suite   
-echo ========================
-echo VERSION : 3.2.1
-echo DATE    : 06-OCT-2023
-echo ------------------------
+printf " ========================\n"
+printf "     Nion Tools Suite    \n"
+printf " ========================\n"
+printf " VERSION : 3.2.1         \n"
+printf " DATE    : 06-OCT-2023   \n"
+printf " ------------------------\n"
 
 # Compile the launcher first
-echo [1] Compiling Launcher...
+printf "[1] Compiling Launcher...\n"
 javac -d ../Binaries Main.java
 
 # Compile the program then
-echo [2] Compiling Program...
+printf "[2] Compiling Program...\n"
 javac -d ../Binaries ./Cataphract/Core/Loader.java
 
 # Sign the build binaries for use
-echo [3] Signing Build...
+printf "[3] Signing Build...\n"
 cd ../Binaries
 java BuildSigner.java
 
 # Confirm the status
-echo [ ATTENTION ] Build Complete.
+printf "[ ATTENTION ] Build Complete.\n"

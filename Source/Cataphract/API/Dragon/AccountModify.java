@@ -39,7 +39,7 @@ public class AccountModify
     /** Stores the current account name */
     private String _currentAccountName = "";
     /** Stores the value of the user's privileges */
-    private boolean _currentAccountAdmin = false;
+    private boolean _isCurrentUserAdmin = false;
 
     /** Stores the account name policy */
     private final String _accountNamePolicy = AccountCreate._accountNamePolicy;
@@ -66,7 +66,7 @@ public class AccountModify
     {
         _currentUsername = user;
         _currentAccountName = new Login(user).getNameLogic();
-        _currentAccountAdmin = new Login(user).checkPrivilegeLogic();
+        _isCurrentUserAdmin = new Login(user).checkPrivilegeLogic();
     }
 
     /**
@@ -216,7 +216,7 @@ public class AccountModify
         IOStreams.println("[4] Change Session Unlock PIN\n");
 
         IOStreams.println("[ NAME | PASSWORD | KEY | PIN | HELP | EXIT ]");
-        if(_currentAccountAdmin)
+        if(_isCurrentUserAdmin)
         {
             IOStreams.println(1, 8, "\n       [ DANGER ZONE ]       ");
             IOStreams.println(1, 8, "--- ADMINISTRATOR TOOLKIT ---");
@@ -244,7 +244,7 @@ public class AccountModify
         IOStreams.printError("Cannot promote or demote the user Administrator.");
         else
         {
-            if(_currentAccountAdmin)
+            if(_isCurrentUserAdmin)
             {
                 //encode the selected user to a hashed format
                 targetUser = Cryptography.stringToSHA3_256(targetUser);
@@ -295,7 +295,7 @@ public class AccountModify
     private void viewUserInformation(String targetUser) throws Exception
     {
         // Check if the current user is an Administrator
-        if(_currentAccountAdmin)
+        if(_isCurrentUserAdmin)
         {
             // Check if the specified user exists
             if(new Login(targetUser).checkUserExistence())

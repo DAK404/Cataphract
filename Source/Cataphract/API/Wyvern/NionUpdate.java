@@ -34,7 +34,7 @@ public class NionUpdate
     private String _username = "";
 
     /** Stores the value of user privileges. */
-    private boolean isUserAdmin = false;
+    private boolean _isUserAdmin = false;
 
     /**
     * Constructor to store username and check if the current user is an administrator or not.
@@ -45,7 +45,7 @@ public class NionUpdate
     public NionUpdate(String username)throws Exception
     {
         _username = username;
-        isUserAdmin = new Login(username).checkPrivilegeLogic();
+        _isUserAdmin = new Login(username).checkPrivilegeLogic();
     }
 
     /**
@@ -56,7 +56,7 @@ public class NionUpdate
     public void updater()throws Exception
     {
         //Check if the policy allows user to update of if user has the privilege to update the program
-        if(new PolicyCheck().retrievePolicyValue("update").equals("on") || isUserAdmin)
+        if(new PolicyCheck().retrievePolicyValue("update").equals("on") || _isUserAdmin)
         {
             IOStreams.println("---- Wyvern: Program Update Utility 2.0 ----");
             IOStreams.printAttention("[*] This will install the lastest version of Cataphract. Please ensure that there is internet connectivity.");

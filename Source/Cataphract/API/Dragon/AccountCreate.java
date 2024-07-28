@@ -86,7 +86,7 @@ public final class AccountCreate
     private String _currentUsername = "DEFAULT";
 
     /** Boolean to store whether the current account is an admin */
-    private boolean _currentAccountAdmin = false;
+    private boolean _isCurrentUserAdmin = false;
 
     /** String to store the new account name */
     private String _newAccountName = "";
@@ -126,7 +126,7 @@ public final class AccountCreate
     {
         //Store the current username locally to _currentUsername
         _currentUsername = username;
-        _currentAccountAdmin = new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic();
+        _isCurrentUserAdmin = new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic();
     }
 
     /**
@@ -136,7 +136,7 @@ public final class AccountCreate
     */
     public final void accountCreateLogic()throws Exception
     {
-        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_create").equals("on") || _currentAccountAdmin)
+        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_create").equals("on") || _isCurrentUserAdmin)
         {
             //If the authentication check fails, exit from the module
             if(! authenticateCurrentUser())
@@ -148,7 +148,7 @@ public final class AccountCreate
                 Build.viewBuildInfo();
 
                 //If the current user has administrator rights, ask if the new accounts should have the administrator rights too
-                if(_currentAccountAdmin)
+                if(_isCurrentUserAdmin)
                 {
                     IOStreams.printAttention("The currently logged in user is an administrator.\nYou have the privileges to create other administrator accounts or standard user accounts.\n");
                     IOStreams.printWarning("Administrative rights have additional privileges over standard users! Beware on who the administrative privileges are granted to!\n");

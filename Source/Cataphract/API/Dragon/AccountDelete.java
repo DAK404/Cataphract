@@ -39,7 +39,7 @@ public class AccountDelete
     private String _currentUsername = "";
 
     /** Variable to store if the current user has administrator privileges */
-    private boolean _currentUserAdministrator = false;
+    private boolean _isCurrentUserAdmin = false;
 
     /** Console object for user input */
     private Console console = System.console();
@@ -54,8 +54,8 @@ public class AccountDelete
     {
         // Set the current username
         _currentUsername = currentUsername;
-        //_currentUserAdministrator = new Cataphract.API.Dragon.Login(currentUsername).checkPrivilegeLogic();
-        _currentUserAdministrator = new Login(currentUsername).checkUserExistence();
+        //_isCurrentUserAdmin = new Cataphract.API.Dragon.Login(currentUsername).checkPrivilegeLogic();
+        _isCurrentUserAdmin = new Login(currentUsername).checkUserExistence();
     }
 
     /**
@@ -93,7 +93,7 @@ public class AccountDelete
         IOStreams.println("|   User Management Console: Account Deletion   |");
         IOStreams.println("-------------------------------------------------\n");
 
-        if(_currentUserAdministrator)
+        if(_isCurrentUserAdmin)
         {
             // Warning message for administrator mode
             IOStreams.printWarning("ADMINISTRATOR MODE ACTIVE!");
@@ -165,7 +165,7 @@ public class AccountDelete
                     status = deleteFromDatabase() & deleteDirectories(new File("./Users/Cataphract/" + username));
                     // Print success message and exit
                     IOStreams.printAttention("Account Successfully Deleted.");
-                    if(! _currentUserAdministrator)
+                    if(! _isCurrentUserAdmin)
                     {
                         //wait for 5 seconds and then restart
                         Thread.sleep(5000);

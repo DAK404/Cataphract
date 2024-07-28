@@ -36,7 +36,7 @@ import Cataphract.API.IOStreams;
 public class PolicyManager
 {
     /** Stores the value if the user is an administrator or not.*/
-    private boolean _userIsAdmin = false;
+    private boolean _isUserAdmin = false;
 
     /** Stores the default Cataphract values in an array.*/
     public final String [] resetValues = {"auth", "update", "download", "script", "filemgmt", "read", "edit", "policy", "account_create", "account_delete", "account_modify"};
@@ -79,7 +79,7 @@ public class PolicyManager
         IOStreams.printError("Authentication Failure. Exiting...");
         else
         //Check if the policy management is enabled for users. If disabled, check if the user is admin and override the policy.
-        if((new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("policy").equalsIgnoreCase("on")) || _userIsAdmin)
+        if((new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("policy").equalsIgnoreCase("on")) || _isUserAdmin)
         //Call the policy editor if conditions are met.
         policyEditor();
         else
@@ -113,7 +113,7 @@ public class PolicyManager
             challengeStatus = (new Cataphract.API.Dragon.Login(username).authenticationLogic(Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("Password: "))), Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("Security Key: ")))));
 
             //Update the value to check if the user has administrator privileges.
-            _userIsAdmin = new Cataphract.API.Dragon.Login(username).checkPrivilegeLogic();
+            _isUserAdmin = new Cataphract.API.Dragon.Login(username).checkPrivilegeLogic();
         }
         catch(Exception E)
         {
@@ -132,7 +132,7 @@ public class PolicyManager
     private final void policyEditor()throws Exception
     {
         //Display the suggested inputs to the user.
-        suggestedInputs = "[ MODIFY " + (_userIsAdmin?"| RESET ":"") + "| REFRESH | HELP | EXIT ]";
+        suggestedInputs = "[ MODIFY " + (_isUserAdmin?"| RESET ":"") + "| REFRESH | HELP | EXIT ]";
 
         //Load the properties from the policy file.
         props = new Properties();
@@ -172,7 +172,7 @@ public class PolicyManager
                 //Logic to reset the policy file.
                 case "reset":
                 //Reset can be performed by Administrators only. Restrict normal users from using this command.
-                if(_userIsAdmin)
+                if(_isUserAdmin)
                 {
                     IOStreams.printAttention("Resetting Policy File...");
                     resetPolicyFile();

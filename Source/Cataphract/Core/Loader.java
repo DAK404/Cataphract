@@ -735,9 +735,7 @@ class Setup
                 //Initialize the database driver to be used by Cataphract Setup
                 Class.forName("org.sqlite.JDBC");
                 
-                /**
-                * String that contains the CREATE statement of the database table.
-                */
+                // String that contains the CREATE statement of the database table.
                 String createMUDTable = "CREATE TABLE IF NOT EXISTS MUD (" +
                 "Username TEXT," +
                 "Name TEXT NOT NULL," +
@@ -747,14 +745,10 @@ class Setup
                 "Privileges TEXT NOT NULL," +
                 "PRIMARY KEY(Username));";
                 
-                /**
-                * Get the connection of the database using the given path
-                */
+                // Get the connection of the database using the given path
                 Connection dbConnection = DriverManager.getConnection(databasePath);
                 
-                /**
-                * Build the statement using the createMUDTable string
-                */
+                // Build the statement using the createMUDTable string
                 Statement statement = dbConnection.createStatement();
                 
                 //Execute the SQL statement
