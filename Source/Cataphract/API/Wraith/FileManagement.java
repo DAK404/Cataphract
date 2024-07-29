@@ -2,6 +2,8 @@ package Cataphract.API.Wraith;
 
 import java.io.Console;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import Cataphract.API.IOStreams;
 import Cataphract.API.Minotaur.Cryptography;
@@ -27,17 +29,21 @@ public class FileManagement
 
     }
 
+    /*****************************************
+     *      AUTHENTICATION/LOGIN METHOD      *
+     *****************************************/
+
     public final boolean login()throws Exception
     {
         IOStreams.println("Username: " + _username);
-        return new Cataphract.API.Dragon.Login(_username).authenticationLogic(Cataphract.API.Minotaur.Cryptography.stringToSHA3_256(console.readLine("Password: ")), Cataphract.API.Minotaur.Cryptography.stringToSHA3_256(console.readLine("Security Key: ")));
+        return new Cataphract.API.Dragon.Login(_username).authenticationLogic(Cryptography.stringToSHA3_256(console.readLine("Password: ")), Cryptography.stringToSHA3_256(console.readLine("Security Key: ")));
     }
 
     /*****************************************
      * FILE & DIRECTORY MANAGEMENT UTILITIES *
      *****************************************/
-    
-    private boolean checkEntityExistence(String fileName)throws Exception
+
+    private boolean c       heckEntityExistence(String fileName)throws Exception
     {
         return new File(fileName).exists();
     }
@@ -70,12 +76,12 @@ public class FileManagement
 
     private final void viewDirTreeHelper(int indent, File file) {
         System.out.print("|");
-        
+
         for (int i = 0; i < indent; ++i)
         System.out.print('-');
-        
+
         System.out.println(file.getName().replace(_username, _name + " [ USER ROOT DIRECTORY ]"));
-        
+
         if (file.isDirectory())
         {
             File[] files = file.listFiles();
@@ -123,12 +129,38 @@ public class FileManagement
     {
         if(!checkEntityExistence(fileName) && !checkEntityExistence(destination))
             IOStreams.printError("Invalid file name or destination. Permission Denied.");
-        
-        copyMoveHelper(new File(_defaultPath + _presentWorkingDirectory + fileName, new File(_defaultPath + _presentWorkingDirectory + destination)));
+
+        copyMoveHelper(new File(_defaultPath + _presentWorkingDirectory + fileName), new File(_defaultPath + _presentWorkingDirectory + destination), move);
     }
 
-    private final void copyMoveHelper(File source, File destination, boolean move)
+    private final void copyMoveHelper(File source, File destination, boolean move)throws Exception
+    {
+        if (source.isDirectory())
+        {
+            destination.mkdirs();
+            for (File sourceChild : source.listFiles())
+            {
+                File destChild = new File(destination, sourceChild.getName());
+                copyMoveHelper(sourceChild, destChild, move);
+            }
+        }
+        else
+        {
+            Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            if (move) 
+            {
+                Files.delete(source.toPath());
+            }
+        }
+    }
+
+    /*****************************************
+     * GRINCH FILE MANAGEMENT & SCRIPT LOGIC *
+     *****************************************/
+
+    private void fileManagementLogic()
     {
         
     }
+
 }
