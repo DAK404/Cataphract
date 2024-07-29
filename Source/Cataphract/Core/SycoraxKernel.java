@@ -90,6 +90,10 @@ public class SycoraxKernel
                 lockConsole();
                 break;
 
+                case "policymgmt":
+                new Cataphract.API.Minotaur.PolicyManager().policyEditorLogic();
+                break;
+
                 case "grinch":
                 case "filemanagement":
                 case "files":

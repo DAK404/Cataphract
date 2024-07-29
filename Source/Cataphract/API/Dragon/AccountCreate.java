@@ -283,30 +283,31 @@ public final class AccountCreate
 
         // set the value of the account username
         _newAccountUsername = (console.readLine(_accountUsernamePolicy + "Account Username> "));
-
-        // check if the entered username exists in the database already
-        if(new Cataphract.API.Dragon.Login(_newAccountUsername).checkUserExistence())
-        {
-            IOStreams.printError("Username has already been enrolled! Please try again with another username.");
-            _newAccountUsername = "";
-            console.readLine();
-        }
-
-        // else if, check if the username is a valid username
-        else if(_newAccountUsername == null || _newAccountUsername.equals("") || _newAccountUsername.equalsIgnoreCase("Administrator"))
+        
+        // Check if the entered username adheres to the policy set
+        if(_newAccountUsername == null || _newAccountUsername.equals("") || _newAccountUsername.equalsIgnoreCase("Administrator"))
         {
             _newAccountUsername = "";
             console.readLine("Invalid Account Username. Press ENTER to try again.");
         }
-
-        // else, hash the username and store it
         else
         {
-            // set return status to true to denote that the username entered is valid
-            status = true;
-            _newAccountUsername = Cryptography.stringToSHA3_256(_newAccountUsername);
-        }
+            _newAccountUsername = Cataphract.API.Minotaur.Cryptography.stringToSHA3_256(_newAccountUsername);   
 
+            // check if the entered username exists in the database already
+            if(new Cataphract.API.Dragon.Login(_newAccountUsername).checkUserExistence())
+            {
+                IOStreams.printError("Username has already been enrolled! Please try again with another username.");
+                _newAccountUsername = "";
+                console.readLine();
+            }
+            else
+            {
+                // set return status to true to denote that the username entered is valid
+                status = true;
+            }
+        }
+        
         // return the status
         return status;
     }
