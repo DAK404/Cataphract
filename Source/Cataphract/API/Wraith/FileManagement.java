@@ -24,11 +24,6 @@ public class FileManagement
         _defaultPath = "./Users/Cataphract/" + _username;
     }
 
-    public final void fileManagerLogic()throws Exception
-    {
-
-    }
-
     /*****************************************
      *      AUTHENTICATION/LOGIN METHOD      *
      *****************************************/
@@ -43,7 +38,7 @@ public class FileManagement
      * FILE & DIRECTORY MANAGEMENT UTILITIES *
      *****************************************/
 
-    private boolean c       heckEntityExistence(String fileName)throws Exception
+    private boolean checkEntityExistence(String fileName)throws Exception
     {
         return new File(fileName).exists();
     }
@@ -158,9 +153,71 @@ public class FileManagement
      * GRINCH FILE MANAGEMENT & SCRIPT LOGIC *
      *****************************************/
 
-    private void fileManagementLogic()
+    public void fileManagementLogic()throws Exception
     {
-        
+        // AUTHENTICATION LOGIC OMITTED FOR THE MOMENT.
+
+        String inputValue = "";
+        do
+        {
+            inputValue = console.readLine(_name + "@" + _presentWorkingDirectory.replace(_username, _name));
+            grinchInterpreter(inputValue);
+        }
+        while(!inputValue.equalsIgnoreCase("exit"));
+    }
+
+    private void grinchInterpreter(String command)throws Exception
+    {
+        String[] commandArray = Cataphract.API.Anvil.splitStringToArray(command);
+        switch(commandArray[0].toLowerCase())
+        {
+            case "cut":
+            case "move":
+            case "mov":
+            case "mv":
+            break;
+
+            case "copy":
+            case "cp":
+            break;
+
+            case "delete":
+            case "del":
+            case "rm":
+            break;
+
+            case "rename":
+            break;
+
+            case "mkdir":
+            break;
+
+            case "edit":
+            break;
+
+            case "pwd":
+            break;
+
+            case "cd":
+            break;
+
+            case "tree":
+            break;
+
+            case "dir":
+            case "ls":
+            break;
+
+            case "download":
+            break;
+
+            case "exit":
+            case "":
+            break;
+
+            default:
+            IOStreams.printError("Command Not Found.");
+        }
     }
 
 }
