@@ -16,10 +16,13 @@
 package Cataphract.API.Wraith.Archive;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -141,10 +144,15 @@ public class FileUnzip
                 }
             }
         }
+        catch (FileNotFoundException fnfe)
+        {
+            IOStreams.printError("File Parse Failure: File Not Found.");
+        }
         catch (Exception e)
         {
             // Handle exceptions (e.g., file not found, I/O errors)
             IOStreams.printError("Unable to proceed.");
+            e.printStackTrace();
         }
 
         System.gc();

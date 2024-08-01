@@ -18,13 +18,14 @@ package Cataphract.API.Wraith.Archive;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import Cataphract.API.IOStreams;
 import Cataphract.API.Dragon.Login;
 import Cataphract.API.Minotaur.PolicyCheck;
 
-import java.util.zip.ZipEntry;
 
 /**
 * Utility class for zipping files and directories.

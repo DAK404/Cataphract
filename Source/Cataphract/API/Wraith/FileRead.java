@@ -15,9 +15,9 @@
 
 package Cataphract.API.Wraith;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 import Cataphract.API.IOStreams;
 import Cataphract.API.Build;

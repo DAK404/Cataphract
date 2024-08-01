@@ -50,10 +50,11 @@ public class Calendar
     */
     public void printCalendar(int specificMonth, int specificYear)
     {
+        Time time = new Time();
         // Set the month to current month if invalid input
-        month = specificMonth == 0 || (specificMonth > 12 || specificMonth < 0) ? Integer.parseInt(new Time().getDateTimeUsingSpecifiedFormat("MM")) : specificMonth;
+        month = specificMonth == 0 || (specificMonth > 12 || specificMonth < 0) ? Integer.parseInt(time.getDateTimeUsingSpecifiedFormat("MM")) : specificMonth;
         // Set the year to current year if not specified
-        year = specificYear == 0 ? Integer.parseInt(new Time().getDateTimeUsingSpecifiedFormat("YYYY")) : specificYear;
+        year = specificYear == 0 ? Integer.parseInt(time.getDateTimeUsingSpecifiedFormat("YYYY")) : specificYear;
         // Delegate to the private method for printing the calendar
         printCalendar();
     }
@@ -65,8 +66,9 @@ public class Calendar
     */
     private void printCalendar()
     {
+        Time time = new Time();
         // Get the current date in the specified format
-        String currentDate = new Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy  EEEE");
+        String currentDate = time.getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy  EEEE");
 
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate firstDayOfMonth = yearMonth.atDay(1);

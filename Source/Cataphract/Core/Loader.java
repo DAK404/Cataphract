@@ -92,6 +92,7 @@ public class Loader
                 new Cataphract.API.Astaroth.Calendar().printCalendar(0,0);
                 new Cataphract.API.Astaroth.Calendar().printCalendar(8, 2077);
                 System.exit(0);
+                break;
                 
                 case "iostreams":
                 IOStreams.printError("This is an error message.");

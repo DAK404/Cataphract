@@ -15,11 +15,11 @@
 
 package Cataphract.API.Wraith;
 
-import java.io.BufferedWriter;
-import java.io.Console;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.Console;
 
 import Cataphract.API.IOStreams;
 import Cataphract.API.Astaroth.Time;

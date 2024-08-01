@@ -113,6 +113,10 @@ public class SycoraxKernel
                 case "":
                 break;
 
+                case "update":
+                new Cataphract.API.Wyvern.NionUpdate(_username).updater();
+                break;
+
                 case "usermgmt":
                 switch(commandArray[1].toLowerCase())
                 {

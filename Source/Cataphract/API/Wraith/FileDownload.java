@@ -15,6 +15,7 @@
 
 package Cataphract.API.Wraith;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import java.nio.channels.Channels;
@@ -129,6 +130,10 @@ public class FileDownload
 
             // Download successful.
             status = true;
+        }
+        catch(FileNotFoundException fnfe)
+        {
+            IOStreams.printError("File Not Found On Remote.\nValidate URL And Resource Availability At Specified Address.");
         }
         catch (Exception e)
         {
