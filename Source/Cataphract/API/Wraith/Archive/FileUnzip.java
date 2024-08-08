@@ -15,7 +15,7 @@
 
 package Cataphract.API.Wraith.Archive;
 
-import java.io.FileInputStream;
+import java.io.FileInputStream; 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
@@ -121,7 +121,7 @@ public class FileUnzip
                         // Create directories for file entries and write the file content
                         Files.createDirectories(entryPath.getParent());
                         try
-                        {
+                        {   
                             if(updateMode)
                             {
                                 IOStreams.printInfo("Installing File: " + entryName);
@@ -139,9 +139,14 @@ public class FileUnzip
                             IOStreams.printError("File Error: " + entryName);
                         }
                     }
-                    fos.close();
-                    zipIn.closeEntry();
                 }
+                zipIn.closeEntry();
+                fos.close();
+            }   
+            catch(Exception e)
+            {
+                IOStreams.println("Error: " + e);
+                e.printStackTrace();
             }
         }
         catch (FileNotFoundException fnfe)

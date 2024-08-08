@@ -59,6 +59,8 @@ public class Build
         IOStreams.println(_Branding + "\n");
         //new Build().debug();
         IOStreams.printWarning("Features disabled until integration tests are complete.\n\nIntegration test ongoing.\nCore features are almost complete.\n");
+
+        debug();
     }
 
     /**
@@ -100,7 +102,7 @@ public class Build
         }
     }
 
-    private void debug()
+    private static void debug()
     {
         //int mb = 1024 * 1024;
         // get Runtime instance

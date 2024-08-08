@@ -54,7 +54,7 @@ public class SycoraxKernel
             IOStreams.printError("Incorrect Credentials! Please try again.");
             loginCounterLogic();
         }
-        viewSycoraxInformation();
+        Build.viewBuildInfo();
         IOStreams.printInfo("Login Successful. Loading Sycorax Kernel...");
         _loginAttemptsRemaining = 5;
         fetchUserDetails();
@@ -97,12 +97,8 @@ public class SycoraxKernel
                 case "grinch":
                 case "filemanagement":
                 case "files":
-                //new Cataphract.API.Wraith.FileManagement(_username).fileManagerLogic();
+                new Cataphract.API.Wraith.FileManagement(_username).fileManagementLogic();
                 break;
-
-                // case "clear":
-                // viewSycoraxInformation();
-                // break;
 
                 case "exit":
                 System.exit(0);
@@ -115,6 +111,7 @@ public class SycoraxKernel
 
                 case "update":
                 new Cataphract.API.Wyvern.NionUpdate(_username).updater();
+                new File("./Update.zip").delete();
                 break;
 
                 case "usermgmt":
@@ -136,7 +133,7 @@ public class SycoraxKernel
                     IOStreams.printError("Module Usermgmt: " + commandArray[1] + " - Command Not Found");
                     break;
                 }
-                viewSycoraxInformation();
+                Build.viewBuildInfo();
                 break;
 
                 default:
@@ -147,7 +144,7 @@ public class SycoraxKernel
 
     private boolean login() throws Exception
     {
-        viewSycoraxInformation();
+        Build.viewBuildInfo();
         IOStreams.printInfo("Authentication Attempts Left: " + _loginAttemptsRemaining);
         _username = Cryptography.stringToSHA3_256(console.readLine("> Username: "));
         String password = Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Password: ")));
@@ -176,16 +173,9 @@ public class SycoraxKernel
         _prompt = _isUserAdmin?'!':'*';
     }
 
-    private void viewSycoraxInformation()
-    {
-        Build.clearScreen();
-        IOStreams.println(Build._Branding);
-        IOStreams.println("Powered by Sycorax Kernel.\n");
-    }
-
     private void lockConsole() throws Exception
     {
-        viewSycoraxInformation();
+        Build.viewBuildInfo();
 
         String input = "";
 
@@ -202,7 +192,7 @@ public class SycoraxKernel
             IOStreams.printError("Incorrect PIN.");
             loginCounterLogic();
         }
-        viewSycoraxInformation();
+        Build.viewBuildInfo();
     }
 
     private boolean challengePIN() throws Exception

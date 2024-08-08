@@ -22,14 +22,14 @@ public class FileManagement
     {
         _username = username;
         _name = new Cataphract.API.Dragon.Login(username).getNameLogic();
-        _defaultPath = "./Users/Cataphract/" + _username;
+        _defaultPath = "./Users/Cataphract/" + _username + "/   ";
     }
 
     /*****************************************
      *      AUTHENTICATION/LOGIN METHOD      *
      *****************************************/
 
-    public final boolean login()throws Exception
+    private final boolean login()throws Exception
     {
         IOStreams.println("Username: " + _username);
         return new Cataphract.API.Dragon.Login(_username).authenticationLogic(Cryptography.stringToSHA3_256(console.readLine("Password: ")), Cryptography.stringToSHA3_256(console.readLine("Security Key: ")));
@@ -157,14 +157,18 @@ public class FileManagement
     public void fileManagementLogic()throws Exception
     {
         // AUTHENTICATION LOGIC OMITTED FOR THE MOMENT.
-
-        String inputValue = "";
-        do
+        if(login())
         {
-            inputValue = console.readLine(_name + "@" + _presentWorkingDirectory.replace(_username, _name));
-            grinchInterpreter(inputValue);
+            String inputValue = "";
+            do
+            {
+                inputValue = console.readLine(_name + "@" + _presentWorkingDirectory.replace(_username, _name) + "> "); 
+                grinchInterpreter(inputValue);
+            }
+            while(!inputValue.equalsIgnoreCase("exit"));
         }
-        while(!inputValue.equalsIgnoreCase("exit"));
+        else
+            IOStreams.printError("Invalid Credentials.");
     }
 
     private void grinchInterpreter(String command)throws Exception
@@ -176,33 +180,55 @@ public class FileManagement
             case "move":
             case "mov":
             case "mv":
+            if(commandArray.length < 3)
+                IOStreams.printError("Invalid Syntax.");
+            else
+            copyMoveEntity(commandArray[1], commandArray[2], true);
             break;
 
             case "copy":
             case "cp":
+            if(commandArray.length < 3)
+                IOStreams.printError("Invalid Syntax.");
+            else
+            copyMoveEntity(commandArray[1], commandArray[2], false);
             break;
 
             case "delete":
             case "del":
             case "rm":
+            if(commandArray.length < 2)
+                IOStreams.printError("Invalid Syntax.");
+            else
+            deleteDirectoryFile(commandArray[1]);
             break;
 
             case "rename":
+            if(commandArray.length < 2)
+                IOStreams.printError("Invalid Syntax.");
+            else
+            renameEntity(commandArray[1], commandArray[2]);
             break;
 
             case "mkdir":
+            if(commandArray.length < 2)
+                IOStreams.printError("Invalid Syntax.");
+            else
+            makeDirectory(commandArray[1]);
             break;
 
             case "edit":
             break;
 
             case "pwd":
+            IOStreams.println(_defaultPath + _presentWorkingDirectory);
             break;
 
             case "cd":
             break;
 
             case "tree":
+            viewDirectoryTree();
             break;
 
             case "dir":

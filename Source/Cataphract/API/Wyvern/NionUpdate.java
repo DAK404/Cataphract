@@ -66,6 +66,7 @@ public class NionUpdate
 
             downloadUpdate();
             installUpdate();
+            IOStreams.printAttention("It is recommended to restart Cataphract for the updates to be reflected.");
         }
         else
         IOStreams.printError("Policy Configuration Error!");
