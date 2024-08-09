@@ -83,6 +83,26 @@ public class IOStreams
     }
 
     /**
+    * Prints the text specified, prefixed with a Debug tag
+    *
+    * @param message The text specified to be printed onto the console.
+    */
+    public static void printDebug(String message)
+    {
+        println(1, 7, "[    DEBUG    ] " + message);
+    }
+
+    /**
+    * Prints the text specified without newline character at the end. Does not include any formatting.
+    *
+    * @param message The text specified to be printed onto the console.
+    */
+    public static void print(String message)
+    {
+        System.out.print(message);
+    }
+
+    /**
     * Prints the text specified. Does not include any formatting.
     *
     * @param message The text specified to be printed onto the console.

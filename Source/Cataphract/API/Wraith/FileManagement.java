@@ -6,6 +6,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+import Cataphract.API.Anvil;
 import Cataphract.API.IOStreams;
 import Cataphract.API.Minotaur.Cryptography;
 
@@ -13,7 +14,6 @@ public class FileManagement
 {
     private String _username = "";
     private String _name = "";
-    private String _defaultPath = "";
     private String _presentWorkingDirectory = "";
 
     private Console console = System.console();
@@ -22,7 +22,7 @@ public class FileManagement
     {
         _username = username;
         _name = new Cataphract.API.Dragon.Login(username).getNameLogic();
-        _defaultPath = "./Users/Cataphract/" + _username + "/   ";
+        _presentWorkingDirectory = "./Users/Cataphract/" + _username + "/";
     }
 
     /*****************************************
@@ -31,8 +31,8 @@ public class FileManagement
 
     private final boolean login()throws Exception
     {
-        IOStreams.println("Username: " + _username);
-        return new Cataphract.API.Dragon.Login(_username).authenticationLogic(Cryptography.stringToSHA3_256(console.readLine("Password: ")), Cryptography.stringToSHA3_256(console.readLine("Security Key: ")));
+        IOStreams.println("> Username: " + _name);
+        return new Cataphract.API.Dragon.Login(_username).authenticationLogic(Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Password: "))), Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Security Key: ")))) ;
     }
 
     /*****************************************
@@ -44,27 +44,43 @@ public class FileManagement
         return new File(fileName).exists();
     }
 
-    private void deleteDirectoryFile(String fileName)throws Exception
+    private final void deleteEntity(String delFile)throws Exception
     {
-        fileName = _defaultPath + _presentWorkingDirectory + fileName;
-        File deletionEntity = new File(fileName);
+        try
+        {
+            delFile = _presentWorkingDirectory+delFile;
+            if(checkEntityExistence(delFile))
+            {
+                File f=new File(delFile);
+                if(f.isDirectory())
+                deleteEntityHelper(f);
+                else
+                f.delete();
+            }
+            else
+            IOStreams.printError("The Specified File/Directory Does Not Exist.");
+            System.gc();
+        }
+        catch (Exception E)
+        {
+            //troubleshooting tips here
+            E.printStackTrace();
+        }
+    }
 
-        if (! checkEntityExistence(fileName))
+    private final void deleteEntityHelper(File delfile)throws Exception
+    {
+        if (delfile.listFiles() != null)
         {
-            IOStreams.printError("The specified file or directory does not exist.");
+            for (File fileInDirectory : delfile.listFiles())
+                deleteEntityHelper(fileInDirectory);
         }
-        else
-        {
-            if(deletionEntity.isDirectory())
-                for (File filesInDirectory : deletionEntity.listFiles())
-                    deleteDirectoryFile(filesInDirectory.getName());
-            deletionEntity.delete();
-        }
+        delfile.delete();
     }
 
     private void viewDirectoryTree()throws Exception
     {
-        File treeView = new File(_defaultPath + _presentWorkingDirectory);
+        File treeView = new File(_presentWorkingDirectory);
         IOStreams.println("\n--- [ TREE VIEW ] ---\n");
         viewDirTreeHelper(0, treeView);
         IOStreams.println("");
@@ -74,9 +90,9 @@ public class FileManagement
         System.out.print("|");
 
         for (int i = 0; i < indent; ++i)
-        System.out.print('-');
+        IOStreams.print("-");
 
-        System.out.println(file.getName().replace(_username, _name + " [ USER ROOT DIRECTORY ]"));
+        IOStreams.println(file.getName().replace(_username, _name + " [ USER HOME DIRECTORY ]"));
 
         if (file.isDirectory())
         {
@@ -88,12 +104,9 @@ public class FileManagement
 
     private final void navPreviousDirectory()throws Exception
     {
-        int lastSlashIndex = _presentWorkingDirectory.lastIndexOf('/');
-        if (lastSlashIndex != -1)
-        {
-            _presentWorkingDirectory = _presentWorkingDirectory.substring(0, lastSlashIndex);
-        }
-        else
+        _presentWorkingDirectory = _presentWorkingDirectory.substring(0, _presentWorkingDirectory.length() - 1);  
+        _presentWorkingDirectory = _presentWorkingDirectory.replace(_presentWorkingDirectory.substring(_presentWorkingDirectory.lastIndexOf('/'), _presentWorkingDirectory.length()), "/");
+        if (_presentWorkingDirectory.equals("./Users/Cataphract/"))
         {
             IOStreams.printError("Permission Denied.");
             resetToHomeDirectory();
@@ -102,18 +115,18 @@ public class FileManagement
 
     private final void resetToHomeDirectory()
     {
-        _presentWorkingDirectory = "/";
+        _presentWorkingDirectory = "./Users/Cataphract/" + _username + '/'  ;
     }
 
     private final void makeDirectory(String fileName) throws Exception
     {
-        new File(_defaultPath + _presentWorkingDirectory + fileName).mkdirs();
+        new File(_presentWorkingDirectory + fileName).mkdirs();
     }
 
     private final void renameEntity(String fileName, String newFileName) throws Exception
     {
-        fileName = _defaultPath + _presentWorkingDirectory + fileName;
-        newFileName = _defaultPath + _presentWorkingDirectory + newFileName;
+        fileName = _presentWorkingDirectory + fileName;
+        newFileName = _presentWorkingDirectory + newFileName;
 
         if(checkEntityExistence(newFileName))
             new File(fileName).renameTo(new File(newFileName));
@@ -126,7 +139,7 @@ public class FileManagement
         if(!checkEntityExistence(fileName) && !checkEntityExistence(destination))
             IOStreams.printError("Invalid file name or destination. Permission Denied.");
 
-        copyMoveHelper(new File(_defaultPath + _presentWorkingDirectory + fileName), new File(_defaultPath + _presentWorkingDirectory + destination), move);
+        copyMoveHelper(new File(_presentWorkingDirectory + fileName), new File(_presentWorkingDirectory + destination), move);
     }
 
     private final void copyMoveHelper(File source, File destination, boolean move)throws Exception
@@ -146,6 +159,49 @@ public class FileManagement
             if (move) 
             {
                 Files.delete(source.toPath());
+            }
+        }
+    }
+
+    private final void listEntities()throws Exception
+    {
+        //String format = "%1$-60s|%2$-50s|%3$-20s\n";
+        String format = "%1$-32s| %2$-24s| %3$-10s\n";
+        String c = "-";
+        if(checkEntityExistence(_presentWorkingDirectory))
+        {
+            File dPath=new File(_presentWorkingDirectory);
+            System.out.println("\n");
+            String disp = (String.format(format, "Directory/File Name", "File Size [In KB]","Type"));
+            System.out.println(disp + c.repeat(disp.length()) + "\n");
+            for(File file : dPath.listFiles())
+            {
+                //System.out.format(String.format(format, file.getPath().replace(User,Name), file.getName().replace(User,Name), file.length()/1024+" KB"));
+                System.out.format(String.format(format, file.getName().replace(_username, _name), file.length()/1024+" KB", file.isDirectory()?"Directory":"File"));
+            }
+            System.out.println();
+        }
+        else
+        IOStreams.printError("The Specified File/Directory Does Not Exist.");
+        System.gc();
+    }
+
+    private final void changeDirectory(String destination)throws Exception
+    {
+        if(destination.equals(".."))
+        {
+            navPreviousDirectory();
+            System.gc();
+        }
+        else
+        {
+            if(checkEntityExistence(_presentWorkingDirectory + destination))
+            {
+                _presentWorkingDirectory = _presentWorkingDirectory + destination + "/";
+            }
+            else
+            {
+                IOStreams.printError("\'" + destination + "\' does not exist");
             }
         }
     }
@@ -200,7 +256,7 @@ public class FileManagement
             if(commandArray.length < 2)
                 IOStreams.printError("Invalid Syntax.");
             else
-            deleteDirectoryFile(commandArray[1]);
+            deleteEntity(commandArray[1]);
             break;
 
             case "rename":
@@ -221,10 +277,18 @@ public class FileManagement
             break;
 
             case "pwd":
-            IOStreams.println(_defaultPath + _presentWorkingDirectory);
+            IOStreams.println((_presentWorkingDirectory).replace(_username, _name));
             break;
 
             case "cd":
+            if(commandArray.length < 2)
+            IOStreams.printError("Invalid Syntax.");
+            else
+            changeDirectory(commandArray[1]);
+            break;
+
+            case "cd..":
+            navPreviousDirectory();
             break;
 
             case "tree":
@@ -233,9 +297,14 @@ public class FileManagement
 
             case "dir":
             case "ls":
+            listEntities();
             break;
 
             case "download":
+            break;
+
+            case "home":
+            resetToHomeDirectory(); 
             break;
 
             case "exit":
@@ -243,7 +312,7 @@ public class FileManagement
             break;
 
             default:
-            IOStreams.printError("Command Not Found.");
+            Anvil.anvilInterpreter(commandArray);
         }
     }
 
