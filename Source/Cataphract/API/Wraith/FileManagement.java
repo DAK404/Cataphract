@@ -104,7 +104,7 @@ public class FileManagement
 
     private final void navPreviousDirectory()throws Exception
     {
-        _presentWorkingDirectory = _presentWorkingDirectory.substring(0, _presentWorkingDirectory.length() - 1);  
+        _presentWorkingDirectory = _presentWorkingDirectory.substring(0, _presentWorkingDirectory.length() - 1);
         _presentWorkingDirectory = _presentWorkingDirectory.replace(_presentWorkingDirectory.substring(_presentWorkingDirectory.lastIndexOf('/'), _presentWorkingDirectory.length()), "/");
         if (_presentWorkingDirectory.equals("./Users/Cataphract/"))
         {
@@ -156,7 +156,7 @@ public class FileManagement
         else
         {
             Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            if (move) 
+            if (move)
             {
                 Files.delete(source.toPath());
             }
@@ -218,7 +218,7 @@ public class FileManagement
             String inputValue = "";
             do
             {
-                inputValue = console.readLine(_name + "@" + _presentWorkingDirectory.replace(_username, _name) + "> "); 
+                inputValue = console.readLine(_name + "@" + _presentWorkingDirectory.replace(_username, _name) + "> ");
                 grinchInterpreter(inputValue);
             }
             while(!inputValue.equalsIgnoreCase("exit"));
@@ -274,6 +274,17 @@ public class FileManagement
             break;
 
             case "edit":
+            if(commandArray.length < 2)
+                IOStreams.printError("Invalid Syntax.");
+            else
+                FileWrite.editFile(commandArray[1], _presentWorkingDirectory);
+            break;
+
+            case "read":
+            if(commandArray.length < 2)
+                IOStreams.printError("Invalid Syntax.");
+            else
+                new FileRead().readUserFile(_presentWorkingDirectory + commandArray[1]);
             break;
 
             case "pwd":
@@ -301,10 +312,14 @@ public class FileManagement
             break;
 
             case "download":
+            if(commandArray.length < 3)
+            IOStreams.printError("Invalid Syntax.");
+            else
+            new FileDownload(_username).downloadFile(commandArray[1], commandArray[2]);
             break;
 
             case "home":
-            resetToHomeDirectory(); 
+            resetToHomeDirectory();
             break;
 
             case "exit":
@@ -315,5 +330,4 @@ public class FileManagement
             Anvil.anvilInterpreter(commandArray);
         }
     }
-
 }

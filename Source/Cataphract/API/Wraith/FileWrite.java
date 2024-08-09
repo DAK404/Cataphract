@@ -39,7 +39,6 @@ public class FileWrite
      */
     public FileWrite()
     {
-
     }
 
     /**
@@ -48,7 +47,7 @@ public class FileWrite
     * @param fileName The name of the file to be edited.
     * @param dir The directory path where the file is located.
     */
-    public final void editFile(String fileName, String dir)
+    public final static void editFile(String fileName, String dir)
     {
         try
         {

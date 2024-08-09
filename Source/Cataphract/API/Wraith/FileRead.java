@@ -130,15 +130,14 @@ public class FileRead
             // If help mode is not enabled
             else
             {
-                do
+                // Read the file until the end of file is reached
+                while (fileContents != null)
                 {
                     // Read a line from the file
                     fileContents = bufferObject.readLine();
                     // Print the file contents
                     IOStreams.println(fileContents);
                 }
-                // Continue until the end of file
-                while (fileContents != null);
             }
 
             // Close the streams
@@ -148,7 +147,7 @@ public class FileRead
             System.gc();
 
             // Prompt to return to continue
-            Cataphract.API.IOStreams.confirmReturnToContinue();
+            IOStreams.confirmReturnToContinue();
         }
     }
 
@@ -161,7 +160,7 @@ public class FileRead
     public void readUserFile(String userFileName) throws Exception
     {
         // Set the file name
-        fileName = new File("./Users/Cataphract/" + userFileName);
+        fileName = new File(userFileName);
         // Perform file reading logic
         readFileLogic();
     }
