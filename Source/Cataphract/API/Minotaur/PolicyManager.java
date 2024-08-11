@@ -39,7 +39,7 @@ public class PolicyManager
     private boolean _isUserAdmin = false;
 
     /** Stores the default Cataphract values in an array.*/
-    public final String [] resetValues = {"auth", "update", "download", "script", "filemgmt", "read", "edit", "policy", "account_create", "account_delete", "account_modify"};
+    public final String [] resetValues = {"update", "download", "script", "filemgmt", "read", "edit", "policy", "account_create", "account_delete", "account_modify"};
 
     /** Stores the path of the policy file.*/
     private final String policyFileName = "./System/Cataphract/Private/Policy.burn";

@@ -1,15 +1,40 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
 package Cataphract.API.Wraith;
 
+import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
-
+import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 import Cataphract.API.Anvil;
 import Cataphract.API.IOStreams;
+import Cataphract.API.Dragon.Login;
 import Cataphract.API.Minotaur.Cryptography;
+import Cataphract.API.Minotaur.PolicyCheck;
 
+/**
+* A utility class for file management.
+*
+* @author DAK404 (https://github.com/DAK404)
+* @version 1.3.0 (12-August-2024, Cataphract)
+* @since 0.0.1 (Zen Quantum 0.0.1)
+*/
 public class FileManagement
 {
     private String _username = "";
@@ -212,19 +237,68 @@ public class FileManagement
 
     public void fileManagementLogic()throws Exception
     {
-        // AUTHENTICATION LOGIC OMITTED FOR THE MOMENT.
-        if(login())
+        if (new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || new Login(_username).checkPrivilegeLogic())
         {
-            String inputValue = "";
-            do
+            if(login())
             {
-                inputValue = console.readLine(_name + "@" + _presentWorkingDirectory.replace(_username, _name) + "> ");
-                grinchInterpreter(inputValue);
+                String inputValue = "";
+                do
+                {
+                    inputValue = console.readLine(_name + "@" + _presentWorkingDirectory.replace(_username, _name) + "> ");
+                    grinchInterpreter(inputValue);
+                }
+                while(!inputValue.equalsIgnoreCase("exit"));
             }
-            while(!inputValue.equalsIgnoreCase("exit"));
+            else
+                IOStreams.printError("Invalid Credentials.");
         }
         else
-            IOStreams.printError("Invalid Credentials.");
+            IOStreams.printError("Policy Management System - Permission Denied.");
+    }
+
+    public void fileManagementLogic(String scriptFileName)throws Exception
+    {
+        if ((new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") && new PolicyCheck().retrievePolicyValue("script").equals("on")) || new Login(_username).checkPrivilegeLogic())
+        {
+            if(scriptFileName == null || scriptFileName.equalsIgnoreCase("") || scriptFileName.startsWith(" ") || new File(scriptFileName).isDirectory() || ! (new File("./Users/Truncheon/" + _username + "/" + scriptFileName + ".fmx").exists()))
+            {
+                IOStreams.printError("Invalid Script File!");
+            }
+            else
+            {
+                if(login())
+                {
+                    //Initialize a stream to read the given file.
+                    BufferedReader br = new BufferedReader(new FileReader(scriptFileName));
+                    //Initialize a string to hold the contents of the script file being executed.
+                    String scriptLine;
+
+                    //Read the script file, line by line.
+                    while ((scriptLine = br.readLine()) != "<EndGrinch>")
+                    {
+                        //Check if the line is a comment or is blank in the script file and skip the line.
+                        if(scriptLine.startsWith("#") || scriptLine.equalsIgnoreCase(""))
+                        continue;
+
+                        //Check if End Script command is encountered, which will stop the execution of the script.
+                        else if(scriptLine.equalsIgnoreCase("End Script"))
+                        break;
+
+                        //Read the command in the script file, and pass it on to menuLogic(<command>) for it to be processed.
+                        grinchInterpreter(scriptLine);
+                    }
+
+                    //Close the streams, run the garbage collector and clean.
+                    br.close();
+                }
+                else
+                {
+                    IOStreams.printError("Invalid Credentials.");
+                }
+            }
+        }
+        else
+            IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     private void grinchInterpreter(String command)throws Exception
@@ -277,14 +351,14 @@ public class FileManagement
             if(commandArray.length < 2)
                 IOStreams.printError("Invalid Syntax.");
             else
-                FileWrite.editFile(commandArray[1], _presentWorkingDirectory);
+                new FileWrite(_username).editFile(commandArray[1], _presentWorkingDirectory);
             break;
 
             case "read":
             if(commandArray.length < 2)
                 IOStreams.printError("Invalid Syntax.");
             else
-                new FileRead().readUserFile(_presentWorkingDirectory + commandArray[1]);
+                new FileRead(_username).readUserFile(_presentWorkingDirectory + commandArray[1]);
             break;
 
             case "pwd":

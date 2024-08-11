@@ -65,11 +65,15 @@ public class FileDownload
 
         // Attempt to download the file using NIO only if the policy is configured to "on"
         if (new PolicyCheck().retrievePolicyValue("download").equals("on") || _isUserAdmin)
-        status = downloadUsingNIO(URL, fileName);
-
-        // Check for an invalid URL
-        if (URL == null || fileName == null || URL.equalsIgnoreCase("") || fileName.equalsIgnoreCase(""))
-        IOStreams.printError("Invalid File Name. Enter a valid file name.");
+        {
+            status = downloadUsingNIO(URL, fileName);
+    
+            // Check for an invalid URL
+            if (URL == null || fileName == null || URL.equalsIgnoreCase("") || fileName.equalsIgnoreCase(""))
+            IOStreams.printError("Invalid File Name. Enter a valid file name.");
+        }
+        else
+            IOStreams.printError("Policy Management System - Permission Denied.");
 
         return status;
     }
@@ -93,7 +97,7 @@ public class FileDownload
             status = downloadUsingNIO(updateFileURL, "Update.zip");
         }
         else
-        IOStreams.println("Policy Restriction: Program Update Disallowed! Please contact the Administrator for more information.");
+            IOStreams.printError("Policy Management System - Permission Denied.");
 
         return status;
     }

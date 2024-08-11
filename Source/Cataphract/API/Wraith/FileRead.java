@@ -20,6 +20,8 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 
 import Cataphract.API.IOStreams;
+import Cataphract.API.Dragon.Login;
+import Cataphract.API.Minotaur.PolicyCheck;
 import Cataphract.API.Build;
 
 /**
@@ -31,6 +33,8 @@ import Cataphract.API.Build;
 */
 public class FileRead
 {
+    /** Store the current username to check privileges */
+    private String _username = "";
 
     /** Flag to indicate whether help mode is enabled. */
     private boolean helpMode = false;
@@ -39,10 +43,20 @@ public class FileRead
     private static File fileName = null;
 
     /**
-     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
+     * 
      */
     public FileRead()
     {
+    }
+    
+    /**
+     * 
+     * 
+     * @param username
+     */
+    public FileRead(String username)
+    {
+        _username = username;
     }
 
     /**
@@ -159,10 +173,15 @@ public class FileRead
     */
     public void readUserFile(String userFileName) throws Exception
     {
-        // Set the file name
-        fileName = new File(userFileName);
-        // Perform file reading logic
-        readFileLogic();
+        if (new PolicyCheck().retrievePolicyValue("update").equals("on") || new Login(_username).checkPrivilegeLogic())
+        {
+            // Set the file name
+            fileName = new File(userFileName);
+            // Perform file reading logic
+            readFileLogic();
+        }
+        else
+            IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**

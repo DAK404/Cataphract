@@ -23,6 +23,8 @@ import java.io.Console;
 
 import Cataphract.API.IOStreams;
 import Cataphract.API.Astaroth.Time;
+import Cataphract.API.Dragon.Login;
+import Cataphract.API.Minotaur.PolicyCheck;
 
 /**
 * A class that provides methods for writing to files and logging messages.
@@ -33,12 +35,16 @@ import Cataphract.API.Astaroth.Time;
 */
 public class FileWrite
 {
+    /** Store the current username to check privileges */
+    private String _username = "";
 
-    /**
-     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
-     */
     public FileWrite()
     {
+    }
+
+    public FileWrite(String username)
+    {
+        _username = username;
     }
 
     /**
@@ -47,79 +53,85 @@ public class FileWrite
     * @param fileName The name of the file to be edited.
     * @param dir The directory path where the file is located.
     */
-    public final static void editFile(String fileName, String dir)
+    public final void editFile(String fileName, String dir)throws Exception
     {
-        try
+        if (new PolicyCheck().retrievePolicyValue("update").equals("on") || new Login(_username).checkPrivilegeLogic())
         {
-            // Check if the provided file name is valid
-            if (checkFileValidity(fileName))
+
+            try
             {
-                boolean appendFile = true; // Flag to determine if file content should be appended or overwritten
-                String message = ""; // Initialize the message variable
-
-                System.out.println("Wraith Text Editor 1.5");
-                System.out.println("______________________\n");
-
-                // Get the console object to read user input
-                Console console = System.console();
-
-                // Create a File object representing the file to be edited
-                File writeToFile = new File(dir + fileName);
-                System.out.println("\nEditing File : " + fileName + "\n\n");
-
-                // Check if the file already exists
-                if (writeToFile.exists())
+                // Check if the provided file name is valid
+                if (checkFileValidity(fileName))
                 {
-                    // Prompt the user for action (overwrite, append, return, or help)
-                    switch (console.readLine("[ ATTENTION ] : A file with the same name has been found in this directory. Do you want to OVERWRITE it, APPEND to the file, or GO BACK? \n\nOptions:\n[ OVERWRITE | APPEND | RETURN | HELP ]\n\n> ").toLowerCase()) {
-                        // If the user chooses to overwrite the file
-                        case "overwrite":
-                        appendFile = false; // Set appendFile flag to false to overwrite the file content
-                        System.out.println("The new content will overwrite the previous content present in the file!");
-                        break;
-                        // If the user chooses to append to the file
-                        case "append":
-                        System.out.println("The new content will be added to the end of the file! Previous data will remain unchanged.");
-                        break;
-                        // If the user chooses to return without making any changes
-                        case "return":
-                        return;
-                        // If the user requests help
-                        case "help":
-                        System.out.println("Work in Progress");
-                        break;
-                        // If the user enters an invalid choice
-                        default:
-                        System.out.println("Invalid choice. Exiting...");
-                        return;
+                    boolean appendFile = true; // Flag to determine if file content should be appended or overwritten
+                    String message = ""; // Initialize the message variable
+    
+                    System.out.println("Wraith Text Editor 1.5");
+                    System.out.println("______________________\n");
+    
+                    // Get the console object to read user input
+                    Console console = System.console();
+    
+                    // Create a File object representing the file to be edited
+                    File writeToFile = new File(dir + fileName);
+                    System.out.println("\nEditing File : " + fileName + "\n\n");
+    
+                    // Check if the file already exists
+                    if (writeToFile.exists())
+                    {
+                        // Prompt the user for action (overwrite, append, return, or help)
+                        switch (console.readLine("[ ATTENTION ] : A file with the same name has been found in this directory. Do you want to OVERWRITE it, APPEND to the file, or GO BACK? \n\nOptions:\n[ OVERWRITE | APPEND | RETURN | HELP ]\n\n> ").toLowerCase()) {
+                            // If the user chooses to overwrite the file
+                            case "overwrite":
+                            appendFile = false; // Set appendFile flag to false to overwrite the file content
+                            System.out.println("The new content will overwrite the previous content present in the file!");
+                            break;
+                            // If the user chooses to append to the file
+                            case "append":
+                            System.out.println("The new content will be added to the end of the file! Previous data will remain unchanged.");
+                            break;
+                            // If the user chooses to return without making any changes
+                            case "return":
+                            return;
+                            // If the user requests help
+                            case "help":
+                            System.out.println("Work in Progress");
+                            break;
+                            // If the user enters an invalid choice
+                            default:
+                            System.out.println("Invalid choice. Exiting...");
+                            return;
+                        }
                     }
+    
+                    // Create a BufferedWriter to write to the file
+                    BufferedWriter obj = new BufferedWriter(new FileWriter(writeToFile, appendFile));
+                    PrintWriter pr = new PrintWriter(obj);
+    
+                    // Prompt the user for input and write to the file until "<exit>" is entered
+                    do
+                    {
+                        pr.println(message); // Write the message to the file
+                        message = console.readLine(); // Read the next line of input from the user
+                    }
+                    while (!(message.equals("<exit>"))); // Continue until "<exit>" is entered
+    
+                    // Close the streams
+                    pr.close();
+                    obj.close();
+    
+                    // Request garbage collection to free up resources
+                    System.gc();
                 }
-
-                // Create a BufferedWriter to write to the file
-                BufferedWriter obj = new BufferedWriter(new FileWriter(writeToFile, appendFile));
-                PrintWriter pr = new PrintWriter(obj);
-
-                // Prompt the user for input and write to the file until "<exit>" is entered
-                do
-                {
-                    pr.println(message); // Write the message to the file
-                    message = console.readLine(); // Read the next line of input from the user
-                }
-                while (!(message.equals("<exit>"))); // Continue until "<exit>" is entered
-
-                // Close the streams
-                pr.close();
-                obj.close();
-
-                // Request garbage collection to free up resources
-                System.gc();
+            }
+            catch (Exception E)
+            {
+                // Handle any exceptions thrown during runtime
+                new Cataphract.API.ExceptionHandler().handleException(E);
             }
         }
-        catch (Exception E)
-        {
-            // Handle any exceptions thrown during runtime
-            new Cataphract.API.ExceptionHandler().handleException(E);
-        }
+        else
+            IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**
