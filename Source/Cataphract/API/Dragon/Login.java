@@ -48,7 +48,7 @@ public class Login
     public Login(String username) throws Exception
     {
         // If username is empty or null, assign a default user
-        _username = (username.equals("") || username == null) ? "DEFAULT USER" : username;
+        _username = (username == null || username.equals("")) ? "DEFAULT USER" : username;
     }
 
     /**

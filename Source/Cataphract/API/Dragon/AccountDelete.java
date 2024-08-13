@@ -54,7 +54,7 @@ public class AccountDelete
     {
         // Set the current username
         _currentUsername = currentUsername;
-        //_isCurrentUserAdmin = new Cataphract.API.Dragon.Login(currentUsername).checkPrivilegeLogic();
+        //_isCurrentUserAdmin = new Login(currentUsername).checkPrivilegeLogic();
         _isCurrentUserAdmin = new Login(currentUsername).checkUserExistence();
     }
 
@@ -69,7 +69,7 @@ public class AccountDelete
         Build.viewBuildInfo();
 
         // Check the policy if account deletion is allowed in the policy file, can be bypassed by the accounts with administrator privileges
-        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_delete").equals("on") || new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic())
+        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_delete").equals("on") || new Login(_currentUsername).checkPrivilegeLogic())
         {
             // Check login credentials
             if (!login())

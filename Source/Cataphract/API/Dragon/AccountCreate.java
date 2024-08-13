@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import Cataphract.API.Build;
 import Cataphract.API.IOStreams;
 import Cataphract.API.Minotaur.Cryptography;
+import Cataphract.API.Minotaur.PolicyCheck;
 
 /**
 * A class to create new user accounts on the system. Can be restricted by policy "account_create"
@@ -126,7 +127,7 @@ public final class AccountCreate
     {
         //Store the current username locally to _currentUsername
         _currentUsername = username;
-        _isCurrentUserAdmin = new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic();
+        _isCurrentUserAdmin = new Login(_currentUsername).checkPrivilegeLogic();
     }
 
     /**
@@ -137,7 +138,7 @@ public final class AccountCreate
     public final void accountCreateLogic()throws Exception
     {
         // Check the policy if account creation is allowed in the policy file, can be bypassed by the accounts with administrator privileges
-        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_create").equals("on") || _isCurrentUserAdmin)
+        if(new PolicyCheck().retrievePolicyValue("account_create").equals("on") || _isCurrentUserAdmin)
         {
             //If the authentication check fails, exit from the module
             if(! authenticateCurrentUser())
@@ -204,11 +205,11 @@ public final class AccountCreate
         try
         {
             //Display the name of the user currently logged in
-            IOStreams.println("Username: " + new Cataphract.API.Dragon.Login(_currentUsername).getNameLogic());
+            IOStreams.println("Username: " + new Login(_currentUsername).getNameLogic());
 
-            new Cataphract.API.Minotaur.Cryptography();
+            new Cryptography();
             //challenge the database for the provided credentials, and store the status
-            authenticationStatus = new Cataphract.API.Dragon.Login(_currentUsername).authenticationLogic(Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("Password: "))), Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("SecurityKey: "))));
+            authenticationStatus = new Login(_currentUsername).authenticationLogic(Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("Password: "))), Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("SecurityKey: "))));
         }
         catch(Exception e)
         {
@@ -293,10 +294,10 @@ public final class AccountCreate
         }
         else
         {
-            _newAccountUsername = Cataphract.API.Minotaur.Cryptography.stringToSHA3_256(_newAccountUsername);   
+            _newAccountUsername = Cryptography.stringToSHA3_256(_newAccountUsername);   
 
             // check if the entered username exists in the database already
-            if(new Cataphract.API.Dragon.Login(_newAccountUsername).checkUserExistence())
+            if(new Login(_newAccountUsername).checkUserExistence())
             {
                 IOStreams.printError("Username has already been enrolled! Please try again with another username.");
                 _newAccountUsername = "";
@@ -503,7 +504,7 @@ public final class AccountCreate
     public final void createDefaultAdministratorAccount()throws Exception
     {
         // Check if the Administrator account exists already. If not, then create the Administrator account
-        if(!new Cataphract.API.Dragon.Login("Administrator").checkUserExistence())
+        if(!new Login("Administrator").checkUserExistence())
         {
             // Set the parameters for the Administrator account
             _newAccountAdmin = true;

@@ -79,7 +79,7 @@ public class PolicyManager
         IOStreams.printError("Authentication Failure. Exiting...");
         else
         //Check if the policy management is enabled for users. If disabled, check if the user is admin and override the policy.
-        if((new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("policy").equalsIgnoreCase("on")) || _isUserAdmin)
+        if((new PolicyCheck().retrievePolicyValue("policy").equalsIgnoreCase("on")) || _isUserAdmin)
         //Call the policy editor if conditions are met.
         policyEditor();
         else

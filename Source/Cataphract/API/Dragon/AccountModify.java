@@ -77,7 +77,7 @@ public class AccountModify
     public final void accountModifyLogic()throws Exception
     {
         // Check the policy if account modification is allowed in the policy file, can be bypassed by the accounts with administrator privileges
-        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_modify").equals("on") || new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic())
+        if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_modify").equals("on") || new Login(_currentUsername).checkPrivilegeLogic())
         {
             // Check login credentials
             if(!login())

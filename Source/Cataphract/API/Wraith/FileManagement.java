@@ -59,7 +59,7 @@ public class FileManagement
         // Set username to the global variable
         _username = username;
         // Set the name of the user to the global variable
-        _name = new Cataphract.API.Dragon.Login(username).getNameLogic();
+        _name = new Login(username).getNameLogic();
         // Initialize the present working directory
         _presentWorkingDirectory = "./Users/Cataphract/" + _username + "/";
     }
@@ -77,7 +77,7 @@ public class FileManagement
     private final boolean login()throws Exception
     {
         IOStreams.println("> Username: " + _name);
-        return new Cataphract.API.Dragon.Login(_username).authenticationLogic(Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Password: "))), Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Security Key: ")))) ;
+        return new Login(_username).authenticationLogic(Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Password: "))), Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Security Key: ")))) ;
     }
 
     /*****************************************
@@ -440,7 +440,7 @@ public class FileManagement
                     String scriptLine;
 
                     // Read the script file, line by line
-                    while ((scriptLine = br.readLine()) != "<EndGrinch>")
+                    while (!(scriptLine = br.readLine()).equalsIgnoreCase("<EndGrinch>"))
                     {
                         // Check if the line is a comment or is blank in the script file and skip the line
                         if (scriptLine.startsWith("#") || scriptLine.equalsIgnoreCase(""))
@@ -474,7 +474,7 @@ public class FileManagement
     private void grinchInterpreter(String command)throws Exception
     {
         // Split the command string into an array of command arguments
-        String[] commandArray = Cataphract.API.Anvil.splitStringToArray(command);
+        String[] commandArray = Anvil.splitStringToArray(command);
         
         // Switch statement to handle different commands
         switch (commandArray[0].toLowerCase()) 

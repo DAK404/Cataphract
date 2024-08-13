@@ -33,6 +33,8 @@ import java.sql.Statement;
 
 //Import the required Cataphract APIs
 import Cataphract.API.IOStreams;
+import Cataphract.API.Astaroth.Calendar;
+import Cataphract.API.Astaroth.Time;
 import Cataphract.API.Minotaur.Cryptography;
 import Cataphract.API.Anvil;
 import Cataphract.API.Build;
@@ -87,10 +89,10 @@ public class Loader
                 throw new Exception();
                 
                 case "astaroth":
-                IOStreams.println(String.valueOf(new Cataphract.API.Astaroth.Time().getUnixEpoch()));
-                IOStreams.println(String.valueOf(new Cataphract.API.Astaroth.Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy \nEEEE HH:mm:ss")));
-                new Cataphract.API.Astaroth.Calendar().printCalendar(0,0);
-                new Cataphract.API.Astaroth.Calendar().printCalendar(8, 2077);
+                IOStreams.println(String.valueOf(new Time().getUnixEpoch()));
+                IOStreams.println(String.valueOf(new Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy \nEEEE HH:mm:ss")));
+                new Calendar().printCalendar(0,0);
+                new Calendar().printCalendar(8, 2077);
                 System.exit(0);
                 break;
                 
@@ -594,7 +596,7 @@ class Setup
     */
     private void displaySetupProgress()
     {
-        Cataphract.API.Build.viewBuildInfo();
+        Build.viewBuildInfo();
         IOStreams.println("[ -- Program Setup Checklist -- ]");
         IOStreams.println("[*] Show Program Prerequisites   : " + (prereqInfoStatus?"COMPLETED":"PENDING"));
         IOStreams.println("[*] Initialize Directories       : " + (initDirs?"COMPLETED":"PENDING"));
@@ -614,12 +616,12 @@ class Setup
         boolean returnValue = false;
         
         //A brief introduction to Cataphract and why it is being setup //
-        Cataphract.API.Build.clearScreen();
+        Build.clearScreen();
         
         /**
         * Display a message to give a brief introduction to Cataphract and the reason why it is being setup
         */
-        String oobeIntroduction = Cataphract.API.Build._Branding + """
+        String oobeIntroduction = Build._Branding + """
         
         Welcome to Cataphract!
         
@@ -635,7 +637,7 @@ class Setup
         
         If the current user is a System Administrator,\u00A0""";
         
-        Cataphract.API.IOStreams.confirmReturnToContinue(oobeIntroduction, ".\nSetup> ");
+        IOStreams.confirmReturnToContinue(oobeIntroduction, ".\nSetup> ");
         
         //User needs to accept EULA
         showAndAcceptEULA();
@@ -654,7 +656,7 @@ class Setup
         
         //Show the set of actions undertaken to the user before restarting
         displaySetupProgress();
-        Cataphract.API.IOStreams.confirmReturnToContinue("Setup complete! ", ".\nSetup> ");
+        IOStreams.confirmReturnToContinue("Setup complete! ", ".\nSetup> ");
         
         
         returnValue = prereqInfoStatus & initAdminAccount & initDB & initDirs & initPolicies;
@@ -769,7 +771,7 @@ class Setup
         catch(Exception e)
         {
             //Catch any exceptions caught during runtime and pass it on to the ExceptionHandler class
-            new Cataphract.API.ExceptionHandler().handleException(e);
+            new ExceptionHandler().handleException(e);
         }
         
         //Update the Database Initialization to COMPLETE or failed
