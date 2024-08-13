@@ -69,7 +69,7 @@ public class NionUpdate
             IOStreams.printAttention("It is recommended to restart Cataphract for the updates to be reflected.");
         }
         else
-        IOStreams.printError("Policy Configuration Error!");
+        IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**

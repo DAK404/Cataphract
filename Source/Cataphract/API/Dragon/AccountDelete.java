@@ -79,7 +79,7 @@ public class AccountDelete
             userManagementConsoleDelete();
         }
         else
-        IOStreams.printError("Policy Configuration Error!");
+        IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**
@@ -126,6 +126,10 @@ public class AccountDelete
                     }
                     break;
 
+                    case "list":
+                    new Login(_currentUsername).listAllUserAccounts();
+                    break;
+
                     default:
                     // Display error for unknown command
                     IOStreams.printError("Command Not Found: " + command[0]);
@@ -151,33 +155,39 @@ public class AccountDelete
 
         // Check if the username is "Administrator"
         if (username.equals(Cryptography.stringToSHA3_256("Administrator")))
-        IOStreams.printError("Deletion of Administrator Account is not allowed!");
-        else if (! new Login(Cryptography.stringToSHA3_256(username)).checkUserExistence())
-        IOStreams.printError("User does not exist! Please enter a valid username.");
-        else
+            IOStreams.printError("Deletion of Administrator Account is not allowed!");
+        else 
         {
-            try
+            if (! new Login(Cryptography.stringToSHA3_256(username)).checkUserExistence() || ! new Login(username).checkUserExistence())
             {
-                // Prompt user for confirmation
-                if (console.readLine("Are you sure you wish to delete user account \"" + new Login(username).getNameLogic() + "\"? [ YES | NO ]\n> ").equalsIgnoreCase("yes"))
+                IOStreams.println("User does not exist! Please enter the correct username (or the username hash) to continue");
+            }
+            else
+            {
+                try
                 {
-                    // Delete account from database and directories
-                    status = deleteFromDatabase() & deleteDirectories(new File("./Users/Cataphract/" + username));
-                    // Print success message and exit
-                    IOStreams.printAttention("Account Successfully Deleted.");
-                    if(! _isCurrentUserAdmin)
+                    // Prompt user for confirmation
+                    if (console.readLine("Are you sure you wish to delete user account \"" + new Login(username).getNameLogic() + "\"? [ YES | NO ]\n> ").equalsIgnoreCase("yes"))
                     {
-                        //wait for 5 seconds and then restart
-                        Thread.sleep(5000);
-                        System.exit(211);
+                        // Delete account from database and directories
+                        status = deleteFromDatabase() & deleteDirectories(new File("./Users/Cataphract/" + username));
+                        // Print success message and exit
+                        IOStreams.printAttention("Account Successfully Deleted.");
+                        if(! _isCurrentUserAdmin)
+                        {
+                            //wait for 5 seconds and then restart
+                            Thread.sleep(5000);
+                            System.exit(211);
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    // Print error message for any exceptions
+                    IOStreams.printError("System Error: Unable to delete account.");
+                }
             }
-            catch (Exception e)
-            {
-                // Print error message for any exceptions
-                IOStreams.printError("System Error: Unable to delete account.");
-            }
+
         }
 
         return status;

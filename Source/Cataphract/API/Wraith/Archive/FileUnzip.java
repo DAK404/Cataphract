@@ -70,7 +70,7 @@ public class FileUnzip
         if(new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || isUserAdmin)
         unzipLogic(fileName, unzipDestination);
         else
-        IOStreams.printError("Policy Configuration Error!");
+        IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**
@@ -84,7 +84,7 @@ public class FileUnzip
         if(new PolicyCheck().retrievePolicyValue("update").equals("on") || isUserAdmin)
         unzipLogic("./Update.zip", "./");
         else
-        IOStreams.printError("Policy Configuration Error!");
+        IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**

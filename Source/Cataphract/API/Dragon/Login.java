@@ -16,10 +16,13 @@
 package Cataphract.API.Dragon;
 
 import java.io.Console;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import Cataphract.API.IOStreams;
 
 /**
 * A class to handle the user login and authentication.
@@ -109,6 +112,39 @@ public class Login
     {
         // Check for existing user account
         return checkForExistingAccount();
+    }
+
+    protected void listAllUserAccounts()throws Exception
+    {
+        // Check if the current user is an Administrator
+        if(checkPrivilegeLogic())
+        {
+            // Define the format for displaying the usernames
+            String format = "%1$-64s| %2$-32s| %3$-5s\n";
+            String c = "-";
+            
+            // Print a newline for better formatting
+            System.out.println();
+            
+            // Format and print the header for the user directory listing
+            String disp = String.format(format, "Username", "Account Name", "Privileges");
+            System.out.println(disp + c.repeat(disp.length()) + "\n");
+
+            // List the files in the ./Users/Cataphract directory
+            File[] fileList = new File("./Users/Cataphract/").listFiles();
+
+            // Iterate through the list of files
+            for(File users: fileList)
+            {
+                String usernames = users.getName();
+                // Format and print the name, username and privileges
+                System.out.format(String.format(format, usernames, new Login(usernames).getNameLogic(), new Login(usernames).checkPrivilegeLogic()));
+            }
+
+            System.out.println();
+        }
+        else
+            IOStreams.printError("Insufficient Privileges.");
     }
 
     /**

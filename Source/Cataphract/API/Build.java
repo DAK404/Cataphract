@@ -39,7 +39,7 @@ public class Build
     """;
 
     /** An array that holds the values for Kernel Name, version, build date, build ID and the kernel branch/build type. */
-    public final static String[] _BuildInfo = {"Cataphract", "1.0.0", "27-April-2024", "20240427-182445_NION", "Development"};
+    public final static String[] _BuildInfo = {"Cataphract", "1.3.0", "14-August-2024", "20240814-003624_NION", "Development"};
 
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
@@ -58,7 +58,7 @@ public class Build
         //print the branding string.
         IOStreams.println(_Branding + "\n");
         //new Build().debug();
-        IOStreams.printWarning("Features disabled until integration tests are complete.\n\nIntegration test ongoing.\nCore features are almost complete.\n");
+        IOStreams.printDebug("Development Build. Use at your own risk!");
 
         debug();
     }

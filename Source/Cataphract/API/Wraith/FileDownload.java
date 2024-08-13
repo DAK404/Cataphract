@@ -98,7 +98,6 @@ public class FileDownload
         }
         else
             IOStreams.printError("Policy Management System - Permission Denied.");
-
         return status;
     }
 
@@ -144,9 +143,6 @@ public class FileDownload
             // Print any exceptions that occur during the download.
             e.printStackTrace();
         }
-
-        // Explicitly request garbage collection (optional).
-        System.gc();
 
         // Return the status of the download
         return status;

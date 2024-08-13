@@ -165,9 +165,7 @@ public class Loader
             System.exit(100);
             else
             {
-                IOStreams.printError("Setup Failed! Reverting changes...");
-                
-                //TODO: Delete /System and /Users directories
+                IOStreams.printError("Setup Failed!");
             }
             break;
             
@@ -535,8 +533,8 @@ public class Loader
                 case "login":
                 new SycoraxKernel().startSycoraxKernel();
 
-                // A Windows 95/98 Easter Egg?
-                IOStreams.println(3, 0, "It is now safe to turn off your PC ;)");
+                Build.viewBuildInfo();
+                IOStreams.println(3, 0, "Logout Successful");
                 break;
 
                 default:

@@ -183,7 +183,7 @@ public final class AccountCreate
         }
         //If the policy for usermanagement system is not setup, incorrect or the policy file is corrupt, display the same
         else
-        IOStreams.printError("Policy Configuration Error!");
+        IOStreams.printError("Policy Management System - Permission Denied.");
         System.gc();
     }
 

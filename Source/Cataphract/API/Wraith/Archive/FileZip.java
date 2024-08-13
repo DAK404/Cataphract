@@ -77,7 +77,7 @@ public class FileZip
             fos.close();
         }
         else
-        IOStreams.printError("Policy Configuration Error!");
+        IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**

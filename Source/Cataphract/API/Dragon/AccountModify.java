@@ -90,7 +90,7 @@ public class AccountModify
             System.gc();
         }
         else
-        IOStreams.printError("Policy Configuration Error!");
+        IOStreams.printError("Policy Management System - Permission Denied.");
 
         // Trigger garbage collection
         System.gc();
@@ -182,6 +182,7 @@ public class AccountModify
                 break;
 
                 case "list":
+                new Login(_currentUsername).listAllUserAccounts();
                 break;
 
                 case "clear":
@@ -289,7 +290,7 @@ public class AccountModify
 
     /**
      * Logic to view account information by users with Administrator privileges
-     * 
+     *
      * @param targetUser The user account intended to be viewed
      * @throws Exception Throws any exceptions encountered during runtime.
      */
@@ -318,11 +319,6 @@ public class AccountModify
         {
             IOStreams.printError("Invalid Privileges! Cannot Modify User Privileges.");
         }
-    }
-
-    private void listAllUserAccounts()
-    {
-        //reuse code from FileManagement.java? It'd be easier to do so.
     }
 
     /**
