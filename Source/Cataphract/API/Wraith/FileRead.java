@@ -43,16 +43,16 @@ public class FileRead
     private static File fileName = null;
 
     /**
-     * 
+     * Constructor to be used for reading help files
      */
     public FileRead()
     {
     }
     
     /**
+     * Constructor to be used for reading user generated files
      * 
-     * 
-     * @param username
+     * @param username The username of the currently logged in user
      */
     public FileRead(String username)
     {
@@ -173,6 +173,7 @@ public class FileRead
     */
     public void readUserFile(String userFileName) throws Exception
     {
+        // Check the policy if file reading is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if (new PolicyCheck().retrievePolicyValue("update").equals("on") || new Login(_username).checkPrivilegeLogic())
         {
             // Set the file name

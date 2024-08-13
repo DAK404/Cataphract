@@ -59,6 +59,7 @@ public class FileZip
     */
     public void zipFile(String zipFileName, String directoryToCompress) throws Exception
     {
+        // Check the policy if file zipping is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if(new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || isUserAdmin)
         {
             // Create a FileOutputStream for the zip file

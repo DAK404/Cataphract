@@ -55,7 +55,7 @@ public class NionUpdate
     */
     public void updater()throws Exception
     {
-        //Check if the policy allows user to update of if user has the privilege to update the program
+        // Check the policy if updating is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if(new PolicyCheck().retrievePolicyValue("update").equals("on") || _isUserAdmin)
         {
             IOStreams.println("---- Wyvern: Program Update Utility 2.0 ----");

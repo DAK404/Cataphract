@@ -38,10 +38,18 @@ public class FileWrite
     /** Store the current username to check privileges */
     private String _username = "";
 
+    /**
+     * Constructor to be used for logging data to a log file
+     */
     public FileWrite()
     {
     }
 
+    /**
+     * Constructor to be used for writing data into a user created file
+     * 
+     * @param username The username of the currently logged in user
+     */
     public FileWrite(String username)
     {
         _username = username;
@@ -55,9 +63,9 @@ public class FileWrite
     */
     public final void editFile(String fileName, String dir)throws Exception
     {
+        // Check the policy if file writing is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if (new PolicyCheck().retrievePolicyValue("update").equals("on") || new Login(_username).checkPrivilegeLogic())
         {
-
             try
             {
                 // Check if the provided file name is valid

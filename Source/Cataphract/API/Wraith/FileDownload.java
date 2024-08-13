@@ -63,7 +63,7 @@ public class FileDownload
     {
         boolean status = false;
 
-        // Attempt to download the file using NIO only if the policy is configured to "on"
+        // Check the policy if file download is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if (new PolicyCheck().retrievePolicyValue("download").equals("on") || _isUserAdmin)
         {
             status = downloadUsingNIO(URL, fileName);

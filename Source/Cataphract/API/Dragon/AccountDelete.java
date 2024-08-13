@@ -68,7 +68,7 @@ public class AccountDelete
         // Display build information
         Build.viewBuildInfo();
 
-        // Check the policy to see if the account deletion is allowed for the current user
+        // Check the policy if account deletion is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_delete").equals("on") || new Cataphract.API.Dragon.Login(_currentUsername).checkPrivilegeLogic())
         {
             // Check login credentials

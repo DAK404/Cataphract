@@ -66,7 +66,7 @@ public class FileUnzip
     */
     public void unzip(String fileName, String unzipDestination)throws Exception
     {
-        // Check the policy, and override it if the user has Administrator privileges
+        // Check the policy if file unzip is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if(new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || isUserAdmin)
         unzipLogic(fileName, unzipDestination);
         else

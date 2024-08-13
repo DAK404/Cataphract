@@ -136,6 +136,7 @@ public final class AccountCreate
     */
     public final void accountCreateLogic()throws Exception
     {
+        // Check the policy if account creation is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if(new Cataphract.API.Minotaur.PolicyCheck().retrievePolicyValue("account_create").equals("on") || _isCurrentUserAdmin)
         {
             //If the authentication check fails, exit from the module
