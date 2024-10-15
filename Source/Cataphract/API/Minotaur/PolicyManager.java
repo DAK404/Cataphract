@@ -218,6 +218,7 @@ public class PolicyManager
     private final void displaySettings()throws Exception
     {
         Build.viewBuildInfo();
+        IOStreams.println("--------------------------------------------");
         IOStreams.println("         Minotaur Policy Editor 2.0         ");
         IOStreams.println("--------------------------------------------");
         IOStreams.println("      - Current Policy Configuration -      ");
@@ -280,5 +281,6 @@ public class PolicyManager
 
         savePolicy("module", "off");
         savePolicy("policy", "off");
+        savePolicy("auth", "off");
     }
 }

@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Check Path
         run: echo ${{ github.workspace }}
-    
+
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -25,18 +25,8 @@ jobs:
           distribution: 'oracle'
           java-version: '21'
 
-      - name: Copy SourceCompileProgram.sh to Source Directory
-        run: cp ./Tools/Silent/Linux/SourceCompileProgram.sh ./Source/
-
-      - name: Create Binaries directory
-        run: mkdir ./Binaries
-
-      - name: Copy BuildSigner to Binaries Directory
-        run: cp ./Tools/Interactive/BuildSigner.java ./Binaries/
-
-      - name: Run SourceCompileProgram.sh to compile program
-        working-directory: ./Source
-        run: sh ./SourceCompileProgram.sh
+      - name: Run Makefile to compile program
+        run: make project=Cataphract all 2>&1 | tee CompileLogs/Compile.log
 
       - name: Upload the Build Artefacts
         uses: actions/upload-artifact@v4

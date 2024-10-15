@@ -1,25 +1,30 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "BuildProgram",
+            "label": "Build Cataphract Kernel (Linux)",
             "type": "shell",
-            "windows": {
-                "command": ".\\SourceCompileProgram.cmd"
-            },
-            "linux": {
-                "command": "sh SourceCompileProgram.sh"
-            },
-            "options": {
-                "cwd": "${workspaceFolder}/Source"
-            },
-            "problemMatcher": [],
+            "command": "make",
+            "args": [
+                "project=Cataphract",
+                "kernel"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Build the Cataphract kernel on Linux"
+        },
+        {
+            "label": "Build Cataphract Kernel (Windows)",
+            "type": "shell",
+            "command": ".\\SourceCompileProgram.cmd",
+            "group": {
+                "kind": "build",
+                "isDefault": false
             }
         }
     ]
 }
+
