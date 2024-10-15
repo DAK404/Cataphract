@@ -26,7 +26,7 @@ jobs:
           java-version: '21'
 
       - name: Run Makefile to compile program
-        run: make project=Cataphract kernel 2>&1 | tee CompileLogs/Compile.log
+        run: make project=Cataphract all
 
       - name: Upload the Build Artefacts
         uses: actions/upload-artifact@v4

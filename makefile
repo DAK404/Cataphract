@@ -33,7 +33,10 @@ BIN_CLASSPATH = ./Binaries
 .PHONY: all setup kernel launcher docs sign clean
 
 # Build steps
-all: setup kernel launcher docs sign
+all: setup kernel launcher sign
+
+# Super Build (includes documentations)
+super: setup kernel launcher sign docs
 
 # Preliminary setup
 setup:
@@ -64,7 +67,7 @@ setup:
 	@echo ""
 
 # Compilation targets
-kernel: setup launcher sign
+kernel: setup
 	@echo "[*] Compiling Program..."
 	@echo ""
 	javac -cp $(CLASSPATH) -d $(BIN_DIR) $(SRC_DIR)/$(PROJECT_NAME)/Core/Loader.java
