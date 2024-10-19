@@ -7,7 +7,7 @@
             "command": "make",
             "args": [
                 "project=Cataphract",
-                "kernel"
+                "all"
             ],
             "group": {
                 "kind": "build",

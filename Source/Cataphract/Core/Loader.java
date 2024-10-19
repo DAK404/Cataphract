@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.regex.Matcher;
 
 //Import the required Java SQL classes
 import java.sql.Connection;
@@ -84,34 +83,44 @@ public class Loader
                 case "normal":
                 IOStreams.println("Starting Kernel...");
                 break;
-                
-                case "crash":
-                throw new Exception();
-                
-                case "astaroth":
-                IOStreams.println(String.valueOf(new Time().getUnixEpoch()));
-                IOStreams.println(String.valueOf(new Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy \nEEEE HH:mm:ss")));
-                new Calendar().printCalendar(0,0);
-                new Calendar().printCalendar(8, 2077);
-                System.exit(0);
-                break;
-                
-                case "iostreams":
-                IOStreams.printError("This is an error message.");
-                IOStreams.printWarning("This is a warning message.");
-                IOStreams.printAttention("This is an attention message.");
-                IOStreams.printInfo("This is an information message.");
-                IOStreams.println("This is a normal printline message. Printing the same with colors");
-                for(int i = 0; i < 9; i++)
-                {
-                    for(int j = 0; j < 9; j++)
-                    {
-                        IOStreams.print(i, j, "testing IOStreams");
-                        System.out.print(" ");
-                    }
-                    System.out.println();
-                }
-                System.exit(0);
+
+                case "debug":
+                    if(args.length < 2)
+                        IOStreams.printError("Invalid Syntax.");
+                    else
+                        switch(args[1])
+                        {
+                            case "crash":
+                                throw new Exception();
+
+                            case "astaroth":
+                                IOStreams.println(String.valueOf(new Time().getUnixEpoch()));
+                                IOStreams.println(String.valueOf(new Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy \nEEEE HH:mm:ss")));
+                                new Calendar().printCalendar(0,0);
+                                new Calendar().printCalendar(8, 2077);
+                                System.exit(0);
+                            break;
+
+                            case "iostreams":
+                                IOStreams.printError("This is an error message.");
+                                IOStreams.printWarning("This is a warning message.");
+                                IOStreams.printAttention("This is an attention message.");
+                                IOStreams.printInfo("This is an information message.");
+                                IOStreams.println("This is a normal printline message. Printing the same with colors");
+                                for(int i = 0; i < 9; i++)
+                                {
+                                    for(int j = 0; j < 9; j++)
+                                    {
+                                        IOStreams.print(i, j, "testing IOStreams");
+                                        System.out.print(" ");
+                                    }
+                                    System.out.println();
+                                }
+                                System.exit(0);
+
+                            default:
+                                IOStreams.printError("Undefined Debug Parameter.");
+                        }
                 
                 //Rejects boot if the mode is not specified
                 default:
@@ -143,28 +152,28 @@ public class Loader
             break;
             
             case 1:
-            IOStreams.printError("Unable to locate or parse Manifest Files! Aborting boot...");
-            System.exit(4);
+                IOStreams.printError("Unable to locate or parse Manifest Files! Aborting boot...");
+                System.exit(4);
             break;
             
             case 2:
-            IOStreams.printError("Unable to populate the Kernel files! Aborting boot...");
-            System.exit(4);
+                IOStreams.printError("Unable to populate the Kernel files! Aborting boot...");
+                System.exit(4);
             break;
             
             case 3:
-            IOStreams.printError("File Signature verification failed! Aborting boot...");
-            System.exit(4);
+                IOStreams.printError("File Signature verification failed! Aborting boot...");
+                System.exit(4);
             break;
             
             case 4:
-            IOStreams.printError("File verification failed: Found File Size Discrepancy! Aborting boot...");
-            System.exit(4);
+                IOStreams.printError("File verification failed: Found File Size Discrepancy! Aborting boot...");
+                System.exit(4);
             break;
             
             case 5:
-            if(new Setup().setupCataphract())
-            System.exit(100);
+                if(new Setup().setupCataphract())
+                System.exit(100);
             else
             {
                 IOStreams.printError("Setup Failed!");
@@ -172,13 +181,13 @@ public class Loader
             break;
             
             case 55:
-            IOStreams.printError("Could not initialize Abraxis! Aborting boot...");
-            System.exit(4);
+                IOStreams.printError("Could not initialize Abraxis! Aborting boot...");
+                System.exit(4);
             break;
             
             default:
-            IOStreams.printError("Generic Failure. Cannot Boot.");
-            System.exit(4);
+                IOStreams.printError("Generic Failure. Cannot Boot.");
+                System.exit(4);
             break;
         }
         
@@ -377,7 +386,7 @@ public class Loader
                 try
                 {
                     //Store the hash of the file present in the manifest.
-                    String manifestHash = manifestM1Entries.getProperty(convertToNionSeparator(fileName));
+                    String manifestHash = manifestM1Entries.getProperty(IOStreams.convertToNionSeparator(fileName));
                     
                     //Check if the manifest and the file hashes are equal
                     if(!manifestHash.equals(kernelFileHash))
@@ -442,7 +451,7 @@ public class Loader
                 if(fileName.endsWith(".class"))
                 {
                     //Store the file size in the M2 manifest
-                    long fileSizeM2 = Long.parseLong(String.valueOf(manifestM2Entries.get(convertToNionSeparator(fileName))));
+                    long fileSizeM2 = Long.parseLong(String.valueOf(manifestM2Entries.get(IOStreams.convertToNionSeparator(fileName))));
                     //Store the file size present on the disk
                     long fileSize = new File(fileName).length();
                     
@@ -487,28 +496,6 @@ public class Loader
     private boolean setupStatusCheck()
     {
         return new File("./System/Cataphract").exists() & new File("./Users/Cataphract").exists();
-    }
-    
-    /**
-    * Logic to convert from an OS dependent file separator format of file paths to Nion File Separator format.
-    *
-    * @param nionPath String that contains the file path in Nion File Separator format
-    * @return String The value of the String converted to the OS dependent file separator format
-    */
-    // private String convertFileSeparator(String nionPath)
-    // {
-    //     return nionPath.replaceAll("|", Matcher.quoteReplacement(File.separator));
-    // }
-        
-    /**
-    * Logic to convert from an OS dependent file separator format of file paths to Nion File Separator format.
-    *
-    * @param filePath String that contains the file path in OS dependent file separator format.
-    * @return String The value of the String converted to Nion File Separator format.
-    */
-    private String convertToNionSeparator(String filePath)
-    {
-        return filePath.replaceAll(Matcher.quoteReplacement(File.separator), "|");
     }
     
     /**

@@ -16,6 +16,8 @@
 package Cataphract.API;
 
 import java.io.Console;
+import java.io.File;
+import java.util.regex.Matcher;
 
 /**
 * A class implementing console output with prefixes, colors, and a "Press RETURN To Continue" functionality
@@ -174,5 +176,27 @@ public class IOStreams
     public static String confirmReturnToContinue(String prefix, String suffix)
     {
         return console.readLine(prefix + "Press RETURN to Continue" + suffix);
+    }
+
+    /**
+    * Logic to convert from Nion File Separator format of file paths to an OS dependent file separator format.
+    *
+    * @param nionPath String that contains the file path in Nion File Separator format
+    * @return String The value of the String converted to the OS dependent file separator format
+    */
+    public static String convertFileSeparator(String nionPath)
+    {
+        return nionPath.replaceAll("\\|", Matcher.quoteReplacement(File.separator));
+    }
+        
+    /**
+    * Logic to convert from an OS dependent file separator format of file paths to Nion File Separator format.
+    *
+    * @param filePath String that contains the file path in OS dependent file separator format.
+    * @return String The value of the String converted to Nion File Separator format.
+    */
+    public static String convertToNionSeparator(String filePath)
+    {
+        return filePath.replaceAll(Matcher.quoteReplacement(File.separator), "|");
     }
 }

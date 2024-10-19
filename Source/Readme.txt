@@ -48,118 +48,142 @@ The directory structure should look something like this:
 |- Source/
     |- Cataphract/
     |- Main.java
-    |- SourceCompileProgram
 |- Tools/
 
-NOTE: Please choose the tool according to the OS you're running on. As of now Mac OS is not
-officially supported. You may try to compile it at your own risk!
+In the project root directory, there is a file called makefile. This is a GNU Make file,
+which is a script to compile the program efficiently.
 
-Once the SourceCompileProgram is copied into the Source directory, you can either just run the
-tool in the Terminal/Console or simply double click it if the OS supports it.
+--- NOTE ---
+You may need to install GNU Make by via your Linux Distribution's package manager.
+If you're on Windows, you may need to install Chocolatey Package Manager and then install
+Make via Chocolatey.
+------------
 
-The tool will display the status of the actions undertaken, and the build shall succeed or
-fail depending on the compilation errors encountered. If there are errors, please correct the
-specified issues and try again.
+Opening a terminal and simply running the command `make` in the project root directory shall
+display the following:
 
-Once compiled, you'll see a Binaries directory under ProjectRoot.
+Nion Foundry Build System
+Version: 4.0
 
-If the Binaries directory did not exist previously, the build will not be signed.
-Build Signing must be done to boot the kernel. It will not be covered in this guide as it is
-covered in EasyGuide and is out of scope for this Documentation.
+Usage: make project=<project_name> <target>
 
-(TIP: Just re-run the SourceCompileProgram again after copying BuildSigner.java to Binaries
-directory and the program should be signed on the 2nd run)
+->> Targets Available <<-
+ * all       ->  [ RECOMMENDED ] Compiles everything.
+ * super     ->  [ RECOMMENDED ] Compiles everything + documentation.
+ * Kernel    ->  Compiles only the program
+ * launcher  ->  Compiles only the launcher
+ * docs      ->  Generates only the documentation
+ * sign      ->  Signs the build
+ * clean     ->  Cleans build and documentation directories
 
-Once done, it may be useful to build the documentation if any changes were made to the program
-and reflect the changes for the same.
+To read the complete documentation on this project, please visit
+Link to documentation will be available soon.
 
-There are 2 types of Documentation that can be built here:
-Developer Documentation
-Internal Documentation
+This is the help viewer showing the available commands and available targets.
+
+--- NOTE ---
+* This is a handy command to compile your project using Nion Foundry Build System:
+
+    make project=<project_name> <target>
+
+To compile Cataphract, the following can be used:
+
+    make project=Cataphract all
+------------
+
+The following explains how to use the Nion Foundry Build System.
+
+1. project parameter:
+    The project parameter shall specify the project that needs to be compiled. In this case,
+    the value that needs to be provided is `Cataphract`.
+
+    --- NOTE ---
+    The project name is case sensitive.
+    ------------
+
+2. target:
+    This shall specify what aspects of the program needs to be compiled. For those who
+    would like to compile the program and be able to use it, the `all` target needs to be
+    selected.
+
+    The following shall explain the available targets to the end user:
+
+    * all - This target shall compile the launcher, Kernel, and sign the build.
+    * super - This target shall execute the target `all` and additionally, generate
+        Javadoc Documentation pages.
+    * kernel - This target is for developers who would like to compile the Kernel only.
+    * launcher - This target is for developers who would like to compile the launcher only.
+    * docs - This target is for developers who would like to generate the Javadoc pages.
+    * sign - This target is used to sign the build present in the `Binaries` directory.
+    * clean - This target cleans the directories of `docs` and `Binaries`
+
+    --- NOTE ---
+    * The targets are case sensitive.
+    * Target and project name is necessary for Nion Foundry Build System
+      to work as expected.
+    ------------
+
+- [ RUNNING THE PROJECT ]-
+
+SQLITE JDBC SETUP INSTRUCTIONS:
+
+To run the project, there is one last step necessary: Downloading and extracting SQLite
+JDBC driver.
+
+The SQLite JDBC driver is used to connect to a database (which is created during the program
+setup stages to store user information). Without this driver, the program will fail to login
+and work as expected.
+
+Since SQLite is not a project undertaken by me, it is recommended to download the version
+directly from the release page of the SQLite repository on GitHub.
+
+-------------------------------------------------------------
+---! Please note that only version 3.43.0.0 is supported !---
+-------------------------------------------------------------
+
+RUNNING THE COMPILED BINARIES:
+
+The compiled binaries can be run by using the following syntax:
+
+java Main <kernel_name> <mode> <other_args>
+
+The meaning of the above syntax is as follows:
+
+Main: This is the Main.class executed. This is the Launcher application which will start
+the specified Kernel.
+
+<kernel_name>: This is the name of the Kernel to start. The Launcher application is designed
+to run with various kernels that are compatible with the Nion File Structure Specification.
+With multiple kernels existing in the same directory, it would make sense to specify which
+Kernel needs to be started. This will remove the necessity for each Kernel to have its own
+dedicated Launcher application.
+
+<mode>: This will tell the Kernel to start in the specified mode. This mode shall vary from
+Kernel to Kernel. Please refer to the documentation for the specified Kernel to learn more
+about the modes supported.
+
+<other_args>: These are other arguments that are required by the Kernel, which will be
+passed on from the Launcher application to the Kernel.
 
 
-Developer Documentation contains just enough details for developers to build applications on
-top of or alongside Cataphract. This is useful to build an application that will utilize or
-interact with the APIs that Cataphract offers. This does not cover the kernel architecture
-and gives a limited scope and insight into the program structure.
+-[ DOCUMENTATION ]-
 
-Internal Documentation contains ALL details, including private, protected and public methods,
-classes, constructors, methods and variables. This is useful to understand, improve, optimize
-the kernel and help in building additional functionalities and features into the kernel.
+Documentation is present in the ./docs directory. There are 2 types of documentation that
+can be used for different purposes.
 
+DEVELOPER DOCUMENTATION:
 
-DEVELOPER DOCUMENTATION COMPILE INSTRUCTIONS:
+If you are working on building programs by utilizing the Cataphract APIs, the Developer
+Documentation should help, by providing the details of classes, methods and fields. This
+documentation does not include the details on private methods and fields, and presents only
+the set of essential data necessary to utilize the APIs.
 
-To compile the Developer Documentation, copy the SourceCompileDocs from tools directory into
-the root of the Source directory.
+INTERNAL DOCUMENTATION:
 
-The directory structure should look something like this:
-
-./ ProjectRoot
-|- .vscode/
-|- docs/
-|- Source/
-    |- Cataphract/
-    |- Main.java
-    |- SourceCompileProgram
-    |- SourceCompileDocs
-|- Tools/
-
-Once the SourceCompileDocs is copied into the Source directory, you can either just run the
-tool in in the Terminal/Console or simply double click it if the OS supports it.
-
-The tool will display the status of the actions undertaken, and will spew out the Dev_Doc.log
-file. This log contains any possible errors and warnings produced by running the tool. This
-is helpful to make the Documentation more readable and efficient.
-
-
-INTERNAL DOCUMENTATION COMPILE INSTRUCTIONS:
-
-To compile the Developer Documentation, copy the SourceCompileDocs_Internal from tools directory
-into the root of the Source directory.
-
-The directory structure should look something like this:
-
-./ ProjectRoot
-|- .vscode/
-|- docs/
-|- Source/
-    |- Cataphract/
-    |- Main.java
-    |- SourceCompileProgram
-    |- SourceCompileDocs
-    |- SourceCompileDocs_Internal
-|- Tools/
-
-Once the SourceCompileDocs_Internal is copied into the Source directory, you can either just
-run the tool in in the Terminal/Console or simply double click it if the OS supports it.
-
-The tool will display the status of the actions undertaken, and will spew out the Internal_Doc.log
-file. This log contains any possible errors and warnings produced by running the tool. This
-is helpful to make the Documentation more readable and efficient.
-
-SUPER BUILD COMPILE INSTRUCTIONS:
-
-To compile the program and all documentation, copy the SourceSuperBuild file from the Tools 
-directory to the Source directory.
-
-The directory structure should look something like this:
-
-./ ProjectRoot
-|- .vscode/
-|- docs/
-|- Source/
-    |- Cataphract/
-    |- Main.java
-    |- SourceSuperBuild
-|- Tools/
-
-The tool will display the status of the actions undertaken, and will spew out ALL log files.
-This log contains any possible errors and warnings produced by running the tool.
-
-
-The Documentation should be present in the docs directory present in the ProjectRoot directory.
-The program binaries should be present in the Binaries directory present in the ProjectRoot
-directory.
+If you are working on adding new features, fixing issues or modifying the code of the APIs
+and Kernel itself, the Internal Documentation should help, by providing details of classes,
+methods and fields including the private methods and fields. This documentation shall detail
+the structure of each class without the implementation, making it easier to understand how
+to modify the program as per the needs.
 
 ============================================================================================

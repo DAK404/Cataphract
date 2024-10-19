@@ -1,22 +1,8 @@
 # Makefile for Nion Projects
 # Author: DAK404
 
-# Default target
-default: help
-
-help:
-	@echo "Usage: make project=<project_name> <target>"
-	@echo "Targets:"
-	@echo "  all        -> Compiles everything"
-	@echo "  kernel     -> Compiles the program"
-	@echo "  launcher   -> Compiles the launcher"
-	@echo "  docs       -> Generates documentation"
-	@echo "  sign       -> Signs the build"
-	@echo "  clean      -> Cleans the build and documentation directories"
-
-.PHONY: help
-
 # Variables
+FOUNDRY_VER = 4.0
 PROJECT_NAME = $(project)
 SRC_DIR = ./Source
 BIN_DIR = ./Binaries
@@ -29,6 +15,32 @@ BUILDSIGNER_FILE = BuildSigner.java
 CLASSPATH = ./Source
 BIN_CLASSPATH = ./Binaries
 
+# Default target
+default: help
+
+help:
+	@echo ""
+	@echo "Nion Foundry Build System"
+	@echo "Version: $(FOUNDRY_VER)"
+	@echo ""
+	@echo "Usage: make project=<project_name> <target>"
+	@echo ""
+	@echo "->> Targets Available <<-"
+	@echo " * all       ->  [ RECOMMENDED ] Compiles everything."
+	@echo " * super     ->  [ RECOMMENDED ] Compiles everything + documentation."
+	@echo " * kernel    ->  Compiles only the program"
+	@echo " * launcher  ->  Compiles only the launcher"
+	@echo " * docs      ->  Generates only the documentation"
+	@echo " * sign      ->  Signs the build"
+	@echo " * clean     ->  Cleans build and documentation directories"
+	@echo ""
+	@echo "To read the complete documentation on this project, please visit"
+#TO-DO: Insert documentation link
+	@echo "Link to documentation will be available soon."
+	@echo ""
+
+.PHONY: help
+
 # Ensure targets are treated as phony
 .PHONY: all setup kernel launcher docs sign clean
 
@@ -38,17 +50,18 @@ all: setup kernel launcher sign
 # Super Build (includes documentations)
 super: setup kernel launcher sign docs
 
+
 # Preliminary setup
 setup:
 	@echo ""
-	@echo "----->>> Foundry Build started @ [$(shell date +'%Y-%m-%d %H:%M:%S %Z')]"
+	@echo "----->>>>> Foundry Build started @ [$(shell date +'%Y-%m-%d %H:%M:%S %Z')]"
 	@echo "Compiling: $(PROJECT_NAME)"
 	@echo ""
 	@echo "============================="
 	@echo "  Nion Foundry Build System  "
 	@echo "============================="
-	@echo "VERSION : 4.0"
-	@echo "UPDATED : 15-OCT-2024"
+	@echo "   VERSION : 4.0"
+	@echo "   UPDATED : 15-OCT-2024"
 	@echo "-----------------------------"
 	@echo ""
 	@echo "Note: Logs are being saved to ./CompileLogs directory."
@@ -56,14 +69,14 @@ setup:
 	@echo ""
 	@echo "[*] Checking Prerequisites..."
 	@echo ""
-	@echo "->>> Checking for ./Binaries"
+	@echo "->>> Checking for ./Binaries/"
 	@if [ ! -d "$(BIN_DIR)" ]; then mkdir -p $(BIN_DIR); fi
-	@echo "->>> Checking for ./CompileLogs"
+	@echo "->>> Checking for ./CompileLogs/"
 	@if [ ! -d "$(COMP_LOG_DIR)" ]; then mkdir -p $(COMP_LOG_DIR); fi
 	@echo "->>> Checking for BuildSigner.java"
 	@if [ ! -f "$(BIN_DIR)/$(BUILDSIGNER_FILE)" ]; then cp $(TOOLS_DIR)/$(BUILDSIGNER_FILE) $(BIN_DIR); fi
 	@echo ""
-	@echo "--- ! PREREQUISITES CHECK DONE ! ---"
+	@echo "--- !   PREREQUISITES CHECK DONE   ! ---"
 	@echo ""
 
 # Compilation targets
@@ -80,7 +93,7 @@ launcher: setup
 	@echo ""
 	javac -cp $(CLASSPATH) -d $(BIN_DIR) $(SRC_DIR)/Main.java
 	@echo ""
-	@echo "--- ! LAUNCHER COMPILATION DONE ! ---"
+	@echo "--- !   LAUNCHER COMPILATION DONE  ! ---"
 	@echo ""
 
 # Documentation generation
@@ -90,7 +103,7 @@ docs: setup
 	@echo ""
 	javadoc -private -author -version -d $(DOC_DIR)/InternalDocumentation @SuperFileList.temp > $(COMP_LOG_DIR)/Internal_Docs.log 2>&1
 	@echo ""
-	@echo "--- ! INTERNAL DOCUMENTATION DONE ! ---"
+	@echo "--- !  PROGRAM DOCUMENTATION DONE  ! ---"
 	@echo ""
 	@echo "[*] Compiling Developer Documentation..."
 	@echo ""
@@ -102,9 +115,9 @@ docs: setup
 	@echo ""
 	rm SuperFileList.temp
 	@echo ""
-	@echo "--- ! CLEANUP DONE ! ---"
+	@echo "--- !         CLEANUP DONE         ! ---"
 	@echo ""
-	@echo "--- ! JAVADOC COMPILATION DONE ! ---"
+	@echo "--- !   JAVADOC COMPILATION DONE   ! ---"
 	@echo ""
 
 # Post-build signing
@@ -113,12 +126,15 @@ sign: setup
 	@echo ""
 	cd $(BIN_DIR) && java -cp $(BIN_CLASSPATH) BuildSigner.java
 	@echo ""
-	@echo "--- ! BUILD SIGNING DONE ! ---"
+	@echo "--- !      BUILD SIGNING DONE      ! ---"
 	@echo ""
 
 clean:
-	@echo "Cleaning up..."
+	@echo "[*] Cleaning Up Directories..."
+	@echo ""
 	rm -rf $(BIN_DIR)* $(DOC_DIR)*
+	@echo ""
+	@echo "--- !       CLEANUP COMPLETE       ! ---"
 	@echo ""
 
 .PHONY: default help all setup kernel launcher docs sign clean
