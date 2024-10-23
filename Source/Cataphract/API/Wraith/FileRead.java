@@ -196,7 +196,7 @@ public class FileRead
         // Enable help mode
         helpMode = true;
         // Set the file name
-        fileName = new File("./Docs/Cataphract/Help/" + helpFile);
+        fileName = new File(IOStreams.convertFileSeparator(".|Docs|Cataphract|Help|" + helpFile));
         // Perform file reading logic
         readFileLogic();
     }

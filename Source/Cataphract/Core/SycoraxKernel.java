@@ -154,7 +154,6 @@ public class SycoraxKernel
                 fetchUserDetails();
             break;
 
-
             // Lock the console
             case "lock":
                 lockConsole();

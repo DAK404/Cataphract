@@ -205,7 +205,7 @@ public class FileManagement
             _presentWorkingDirectory.substring(_presentWorkingDirectory.lastIndexOf('|'), _presentWorkingDirectory.length()),"|");
 
         // Check if the present working directory is the restricted user home directory
-        if (_presentWorkingDirectory.equals(IOStreams.convertFileSeparator(".|Users|Cataphract|"))) 
+        if (_presentWorkingDirectory.equals(IOStreams.convertFileSeparator(".|Users|Cataphract|")))
         {
             // Print an error message if access is denied
             IOStreams.printError("Permission Denied.");
@@ -269,7 +269,7 @@ public class FileManagement
         // Convert paths from Nion paths to OS specific paths
         fileName = IOStreams.convertFileSeparator(fileName);
         destination = IOStreams.convertFileSeparator(destination);
-        
+
         // Check if the specified file or directory is valid
         if(!checkEntityExistence(fileName) && !checkEntityExistence(destination))
             IOStreams.printError("Invalid file name or destination.");
@@ -289,7 +289,7 @@ public class FileManagement
     private final void copyMoveHelper(File source, File destination, boolean move)throws Exception
     {
         // Check if the source is a directory
-        if (source.isDirectory()) 
+        if (source.isDirectory())
         {
             // Create the destination directory
             destination.mkdirs();
@@ -319,34 +319,29 @@ public class FileManagement
      *
      * @throws Exception Throws any exceptions encountered during runtime.
      */
-    private final void listEntities()throws Exception
+    private final void listEntities() throws Exception
     {
         // Define the format for displaying the directory/file information
-        String format = "%1$-32s| %2$-24s| %3$-10s\n";
+        String format = "%1$-32s| %2$-24s| %3$-10s| %4$-32s\n";
         String c = "-";
-
         String ls = IOStreams.convertFileSeparator(_presentWorkingDirectory);
-
         // Check if the present working directory exists
         if (checkEntityExistence(ls))
         {
             // Create a File object for the present working directory
             File dPath = new File(ls);
-
             // Print a newline for better formatting
             System.out.println("\n");
-
             // Format and print the header for the directory listing
-            String disp = String.format(format, "Directory/File Name", "File Size [In KB]", "Type");
+            String disp = String.format(format, "Directory/File Name", "File Size [In KB]", "Type", "MD5 Hash");
             System.out.println(disp + c.repeat(disp.length()) + "\n");
 
             // Iterate through each file in the directory
             for (File file : dPath.listFiles())
             {
                 // Format and print the file or directory information
-                System.out.format(String.format(format, file.getName().replace(_username, _name), file.length() / 1024 + " KB", file.isDirectory() ? "Directory" : "File"));
+                System.out.format(format, file.getName().replace(_username, _name), file.length() / 1024 + " KB", file.isDirectory() ? "Directory" : "File", Cryptography.fileToMD5(file));
             }
-
             // Print a newline for better formatting
             System.out.println();
         }
@@ -357,6 +352,7 @@ public class FileManagement
         }
     }
 
+
     /**
      * Logic to change the present working directory to a given directory
      *
@@ -366,7 +362,7 @@ public class FileManagement
     private final void changeDirectory(String destination)throws Exception
     {
         // Check if the destination is the parent directory
-        if (destination.equals("..")) 
+        if (destination.equals(".."))
         {
             // Navigate to the previous directory
             navPreviousDirectory();
@@ -401,23 +397,23 @@ public class FileManagement
     {
         // Check if file management policy is enabled or if the user has the necessary privileges
         if (new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || new Login(_username).checkPrivilegeLogic())
-        {            
+        {
             // Check if the user is logged in
             if (login())
             {
                 System.out.println(IOStreams.convertToNionSeparator(IOStreams.convertFileSeparator(_presentWorkingDirectory)));
                 String inputValue = "";
                 // Loop to continuously read and execute commands until 'exit' is entered
-                do 
+                do
                 {
                     // Read a line of input from the console
                     inputValue = console.readLine(_name + "@" + IOStreams.convertFileSeparator(_presentWorkingDirectory).replace(_username, _name) + "> ");
-                    
+
                     // Interpret and execute the command
                     grinchInterpreter(inputValue);
-                } 
+                }
                 while (!inputValue.equalsIgnoreCase("exit"));
-            } 
+            }
             else
                 IOStreams.printError("Invalid Credentials.");
         }
@@ -437,12 +433,12 @@ public class FileManagement
         if ((new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") && new PolicyCheck().retrievePolicyValue("script").equals("on")) || new Login(_username).checkPrivilegeLogic())
         {
             // Validate the script file name
-            if (scriptFileName == null || scriptFileName.equalsIgnoreCase("") || scriptFileName.startsWith(" ") || new File(scriptFileName).isDirectory() || !(new File("./Users/Truncheon/" + _username + "/" + scriptFileName + ".fmx").exists()))
+            if (scriptFileName == null || scriptFileName.equalsIgnoreCase("") || scriptFileName.startsWith(" ") || new File(scriptFileName).isDirectory() || !(new File(IOStreams.convertFileSeparator(".|Users|Cataphract|" + _username + "|" + scriptFileName + ".fmx")).exists()))
                 IOStreams.printError("Invalid Script File!");
             else
             {
                 // Check if the user is logged in
-                if (login()) 
+                if (login())
                 {
                     // Initialize a stream to read the given file
                     BufferedReader br = new BufferedReader(new FileReader(scriptFileName));
@@ -451,7 +447,7 @@ public class FileManagement
                     String scriptLine;
 
                     // Read the script file, line by line
-                    while (!(scriptLine = br.readLine()).equalsIgnoreCase("<EndGrinch>"))
+                    while (!(scriptLine = br.readLine()).equalsIgnoreCase("End Grinch"))
                     {
                         // Check if the line is a comment or is blank in the script file and skip the line
                         if (scriptLine.startsWith("#") || scriptLine.equalsIgnoreCase(""))
@@ -486,9 +482,9 @@ public class FileManagement
     {
         // Split the command string into an array of command arguments
         String[] commandArray = Anvil.splitStringToArray(command);
-        
+
         // Switch statement to handle different commands
-        switch (commandArray[0].toLowerCase()) 
+        switch (commandArray[0].toLowerCase())
         {
             case "cut":
             case "move":

@@ -82,37 +82,37 @@ public class Cryptography
     /**
     * Hashing API which will return the MD5 hash value of a given file
     *
-    * @param fileName The name of the file to be hashed
+    * @param fileName The file to be hashed
     * @return String Returns the MD5 hash
     * @throws Exception Throws any exceptions encountered during runtime.
     */
-    public final static String fileToMD5(String fileName) throws Exception
+    public final static String fileToMD5(File fileName) throws Exception
     {
-        return hashFile(new File(fileName), "MD5");
+        return hashFile(fileName, "MD5");
     }
 
     /**
     * Hashing API which will return the SHA3-256 hash value of a given file
     *
-    * @param fileName The name of the file to be hashed
+    * @param fileName The file to be hashed
     * @return String Returns the SHA3-256 hash
     * @throws Exception Throws any exceptions encountered during runtime.
     */
-    public final static String fileToSHA_256(String fileName) throws Exception
+    public final static String fileToSHA_256(File fileName) throws Exception
     {
-        return hashFile(new File(fileName), "SHA-256");
+        return hashFile(fileName, "SHA-256");
     }
 
     /**
     * Hashing API which will return the SHA3-256 hash value of a given file
     *
-    * @param fileName The name of the file to be hashed
+    * @param fileName The file to be hashed
     * @return String Returns the SHA3-256 hash
     * @throws Exception Throws any exceptions encountered during runtime.
     */
-    public final static String fileToSHA3_256(String fileName) throws Exception
+    public final static String fileToSHA3_256(File fileName) throws Exception
     {
-        return hashFile(new File(fileName), "SHA3-256");
+        return hashFile(fileName, "SHA3-256");
     }
 
     // ------------------------------------------------------------------------------------ //

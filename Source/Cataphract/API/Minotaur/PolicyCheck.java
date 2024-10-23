@@ -21,6 +21,8 @@ import java.io.FileInputStream;
 //Import the required Java Util classes
 import java.util.Properties;
 
+import Cataphract.API.IOStreams;
+
 /**
 * A class that helps to check the policy for a given module.
 *
@@ -53,7 +55,7 @@ public class PolicyCheck
         {
             //Open the properties streams
             Properties prop = new Properties();
-            String propsFileName="./System/Cataphract/Private/Policy.burn";
+            String propsFileName = IOStreams.convertFileSeparator(".|System|Cataphract|Private|Policy.burn");
 
             //Load the file stream containing the program properties
             FileInputStream configStream = new FileInputStream(propsFileName);

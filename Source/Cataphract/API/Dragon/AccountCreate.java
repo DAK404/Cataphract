@@ -445,7 +445,7 @@ public final class AccountCreate
         try
         {
             // Store the path of the database
-            String databasePath = "jdbc:sqlite:./System/Cataphract/Private/Mud.dbx";
+            String databasePath = "jdbc:sqlite:" + IOStreams.convertFileSeparator(".|System|Cataphract|Private|Mud.dbx");
 
             // Store the SQL command that needs to be executed by the SQLite database engine
             String sqlCommand = "INSERT INTO MUD(Username, Name, Password, SecurityKey, PIN, Privileges) VALUES(?,?,?,?,?,?)";
@@ -477,7 +477,7 @@ public final class AccountCreate
             dbConnection.close();
 
             //Create directory for the new user account
-            new File("./Users/Cataphract/"+_newAccountUsername).mkdirs();
+            new File(IOStreams.convertFileSeparator(".|Users|Cataphract|" + _newAccountUsername)).mkdirs();
 
             // Invoke garbage collector to free resources up
             System.gc();

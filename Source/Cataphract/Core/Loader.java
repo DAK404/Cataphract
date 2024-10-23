@@ -380,7 +380,7 @@ public class Loader
                 continue;
                 
                 //store the hash of the file present on disk (fileName).
-                String kernelFileHash = Cryptography.fileToSHA3_256(fileName);
+                String kernelFileHash = Cryptography.fileToSHA3_256(new File(fileName));
                 
                 //Added a try-catch block for alerting the user about unknown files.
                 try

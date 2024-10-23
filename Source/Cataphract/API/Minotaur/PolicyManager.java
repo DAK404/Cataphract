@@ -42,7 +42,7 @@ public class PolicyManager
     public final String [] resetValues = {"update", "download", "script", "filemgmt", "read", "edit", "policy", "account_create", "account_delete", "account_modify"};
 
     /** Stores the path of the policy file.*/
-    private final String policyFileName = "./System/Cataphract/Private/Policy.burn";
+    private final String policyFileName = IOStreams.convertFileSeparator(".|System|Cataphract|Private|Policy.burn");
 
     /** Provide a set of applicable commands to the users.*/
     private String suggestedInputs = "";

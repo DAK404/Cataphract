@@ -132,7 +132,7 @@ sign: setup
 clean:
 	@echo "[*] Cleaning Up Directories..."
 	@echo ""
-	rm -rf $(BIN_DIR)* $(DOC_DIR)*
+	rm -rf $(BIN_DIR)* $(DOC_DIR)/DeveloperDocumentation/* $(DOC_DIR)/InternalDocumentation/*
 	@echo ""
 	@echo "--- !       CLEANUP COMPLETE       ! ---"
 	@echo ""

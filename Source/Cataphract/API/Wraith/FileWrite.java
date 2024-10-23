@@ -157,7 +157,7 @@ public class FileWrite
             if (checkFileValidity(fileName)) {
 
                 // Set the default log file path if it doesn't exist
-                logfilePath = (new File(logfilePath).exists() ? logfilePath : "./Logs/Cataphract/");
+                logfilePath = (new File(logfilePath).exists() ? logfilePath : IOStreams.convertFileSeparator(".|Logs|Cataphract|"));
 
                 // Create the directory structure for logs if it doesn't exist
                 File logFile = new File(logfilePath);

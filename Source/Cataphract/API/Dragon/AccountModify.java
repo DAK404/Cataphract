@@ -302,11 +302,13 @@ public class AccountModify
             // Check if the specified user exists
             if(new Login(targetUser).checkUserExistence())
             {
+                String userHomePath = IOStreams.convertFileSeparator(".|Users|Cataphract|" + targetUser);
+
                 // Display the target user information
                 IOStreams.println("\n--- User Information ---");
                 IOStreams.println("Account Name        : " + new Login(targetUser).getNameLogic());
                 IOStreams.println("Account Privileges  : " + new Login(targetUser).checkPrivilegeLogic());
-                IOStreams.println("User Home Directory : " + (new File("./Users/Cataphract/" + targetUser).exists()?"./Users/Cataphract/" + targetUser:"Home Directory Does Not Exist!") + "\n");
+                IOStreams.println("User Home Directory : " + (new File(userHomePath).exists()?userHomePath:"Home Directory Does Not Exist!") + "\n");
             }
             // Notify that the specified user does not exist
             else
@@ -418,7 +420,7 @@ public class AccountModify
         try
         {
             // Store the path of the database
-            String databasePath = "jdbc:sqlite:./System/Cataphract/Private/Mud.dbx";
+            String databasePath = "jdbc:sqlite:" + IOStreams.convertFileSeparator(".|System|Cataphract|Private|Mud.dbx");
 
             // Store the SQL command that needs to be executed by the SQLite database engine
             String sqlCommand = "UPDATE MUD SET " + parameter + " = ? WHERE Username = ?";

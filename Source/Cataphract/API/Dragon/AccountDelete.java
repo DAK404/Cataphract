@@ -170,7 +170,7 @@ public class AccountDelete
                     if (console.readLine("Are you sure you wish to delete user account \"" + new Login(username).getNameLogic() + "\"? [ YES | NO ]\n> ").equalsIgnoreCase("yes"))
                     {
                         // Delete account from database and directories
-                        status = deleteFromDatabase() & deleteDirectories(new File("./Users/Cataphract/" + username));
+                        status = deleteFromDatabase() & deleteDirectories(new File(IOStreams.convertFileSeparator(".|Users|Cataphract|" + username)));
                         // Print success message and exit
                         IOStreams.printAttention("Account Successfully Deleted.");
                         if(! _isCurrentUserAdmin)
@@ -231,7 +231,7 @@ public class AccountDelete
         try
         {
             // Define database path and SQL command
-            String databasePath = "jdbc:sqlite:./System/Cataphract/Private/Mud.dbx";
+            String databasePath = "jdbc:sqlite:" + IOStreams.convertFileSeparator(".|System|Cataphract|Private|Mud.dbx");
             String sqlCommand = "DELETE FROM MUD WHERE Username = ?";
 
             // Load JDBC driver and establish connection

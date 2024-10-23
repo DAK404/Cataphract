@@ -33,6 +33,9 @@ import Cataphract.API.IOStreams;
 */
 public class Login
 {
+    /** Stores the Database path */
+    private String databasePath = "jdbc:sqlite:" + IOStreams.convertFileSeparator(".|System|Cataphract|Private|Mud.dbx");
+
     /** Stores the username */
     private String _username;
 
@@ -114,6 +117,11 @@ public class Login
         return checkForExistingAccount();
     }
 
+    /**
+     * Enumerates all the user accounts in the database
+     * 
+     * @throws Exception Throws any exceptions encountered during runtime.
+     */
     protected void listAllUserAccounts()throws Exception
     {
         // Check if the current user is an Administrator
@@ -130,8 +138,8 @@ public class Login
             String disp = String.format(format, "Username", "Account Name", "Privileges");
             System.out.println(disp + c.repeat(disp.length()) + "\n");
 
-            // List the files in the ./Users/Cataphract directory
-            File[] fileList = new File("./Users/Cataphract/").listFiles();
+            // List the directories in the Users directory
+            File[] fileList = new File(IOStreams.convertFileSeparator(".|Users|Cataphract|")).listFiles();
 
             // Iterate through the list of files
             for(File users: fileList)
@@ -162,8 +170,6 @@ public class Login
 
         // JDBC driver registration
         Class.forName("org.sqlite.JDBC");
-        // Database path
-        String databasePath = "jdbc:sqlite:./System/Cataphract/Private/Mud.dbx";
 
         // Establish database connection
         Connection dbConnection = DriverManager.getConnection(databasePath);
@@ -216,9 +222,7 @@ public class Login
 
         // JDBC driver registration
         Class.forName("org.sqlite.JDBC");
-        // Database path
-        String databasePath = "jdbc:sqlite:./System/Cataphract/Private/Mud.dbx";
-
+        
         // Establish database connection
         Connection dbConnection = DriverManager.getConnection(databasePath);
 
