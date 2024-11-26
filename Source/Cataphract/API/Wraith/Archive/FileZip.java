@@ -37,7 +37,10 @@ import Cataphract.API.Minotaur.PolicyCheck;
 public class FileZip
 {
     /** Store value of user privileges. */
-    private boolean isUserAdmin = false;
+    private boolean _isUserAdmin = false;
+
+    /** Store the username of the current user */
+    private String _username = "";
 
     /**
     * Constructor to check if the current user is an administrator or not.
@@ -47,7 +50,8 @@ public class FileZip
     */
     public FileZip(String username)throws Exception
     {
-        isUserAdmin = new Login(username).checkPrivilegeLogic();
+        _username = username;
+        _isUserAdmin = new Login(username).checkPrivilegeLogic();
     }
 
     /**
@@ -59,11 +63,12 @@ public class FileZip
     */
     public void zipFile(String zipFileName, String directoryToCompress) throws Exception
     {
+        directoryToCompress = IOStreams.convertFileSeparator(directoryToCompress);
         // Check the policy if file zipping is allowed in the policy file, can be bypassed by the accounts with administrator privileges
-        if(new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || isUserAdmin)
+        if(new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || _isUserAdmin)
         {
             // Create a FileOutputStream for the zip file
-            FileOutputStream fos = new FileOutputStream(zipFileName);
+            FileOutputStream fos = new FileOutputStream(IOStreams.convertFileSeparator(".|Users|Cataphract|" + _username + "|") + zipFileName);
             // Create a ZipOutputStream using the FileOutputStream
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
@@ -95,10 +100,10 @@ public class FileZip
             if (fileToZip.isDirectory())
             {
                 // If it's a directory, create a zip entry for it
-                if (fileName.endsWith("/"))
+                if (fileName.endsWith(File.separator))
                 zipOut.putNextEntry(new ZipEntry(fileName));
                 else
-                zipOut.putNextEntry(new ZipEntry(fileName + "/"));
+                zipOut.putNextEntry(new ZipEntry(fileName + File.separator));
 
                 // Get the list of children files and recursively zip them
                 File[] children = fileToZip.listFiles();
@@ -106,7 +111,7 @@ public class FileZip
                 {
                     for (File childFile : children)
                     {
-                        zipFileLogic(childFile, fileName + "/" + childFile.getName(), zipOut);
+                        zipFileLogic(childFile, fileName + File.separator + childFile.getName(), zipOut);
                     }
                 }
             }

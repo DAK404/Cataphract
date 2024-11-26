@@ -23,25 +23,6 @@ Author: DAK404 (https://github.com/DAK404)
 The Core package contains the Kernel and the programs that utilize the APIs whilst providing
 an interface for the user to access the available functionalities.
 
-
--[ HISTORY ]-
-
-The programs in the Core packages have, more or less, had the same purposes since the start.
-Before Zen Quantum, there were no APIs implemented separately, therefore each class was a
-standalone executable. This was because the program was significantly smaller than what it
-is currently. As the number of functionalities grew, it became difficult to maintain code
-due the vast inconsistencies across programs.
-
-From Zen Quantum onwards, an API package was created to hold programs that could be reused
-by the classes in the Core package. At this time, the APIs were still rudimentary and poorly
-implemented since many classes were large blocks of code which was not very flexible to be
-reused across programs.
-
-These problems were mostly fixed in Mosaic and Lamashtu, where the API code was simplified
-and the classes in Core were mostly designed to provide a good user interface and a simple
-command-set to the user.
-
-
 -[ DETAILS ]-
 
 The Core package mainly consists of 3 important classes: The Loader, Setup and the Kernel

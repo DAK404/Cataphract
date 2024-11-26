@@ -23,26 +23,6 @@ Author: DAK404 (https://github.com/DAK404)
 This Package provides utilities to handle date/time efficiently. Can also print a calendar,
 helpful for users and scripting.
 
-
--[ HISTORY ]-
-
-While working on Truncheon (then called Lamashtu before being cancelled and reworked),
-date/time handling became essential since the program would write log files. Additionally,
-for scripting, end users could not print the date and time information. At that point of
-time, WraithEdit.java handled the logging and used the java.util.Date class.
-
-This created a problem.
-
-For example, let us consider 3 classes: A, B and C.
-
-If class A uses java.util.Date, class B uses java.time.LocalDateTime and class C uses a 3rd
-party library or java.text.date to implement the same features, the memory usage would be
-very high due to the number of classes loaded into the memory for runtime.
-
-Current implementation has solved this issue by providing a single class that shall return
-the date/time information.
-
-
 -[ DETAILS ]-
 
 The following classes are implemented in Astaroth Package:

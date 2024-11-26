@@ -23,45 +23,6 @@ Author: DAK404 (https://github.com/DAK404)
 This Package provides utilities to create, manage and delete user accounts. Also provides a
 class for authenticating user credentials.
 
-
--[ HISTORY ]-
-
-While working on Zen Quantum, it was essential to have a class that handled authentication.
-Therefore a new package called "Anima" was created. Anima was aimed to contain all user
-account management utilities. The following functions were implemented:
-
-    * AddUser.java
-    * CreateDB.java
-    * LoginAPI.java
-
-AddUser.java -> Contained code to add a user to the database. The code was non-modular and
-did not effectively handle invalid credentials.
-
-CreateDB.java -> Contained code to create a database file, a table to hold the user details.
-CreateDB was called by the setup program.
-
-LoginAPI.java -> Contained code to handle credential authentication. It was inefficient
-since it required 3 variables to check the validity of the credentials.
-
-In Mosaic, UpdateCredentials.java was introduced. It was aimed to update the user
-credentials. Again, the code was non-modular, which made it very difficult to work on,
-although it provided the required functionality of updating credentials.
-
-In Truncheon, package was renamed to Dragon. The class was renamed to ModifyAccount.java.
-With the privilege system in place, it was now necessary to check for the privilege to
-promote or demote users. There was no dedicated method that would return the privilege of
-the user, therefore, it had to be manually queried and then stored in a variable. It is also
-notable that DeleteAccount.java was created which helped in deleting accounts. With the
-privilege system, an administrator could now delete other user accounts.
-
-In Truncheon: Katana, the LoginAPI, now renamed to LoginAuth.java, had an option to query
-and return privileges therefore it was easier to implement features without rewriting the
-logic to query and acquire the privilege value from the database.
-
-Currently, the class is named as Login.java for a better nomenclature. It is also modular,
-therefore the code is easier to read and develop upon.
-
-
 -[ DETAILS ]-
 
 The classes currently implemented in this package are:

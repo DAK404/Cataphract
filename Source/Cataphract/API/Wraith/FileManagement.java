@@ -28,6 +28,8 @@ import Cataphract.API.IOStreams;
 import Cataphract.API.Dragon.Login;
 import Cataphract.API.Minotaur.Cryptography;
 import Cataphract.API.Minotaur.PolicyCheck;
+import Cataphract.API.Wraith.Archive.FileZip;
+import Cataphract.API.Wraith.Archive.FileUnzip;
 
 /**
 * A utility class for file management.
@@ -44,6 +46,8 @@ public class FileManagement
     private String _name = "";
     /** Store the present working directory during file management */
     private String _presentWorkingDirectory = "";
+    /** Store the default user home directory */
+    private String _userHomeDirectory = "";
 
     /** Instantiate Console to get user inputs. */
     private Console console = System.console();
@@ -61,7 +65,8 @@ public class FileManagement
         // Set the name of the user to the global variable
         _name = new Login(username).getNameLogic();
         // Initialize the present working directory
-        _presentWorkingDirectory = ".|Users|Cataphract|" + _username + "|";
+        _userHomeDirectory = ".|Users|Cataphract|" + _username + "|";
+        _presentWorkingDirectory = _userHomeDirectory;
     }
 
     /*****************************************
@@ -220,7 +225,7 @@ public class FileManagement
      */
     private final void resetToHomeDirectory()
     {
-        _presentWorkingDirectory = ".|Users|Cataphract|" + _username + '|'  ;
+        _presentWorkingDirectory = _userHomeDirectory;
     }
 
     /**
@@ -231,7 +236,7 @@ public class FileManagement
      */
     private final void makeDirectory(String fileName) throws Exception
     {
-        new File(_presentWorkingDirectory + fileName).mkdirs();
+        new File(IOStreams.convertFileSeparator(_presentWorkingDirectory) + fileName).mkdirs();
     }
 
     /**
@@ -340,7 +345,7 @@ public class FileManagement
             for (File file : dPath.listFiles())
             {
                 // Format and print the file or directory information
-                System.out.format(format, file.getName().replace(_username, _name), file.length() / 1024 + " KB", file.isDirectory() ? "Directory" : "File", Cryptography.fileToMD5(file));
+                System.out.format(format, file.getName().replace(_username, _name), file.length() / 1024 + " KB", file.isDirectory() ? "Directory" : "File", file.isDirectory() ? "" : Cryptography.fileToMD5(file));
             }
             // Print a newline for better formatting
             System.out.println();
@@ -401,7 +406,6 @@ public class FileManagement
             // Check if the user is logged in
             if (login())
             {
-                System.out.println(IOStreams.convertToNionSeparator(IOStreams.convertFileSeparator(_presentWorkingDirectory)));
                 String inputValue = "";
                 // Loop to continuously read and execute commands until 'exit' is entered
                 do
@@ -602,6 +606,22 @@ public class FileManagement
             case "exit":
             case "":
                 // Exit the interpreter
+            break;
+
+            case "zip":
+                // Check if the command has the correct number of arguments
+                if (commandArray.length < 3)
+                    IOStreams.printError("Invalid Syntax.");
+                else
+                    new FileZip(_username).zipFile(commandArray[1], _presentWorkingDirectory + commandArray[2]);
+            break;
+
+            case "unzip":
+                    // Check if the command has the correct number of arguments
+                    if (commandArray.length < 3)
+                    IOStreams.printError("Invalid Syntax.");
+                else
+                    new FileUnzip(_username).unzip(_presentWorkingDirectory + commandArray[1], _presentWorkingDirectory + commandArray[2]);
             break;
 
             default:

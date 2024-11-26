@@ -6,7 +6,17 @@
 
 # Table of Contents
 
-[TOC]
+- [Nion: Cataphract](#nion-cataphract)
+- [Table of Contents](#table-of-contents)
+- [Important Links](#important-links)
+  - [Mandatory Software](#mandatory-software)
+  - [Recommended Software](#recommended-software)
+  - [Miscellaneous Resources](#miscellaneous-resources)
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+- [Documentation](#documentation)
+  - [Developer Documentation](#developer-documentation)
+  - [Internal Documentation](#internal-documentation)
 
 ---
 

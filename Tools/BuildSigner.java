@@ -10,188 +10,209 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.Matcher;
 
-
 /**
-* An Application to sign the build files, to ensure the program integrity
-*
-* @author: DAK
-* @version: 1.0
-*/
+ * An Application to sign the build files, to ensure the program integrity.
+ * 
+ * @author: DAK
+ * @version: 1.0
+ */
 public class BuildSigner
 {
-    private static List<String> filePaths = new  ArrayList<String>();
-    private static String fileSeparator = System.getProperty("file.separator");
-    
+    private static final List<String> filePaths = new ArrayList<>();
+    private static final String fileSeparator = System.getProperty("file.separator");
+    private static final String MANIFEST_DIR = "./.Manifest/Cataphract";
+    private static final String[] IGNORE_LIST = {
+        ".Manifest", "System", "Users", "org", "JRE", "BootShell.cmd",
+        "BuildSigner.java", "Logs"
+    };
+
     /**
-    * Logic to sign the build
-    *
-    * @param Args arguments passed during invokation 
-    */
-    public static void main(String[] Args)
+     * Logic to sign the build.
+     * 
+     * @param args arguments passed during invocation
+     */
+    public static void main(String[] args)
     {
         try
         {
-            new File("./.Manifest/Cataphract").mkdirs();
-            new BuildSigner().enumerateFiles(new File("./"));
-            new BuildSigner().hashFiles();
-            new BuildSigner().kernelFileList();
+            new File(MANIFEST_DIR).mkdirs();
+            BuildSigner signer = new BuildSigner();
+            System.out.println();
+            System.out.println("Phase 1: File Enumeration\n");
+            signer.enumerateFiles(new File("./"));
+            System.out.println();
+            System.out.println("Phase 2: Files to Manifest M1\n");
+            signer.storeHashes();
+            System.out.println();
+            System.out.println("Phase 3: Files to Manifest M2\n");
+            signer.storeFileSizes();
+            System.out.println();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             System.out.println("Error: " + e);
             e.printStackTrace();
         }
     }
-    
+
     /**
-    * Enumerate all the files and subdirectory in the specified directory.
-    *
-    * @param directory: The directory to be traversed through to enumerate contents
-    */
+     * Enumerate all the files and subdirectory in the specified directory.
+     *
+     * @param directory The directory to be traversed through to enumerate contents
+     */
     private void enumerateFiles(File directory)
     {
-        try
+        System.out.println("- Discovering Files in Directory: " + directory.getPath());
+        File[] filesList = directory.listFiles();
+        if (filesList == null) return;
+
+        for (File file : filesList)
         {
-            //Initialize an array to hold the contents of the directory
-            File[] filesList = directory.listFiles();
-            
-            //Begin the directory traversal
-            for (File f: filesList)
+            if (ignoreFiles(file.getName())) 
+            continue;
+            if (file.isDirectory())
             {
-                //Check if the file/folder is specified in the ignore list
-                if(ignoreFiles(f.getName()))
-                //If true, begin traversing the next entry
-                continue;
-                
-                //Check if the entry is a directory
-                if (f.isDirectory())
-                //If true, recurse the method to traverse through the subdirectory
-                enumerateFiles(f);
-                
-                //Check if the entry is a file
-                else if (f.isFile())
-                //If true, add the file to the list of files to be signed
-                filePaths.add(f.getPath());
+                System.out.println("-- Entering Directory: " + file.getPath());
+                enumerateFiles(file);
+                System.out.println("-- Exiting Directory: " + file.getPath());
+            }
+            else if (file.isFile())
+            {
+                System.out.println("--- Discovered File: " + file.getPath());
+                filePaths.add(file.getPath());
             }
         }
-        catch(Exception e)
-        {
-            System.out.println("Error: " + e);
-            e.printStackTrace();
-        }
     }
-    
-    private void kernelFileList()throws Exception
+
+    /**
+     * Stores the file hashes in a properties file.
+     */
+    private void storeHashes()
     {
         Properties props = new Properties();
-        FileOutputStream output = new FileOutputStream("./.Manifest/Cataphract/KernelFiles.m2");
-        
-        for(String fileName: filePaths)
+        try (FileOutputStream output = new FileOutputStream(MANIFEST_DIR + "/KernelFilesHashes.m1"))
         {
-            if(fileName.endsWith(".class"))
+            for (String fileName : filePaths)
             {
-                String temp =  fileName.replaceAll(Matcher.quoteReplacement(fileSeparator), "|");
-                props.setProperty(temp, String.valueOf(new File(fileName).length()));
-                System.out.println("Adding File: " + temp);
+                String formattedPath = formatPath(fileName);
+                props.setProperty(formattedPath, fileToSHA3_256(fileName));
+                System.out.println("[MANIFEST 1] Signing File: " + formattedPath);
             }
+            props.storeToXML(output, "File Manifest");
         }
-        props.storeToXML(output, "FileSizes");
-        output.close();
-        System.gc();
-    }
-    
-    /**
-    * Logic to ignore a few files/directories
-    *
-    * @param fileName The file name to be checked
-    * @return status True if the file/directory is to be ignored, false otherwise
-    */
-    private boolean ignoreFiles(String fileName)
-    {
-        //Set the default value to be false
-        boolean status = false;
-        
-        //Initialize the list of the directories/files to be ignored
-        String[] ignoreList = {".Manifest", "System", "Users", "org", "JRE", "BootShell.cmd", "BuildSigner.java", "Logs"};
-        
-        //Check the fileName against the ignore list
-        for(String files : ignoreList)
+        catch (Exception e)
         {
-            if(fileName.equalsIgnoreCase(files))
-            {
-                status = true;
-                break;
-            }
-        }
-        return status;
-    }
-    
-    private void hashFiles()
-    {
-        try
-        {
-            Properties props = new Properties();
-            FileOutputStream output = new FileOutputStream("./.Manifest/Cataphract/KernelFilesHashes.m1");
-            //System.out.println(filePaths);
-            
-            for(String fileName: filePaths)
-            {
-                String temp =  fileName.replaceAll(Matcher.quoteReplacement(fileSeparator), "|");
-                props.setProperty(temp, fileToSHA3_256(fileName));
-                System.out.println("Signing File: " + temp);
-            }
-            
-            props.storeToXML(output, "FileManifest");
-            output.close();
-            System.gc();
-        }
-        catch(Exception e)
-        {
-            System.out.println("Error: " + e);
+            System.out.println("Error storing hashes: " + e);
             e.printStackTrace();
         }
     }
-    
-    private final String fileToSHA3_256(String fileName) throws Exception
+
+    /**
+     * Stores the file sizes in a properties file.
+     * 
+     * @throws Exception
+     */
+    private void storeFileSizes() throws Exception
+    {
+        Properties props = new Properties();
+        try (FileOutputStream output = new FileOutputStream(MANIFEST_DIR + "/KernelFiles.m2"))
+        {
+            for (String fileName : filePaths)
+            {
+                if (fileName.endsWith(".class"))
+                {
+                    String formattedPath = formatPath(fileName);
+                    props.setProperty(formattedPath, String.valueOf(new File(fileName).length()));
+                    System.out.println("[MANIFEST 2] Adding File: " + formattedPath);
+                }
+            }
+            props.storeToXML(output, "File Sizes");
+        }
+    }
+
+    /**
+     * Logic to ignore a few files/directories.
+     *
+     * @param fileName The file name to be checked
+     * @return True if the file/directory is to be ignored, false otherwise
+     */
+    private boolean ignoreFiles(String fileName)
+    {
+        for (String ignored : IGNORE_LIST)
+        {
+            if (fileName.equalsIgnoreCase(ignored))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Converts file path to platform-independent format.
+     * 
+     * @param fileName The file path
+     * @return The formatted file path
+     */
+    private String formatPath(String fileName)
+    {
+        return fileName.replaceAll(Matcher.quoteReplacement(fileSeparator), "|");
+    }
+
+    /**
+     * Generates the SHA3-256 hash of a file.
+     * 
+     * @param fileName The file name
+     * @return The SHA3-256 hash
+     * @throws Exception
+     */
+    private String fileToSHA3_256(String fileName) throws Exception
     {
         return hashFile(new File(fileName), "SHA3-256");
     }
-    
-    private final String convertByteArrayToHexString(byte[] arrayBytes)
+
+    /**
+     * Converts a byte array to a hex string.
+     * 
+     * @param arrayBytes The byte array
+     * @return The hex string
+     */
+    private String convertByteArrayToHexString(byte[] arrayBytes)
     {
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < arrayBytes.length; i++)
-        stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16).substring(1));
+        StringBuilder stringBuffer = new StringBuilder();
+        for (byte arrayByte : arrayBytes)
+        {
+            stringBuffer.append(Integer.toString((arrayByte & 0xff) + 0x100, 16).substring(1));
+        }
         return stringBuffer.toString();
     }
-    
-    private final String hashFile(File file, String algorithm)throws Exception
+
+    /**
+     * Hashes a file using the specified algorithm.
+     * 
+     * @param file The file
+     * @param algorithm The hashing algorithm
+     * @return The hash of the file
+     * @throws Exception
+     */
+    private String hashFile(File file, String algorithm) throws Exception
     {
-        String result = null;
-        if(file.exists())
+        try (FileInputStream inputStream = new FileInputStream(file))
         {
-            try (FileInputStream inputStream = new FileInputStream(file))
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
+            byte[] bytesBuffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(bytesBuffer)) != -1)
             {
-                MessageDigest digest = MessageDigest.getInstance(algorithm);
-                
-                byte[] bytesBuffer = new byte[1024];
-                int bytesRead = -1;
-                
-                while ((bytesRead = inputStream.read(bytesBuffer)) != -1)
-                {
-                    digest.update(bytesBuffer, 0, bytesRead);
-                }
-                
-                byte[] hashedBytes = digest.digest();
-                
-                result =  convertByteArrayToHexString(hashedBytes);
+                digest.update(bytesBuffer, 0, bytesRead);
             }
-            catch (NoSuchAlgorithmException E)
-            {
-                System.out.println("Unsupported Algorithm.\n\n");
-                E.printStackTrace();
-            }
+            return convertByteArrayToHexString(digest.digest());
         }
-        return result;
+        catch (NoSuchAlgorithmException e)
+        {
+            System.out.println("Unsupported Algorithm: " + e);
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

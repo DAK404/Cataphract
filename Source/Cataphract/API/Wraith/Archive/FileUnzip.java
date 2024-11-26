@@ -1,28 +1,11 @@
-/*
-*                                                      |
-*                                                     ||
-*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
-* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
-* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
-* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
-*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
-*                                               ||
-*                                               |
-*
-* A Cross Platform OS Shell
-* Powered By Truncheon Core
-*/
-
 package Cataphract.API.Wraith.Archive;
 
-import java.io.FileInputStream; 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -32,67 +15,70 @@ import Cataphract.API.Minotaur.PolicyCheck;
 import Cataphract.API.Wraith.FileWrite;
 
 /**
-* A utility class for unzipping files.
-*
-* @author DAK404 (https://github.com/DAK404)
-* @version 1.0.0 (11-October-2023, Cataphract)
-* @since 0.0.1 (Cataphract 0.0.1)
-*/
+ * A utility class for unzipping files.
+ * 
+ * @author DAK404 (https://github.com/DAK404)
+ * @version 1.0.0 (11-October-2023, Cataphract)
+ * @since 0.0.1 (Cataphract 0.0.1)
+ */
 public class FileUnzip
 {
     /** Store value of user privileges. */
-    private boolean isUserAdmin = false;
+    private boolean _isUserAdmin = false;
 
-    /** Store value of the update mode; True if program is updating, False if program is not*/
+    /** Store value of the update mode; True if program is updating, False if program is not */
     private boolean updateMode = false;
 
     /**
-    * Constructor to check if the current user is an administrator or not.
-    *
-    * @param username The currently logged in username.
-    * @throws Exception Throws any exceptions encountered during runtime.
-    */
-    public FileUnzip(String username)throws Exception
+     * Constructor to check if the current user is an administrator or not.
+     * 
+     * @param username The currently logged in username.
+     * @throws Exception Throws any exceptions encountered during runtime.
+     */
+    public FileUnzip(String username) throws Exception
     {
-        isUserAdmin = new Login(username).checkPrivilegeLogic();
+        _isUserAdmin = new Login(username).checkPrivilegeLogic();
     }
 
     /**
-    * Unzips a user file in the specified destination directory
-    *
-    * @param fileName Name of the file to be unzipped.
-    * @param unzipDestination Destination for the file to be unzipped in.
-    * @throws Exception Throws any exceptions encountered during runtime.
-    */
-    public void unzip(String fileName, String unzipDestination)throws Exception
+     * Unzips a user file in the specified destination directory
+     * 
+     * @param fileName          Name of the file to be unzipped.
+     * @param unzipDestination  Destination for the file to be unzipped in.
+     * @throws Exception Throws any exceptions encountered during runtime.
+     */
+    public void unzip(String fileName, String unzipDestination) throws Exception
     {
+        fileName = IOStreams.convertFileSeparator(fileName);
+        unzipDestination = IOStreams.convertFileSeparator(unzipDestination);
         // Check the policy if file unzip is allowed in the policy file, can be bypassed by the accounts with administrator privileges
-        if(new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || isUserAdmin)
-        unzipLogic(fileName, unzipDestination);
+        if (new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || _isUserAdmin)
+            unzipLogic(fileName, unzipDestination);
         else
-        IOStreams.printError("Policy Management System - Permission Denied.");
+            IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**
-    * Installs an update by unzipping the "Update.zip" file.
-    *
-    * @throws Exception Throws any exceptions encountered during runtime.
-    */
-    public void installUpdate()throws Exception
+     * Installs an update by unzipping the "Update.zip" file.
+     * 
+     * @throws Exception Throws any exceptions encountered during runtime.
+     */
+    public void installUpdate() throws Exception
     {
         updateMode = true;
-        if(new PolicyCheck().retrievePolicyValue("update").equals("on") || isUserAdmin)
-        unzipLogic("./Update.zip", "./");
+        if (new PolicyCheck().retrievePolicyValue("update").equals("on") || _isUserAdmin)
+            unzipLogic(IOStreams.convertFileSeparator(".|Update.zip"), IOStreams.convertFileSeparator(".|"));
         else
-        IOStreams.printError("Policy Management System - Permission Denied.");
+            IOStreams.printError("Policy Management System - Permission Denied.");
+        updateMode = false;
     }
 
     /**
-    * Unzips a given zip file into the specified output directory.
-    *
-    * @param zipFilePath Path to the zip file.
-    * @param outputDirectory Directory where the unzipped files will be placed.
-    */
+     * Unzips a given zip file into the specified output directory.
+     * 
+     * @param zipFilePath       Path to the zip file.
+     * @param outputDirectory   Directory where the unzipped files will be placed.
+     */
     private void unzipLogic(String zipFilePath, String outputDirectory)
     {
         try
@@ -121,8 +107,8 @@ public class FileUnzip
                         // Create directories for file entries and write the file content
                         Files.createDirectories(entryPath.getParent());
                         try
-                        {   
-                            if(updateMode)
+                        {
+                            if (updateMode)
                             {
                                 IOStreams.printInfo("Installing File: " + entryName);
                                 FileWrite.logger("Installing: " + entryName, "Update");
@@ -132,18 +118,20 @@ public class FileUnzip
                             int bytesRead;
 
                             while ((bytesRead = zipIn.read(buffer)) != -1)
-                            fos.write(buffer, 0, bytesRead);
+                            {
+                                fos.write(buffer, 0, bytesRead);
+                            }
+                            fos.close(); // Close the FileOutputStream here
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             IOStreams.printError("File Error: " + entryName);
                         }
                     }
                 }
                 zipIn.closeEntry();
-                fos.close();
-            }   
-            catch(Exception e)
+            }
+            catch (Exception e)
             {
                 IOStreams.println("Error: " + e);
                 e.printStackTrace();
