@@ -1,7 +1,7 @@
 /*
 *                                                      |
 *                                                     ||
-*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
 * |||            ||    |||          ||       || |||  |||       ||       || |||        |||
 * |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
 * |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
@@ -11,6 +11,25 @@
 *
 * A Cross Platform OS Shell
 * Powered By Truncheon Core
+*/
+
+/*
+* This file is part of the Cataphract project.
+* Copyright (C) 2024 DAK404 (https://github.com/DAK404)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
 package Cataphract.API.Dragon;
@@ -119,7 +138,7 @@ public class Login
 
     /**
      * Enumerates all the user accounts in the database
-     * 
+     *
      * @throws Exception Throws any exceptions encountered during runtime.
      */
     protected void listAllUserAccounts()throws Exception
@@ -130,10 +149,10 @@ public class Login
             // Define the format for displaying the usernames
             String format = "%1$-64s| %2$-32s| %3$-5s\n";
             String c = "-";
-            
+
             // Print a newline for better formatting
             System.out.println();
-            
+
             // Format and print the header for the user directory listing
             String disp = String.format(format, "Username", "Account Name", "Privileges");
             System.out.println(disp + c.repeat(disp.length()) + "\n");
@@ -222,7 +241,7 @@ public class Login
 
         // JDBC driver registration
         Class.forName("org.sqlite.JDBC");
-        
+
         // Establish database connection
         Connection dbConnection = DriverManager.getConnection(databasePath);
 

@@ -1,3 +1,37 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
+/*
+* This file is part of the Cataphract project.
+* Copyright (C) 2024 DAK404 (https://github.com/DAK404)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+*/
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -12,7 +46,7 @@ import java.util.regex.Matcher;
 
 /**
  * An Application to sign the build files, to ensure the program integrity.
- * 
+ *
  * @author: DAK
  * @version: 1.0
  */
@@ -22,13 +56,13 @@ public class BuildSigner
     private static final String fileSeparator = System.getProperty("file.separator");
     private static final String MANIFEST_DIR = "./.Manifest/Cataphract";
     private static final String[] IGNORE_LIST = {
-        ".Manifest", "System", "Users", "org", "JRE", "BootShell.cmd",
+        ".Manifest", "System", "Users", "org", "docs" , "JRE", "BootShell.cmd",
         "BuildSigner.java", "Logs"
     };
 
     /**
      * Logic to sign the build.
-     * 
+     *
      * @param args arguments passed during invocation
      */
     public static void main(String[] args)
@@ -68,7 +102,7 @@ public class BuildSigner
 
         for (File file : filesList)
         {
-            if (ignoreFiles(file.getName())) 
+            if (ignoreFiles(file.getName()))
             continue;
             if (file.isDirectory())
             {
@@ -109,7 +143,7 @@ public class BuildSigner
 
     /**
      * Stores the file sizes in a properties file.
-     * 
+     *
      * @throws Exception
      */
     private void storeFileSizes() throws Exception
@@ -150,7 +184,7 @@ public class BuildSigner
 
     /**
      * Converts file path to platform-independent format.
-     * 
+     *
      * @param fileName The file path
      * @return The formatted file path
      */
@@ -161,7 +195,7 @@ public class BuildSigner
 
     /**
      * Generates the SHA3-256 hash of a file.
-     * 
+     *
      * @param fileName The file name
      * @return The SHA3-256 hash
      * @throws Exception
@@ -173,7 +207,7 @@ public class BuildSigner
 
     /**
      * Converts a byte array to a hex string.
-     * 
+     *
      * @param arrayBytes The byte array
      * @return The hex string
      */
@@ -189,7 +223,7 @@ public class BuildSigner
 
     /**
      * Hashes a file using the specified algorithm.
-     * 
+     *
      * @param file The file
      * @param algorithm The hashing algorithm
      * @return The hash of the file

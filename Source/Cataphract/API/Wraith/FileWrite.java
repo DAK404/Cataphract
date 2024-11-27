@@ -1,7 +1,7 @@
 /*
 *                                                      |
 *                                                     ||
-*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
 * |||            ||    |||          ||       || |||  |||       ||       || |||        |||
 * |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
 * |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
@@ -11,6 +11,25 @@
 *
 * A Cross Platform OS Shell
 * Powered By Truncheon Core
+*/
+
+/*
+* This file is part of the Cataphract project.
+* Copyright (C) 2024 DAK404 (https://github.com/DAK404)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
 package Cataphract.API.Wraith;
@@ -47,7 +66,7 @@ public class FileWrite
 
     /**
      * Constructor to be used for writing data into a user created file
-     * 
+     *
      * @param username The username of the currently logged in user
      */
     public FileWrite(String username)
@@ -73,17 +92,17 @@ public class FileWrite
                 {
                     boolean appendFile = true; // Flag to determine if file content should be appended or overwritten
                     String message = ""; // Initialize the message variable
-    
+
                     System.out.println("Wraith Text Editor 1.5");
                     System.out.println("______________________\n");
-    
+
                     // Get the console object to read user input
                     Console console = System.console();
-    
+
                     // Create a File object representing the file to be edited
                     File writeToFile = new File(dir + fileName);
                     System.out.println("\nEditing File : " + fileName + "\n\n");
-    
+
                     // Check if the file already exists
                     if (writeToFile.exists())
                     {
@@ -111,11 +130,11 @@ public class FileWrite
                             return;
                         }
                     }
-    
+
                     // Create a BufferedWriter to write to the file
                     BufferedWriter obj = new BufferedWriter(new FileWriter(writeToFile, appendFile));
                     PrintWriter pr = new PrintWriter(obj);
-    
+
                     // Prompt the user for input and write to the file until "<exit>" is entered
                     do
                     {
@@ -123,11 +142,11 @@ public class FileWrite
                         message = console.readLine(); // Read the next line of input from the user
                     }
                     while (!(message.equals("<exit>"))); // Continue until "<exit>" is entered
-    
+
                     // Close the streams
                     pr.close();
                     obj.close();
-    
+
                     // Request garbage collection to free up resources
                     System.gc();
                 }

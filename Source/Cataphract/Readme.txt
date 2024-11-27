@@ -1,6 +1,6 @@
                                                       |
                                                      ||
-  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
  |||            ||    |||          ||       || |||  |||       ||       || |||        |||
  |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
  |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
@@ -35,12 +35,5 @@ This package contains APIs that the programs in the Core package rely on.
 
 Sub-packages may exist with various programs, essentially grouped by features and the
 functionalities.
-
--[ IMPORTANT LINKS ]-
-
-Developer Program Documentation          :
-Internal Program Documentation           : 
-Website                                  : https://dak404.github.io/Cataphract
-GitHub Repository                        : https://github.com/DAK404/Cataphract
 
 ============================================================================================

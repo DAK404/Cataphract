@@ -1,7 +1,7 @@
 /*
 *                                                      |
 *                                                     ||
-*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
 * |||            ||    |||          ||       || |||  |||       ||       || |||        |||
 * |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
 * |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
@@ -11,6 +11,25 @@
 *
 * A Cross Platform OS Shell
 * Powered By Truncheon Core
+*/
+
+/*
+* This file is part of the Cataphract project.
+* Copyright (C) 2024 DAK404 (https://github.com/DAK404)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
 package Cataphract.API.Wraith;
@@ -48,10 +67,10 @@ public class FileRead
     public FileRead()
     {
     }
-    
+
     /**
      * Constructor to be used for reading user generated files
-     * 
+     *
      * @param username The username of the currently logged in user
      */
     public FileRead(String username)
@@ -105,17 +124,18 @@ public class FileRead
             // If help mode is enabled
             if (helpMode)
             {
-                do
+                // Continue until the end of file or instructed to stop
+                while (fileContents != null && continueFileRead)
                 {
                     // Read a line from the file
                     fileContents = bufferObject.readLine();
 
-                    if (fileContents.equalsIgnoreCase("<end of page>"))
+                    if (fileContents != null && fileContents.equalsIgnoreCase("<end of page>"))
                     {
                         // If it reaches the end of the page marker, prompt the user to continue or exit the help viewer
                         if (IOStreams.confirmReturnToContinue("", "else type EXIT to quit Help Viewer.\\n" + "~DOC_HLP?> ").equalsIgnoreCase("exit"))
-                        // Set flag to stop reading
-                        continueFileRead = false;
+                            // Set flag to stop reading
+                            continueFileRead = false;
                         else
                         {
                             // Clear the screen and display build information and continue reading the file
@@ -124,31 +144,30 @@ public class FileRead
                         }
                     }
                     // If it reaches the end of the help file marker
-                    else if (fileContents.equalsIgnoreCase("<end of help>"))
+                    else if (fileContents != null && fileContents.equalsIgnoreCase("<end of help>"))
                     {
                         // Print end of help file message
                         IOStreams.println("\n\nEnd of Help File.");
                         break;
                     }
                     // If it encounters a comment line, skip this line
-                    else if (fileContents.startsWith("#"))
+                    else if (fileContents != null && fileContents.startsWith("#"))
                     {
                         continue;
                     }
                     // Print the file contents
-                    IOStreams.println(fileContents);
+                    if (fileContents != null)
+                    {
+                        IOStreams.println(fileContents);
+                    }
                 }
-                // Continue until the end of file or instructed to stop
-                while (fileContents != null || continueFileRead);
             }
             // If help mode is not enabled
             else
             {
                 // Read the file until the end of file is reached
-                while (fileContents != null)
+                while ((fileContents = bufferObject.readLine()) != null)
                 {
-                    // Read a line from the file
-                    fileContents = bufferObject.readLine();
                     // Print the file contents
                     IOStreams.println(fileContents);
                 }
@@ -196,7 +215,7 @@ public class FileRead
         // Enable help mode
         helpMode = true;
         // Set the file name
-        fileName = new File(IOStreams.convertFileSeparator(".|Docs|Cataphract|Help|" + helpFile));
+        fileName = new File(IOStreams.convertFileSeparator(".|docs|Cataphract|Help|" + helpFile));
         // Perform file reading logic
         readFileLogic();
     }

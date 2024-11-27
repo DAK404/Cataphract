@@ -70,7 +70,7 @@ This will guide the user to download the repository and build the source code.
 
 Clone the Cataphract repository from GitHub to your local machine by navigating to the preferred directory and running the following command in your preferred terminal:
 
-> ℹ️ **INFORMATION** - Usually, the GitHub repository has 2 branches: **Main** and **Development**. The **Main** repository contains code that is finalized and tested, whereas the **Development** If you want to download the latest code (which may be untested and/or incomplete), please clone from the **Development** branch. 
+> ℹ️ **INFORMATION** - Usually, the GitHub repository has 2 branches: **Main** and **Development**. The **Main** repository contains code that is finalized and tested, whereas the **Development** If you want to download the latest code (which may be untested and/or incomplete), please clone from the **Development** branch.
 
 ```bash
 git clone https://github.com/DAK404/Cataphract.git
@@ -100,7 +100,7 @@ For more information on building and testing, please see --> INSERT PAGE HERE
 
 [Back To Top](#table-of-contents)
 
---- 
+---
 
 # Documentation
 

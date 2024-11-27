@@ -42,7 +42,7 @@ CLS
 
 :: Display the build information
 ECHO ========================
-ECHO     Nion Tools Suite   
+ECHO     Nion Tools Suite
 ECHO ========================
 ECHO VERSION : 3.1
 ECHO DATE    : 18-JUN-2022

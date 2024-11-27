@@ -1,7 +1,7 @@
 /*
 *                                                      |
 *                                                     ||
-*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
 * |||            ||    |||          ||       || |||  |||       ||       || |||        |||
 * |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
 * |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
@@ -11,6 +11,25 @@
 *
 * A Cross Platform OS Shell
 * Powered By Truncheon Core
+*/
+
+/*
+* This file is part of the Cataphract project.
+* Copyright (C) 2024 DAK404 (https://github.com/DAK404)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
 package Cataphract.Core;
@@ -35,6 +54,7 @@ import Cataphract.API.IOStreams;
 import Cataphract.API.Astaroth.Calendar;
 import Cataphract.API.Astaroth.Time;
 import Cataphract.API.Minotaur.Cryptography;
+import Cataphract.API.Wraith.FileRead;
 import Cataphract.API.Anvil;
 import Cataphract.API.Build;
 import Cataphract.API.ExceptionHandler;
@@ -50,17 +70,17 @@ public class Loader
 {
     /** A list of kernel file paths used by Abraxis subsystem to verify kernel integrity. */
     private static List<String> abraxisFilePathList = new  ArrayList<String>();
-    
+
     /** Instantiate Console to get user inputs. */
     private Console console = System.console();
-    
+
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
     */
     public Loader()
     {
     }
-    
+
     /**
     * The entry point to the loader. Boots the kernel based on the arguments supplied.
     *
@@ -78,7 +98,7 @@ public class Loader
                 case "probe":
                 System.exit(7);
                 break;
-                
+
                 //Boot to the normal mode, no changes made here
                 case "normal":
                 IOStreams.println("Starting Kernel...");
@@ -121,13 +141,13 @@ public class Loader
                             default:
                                 IOStreams.printError("Undefined Debug Parameter.");
                         }
-                
+
                 //Rejects boot if the mode is not specified
                 default:
                 IOStreams.printError("Invalid Boot Mode. Aborting...\n");
                 System.exit(3);
             }
-            
+
             //Display the build information
             Build.viewBuildInfo();
             //Instantiate and start the loader logic
@@ -138,10 +158,10 @@ public class Loader
             new ExceptionHandler().handleException(e);
         }
     }
-    
+
     /**
     * Logic that will load the kernel after checking the kernel integrity
-    * 
+    *
     * @throws Exception Throws any exceptions encountered during runtime.
     */
     private void loaderLogic()throws Exception
@@ -150,27 +170,27 @@ public class Loader
         {
             case 0:
             break;
-            
+
             case 1:
                 IOStreams.printError("Unable to locate or parse Manifest Files! Aborting boot...");
                 System.exit(4);
             break;
-            
+
             case 2:
                 IOStreams.printError("Unable to populate the Kernel files! Aborting boot...");
                 System.exit(4);
             break;
-            
+
             case 3:
                 IOStreams.printError("File Signature verification failed! Aborting boot...");
                 System.exit(4);
             break;
-            
+
             case 4:
                 IOStreams.printError("File verification failed: Found File Size Discrepancy! Aborting boot...");
                 System.exit(4);
             break;
-            
+
             case 5:
                 if(new Setup().setupCataphract())
                 System.exit(100);
@@ -179,21 +199,21 @@ public class Loader
                 IOStreams.printError("Setup Failed!");
             }
             break;
-            
+
             case 55:
                 IOStreams.printError("Could not initialize Abraxis! Aborting boot...");
                 System.exit(4);
             break;
-            
+
             default:
                 IOStreams.printError("Generic Failure. Cannot Boot.");
                 System.exit(4);
             break;
         }
-        
+
         guestShell();
     }
-    
+
     /**
     * Logic of the Abraxis sub-system to check if kernel programs are verified and can be booted without issues.
     *
@@ -203,31 +223,31 @@ public class Loader
     {
         //Initialize the return value to be defaulted at 55
         byte abraxisResult = 55;
-        
+
         IOStreams.printInfo("Stage 0: Checking Manifest Files...");
-        
+
         //check if the Manifest files exist
         if(manifestFilesCheck())
         {
             IOStreams.printInfo("Stage 1: Manifest Files Found. Populating Kernel Files and Directories...");
-            
+
             //Begin populating the Kernel files
             if(populateKernelFiles(new File("./")))
             {
                 IOStreams.printInfo("Stage 2: Kernel Files and Directories populated. Checking File Integrity - Phase 1...");
-                
+
                 //Begin checking the file hashes from the M1 manifest
                 if(checkFileHashes())
                 {
                     IOStreams.printInfo("Stage 3: File Integrity Check - Phase 1 Complete. Checking File Integrity - Phase 2...");
-                    
+
                     //Begin checking the file sizes from the M2 manifest
                     if(checkFileSizes())
                     {
                         //All checks passed, set the return value to be 0
                         abraxisResult = 0;
                         IOStreams.printInfo("Stage 4: File Integrity Check - Phase 2 Complete. Checking System and User Files...");
-                        
+
                         //Check if program setup needs to be run once.
                         if(setupStatusCheck())
                         IOStreams.printInfo("File Check Complete. Booting Cataphract...");
@@ -253,14 +273,14 @@ public class Loader
         else
         //Set the return value to be 1, denoting that there is an error with finding or reading the manifest files
         abraxisResult = 1;
-        
+
         //Clear the file list, save memory.
         abraxisFilePathList.clear();
-        
+
         //Return the value stored in the return value
         return abraxisResult;
     }
-    
+
     /**
     * Logic to check if the Manifest files exists in the manifest directory.
     *
@@ -270,7 +290,7 @@ public class Loader
     {
         return new File("./.Manifest/Cataphract/KernelFilesHashes.m1").exists() & new File("./.Manifest/Cataphract/KernelFiles.m2").exists();
     }
-    
+
     /**
     * Logic to populate the Kernel files into a list
     *
@@ -281,13 +301,13 @@ public class Loader
     {
         //Initialize the status return value to false
         boolean status = false;
-        
+
         //Added a try-catch block for better error handling mechanism
         try
         {
             //Store an array of files and directories from the specified directory.
             File[] fileList = fileDirectory.listFiles();
-            
+
             //Iterate through each entry in the array
             for(File fileName: fileList)
             {
@@ -295,17 +315,17 @@ public class Loader
                 if(fileIgnoreList(fileName.getName()))
                 //If true, start the iteration with the next entry
                 continue;
-                
+
                 //if the entry is a directory, recursively iterate the contents
                 if(fileName.isDirectory())
                 //populate the entries in the sub-directory
                 populateKernelFiles(fileName);
-                
+
                 //Else get the path of the entry and add it to the list
                 else
                 abraxisFilePathList.add(fileName.getPath());
             }
-            
+
             //set the status to be true to denote that the population of the specified directory is successful.
             status = true;
         }
@@ -314,11 +334,11 @@ public class Loader
         {
             e.printStackTrace();
         }
-        
+
         //Return the status value
         return status;
     }
-    
+
     /**
     * Logic to ignore certain files and directories who's value may or may not change over time.
     * These may be external libraries, JREs, manifest files, the System and User directories.
@@ -329,9 +349,9 @@ public class Loader
     private boolean fileIgnoreList(String fileName)
     {
         boolean status = false;
-        
+
         String[] ignoreList = {".Manifest", "System", "Users", "org", "JRE", "Logs"};
-        
+
         for(String files : ignoreList)
         {
             if(fileName.equalsIgnoreCase(files))
@@ -343,7 +363,7 @@ public class Loader
         System.gc();
         return status;
     }
-    
+
     /**
     * Logic to check the file hashes against the M1 manifest hashes.
     *
@@ -353,7 +373,7 @@ public class Loader
     {
         //Initialize the return value to be true.
         boolean kernelIntegrity = true;
-        
+
         //Added a try-catch block for better error handling mechanism.
         try
         {
@@ -361,33 +381,33 @@ public class Loader
             Properties manifestM1Entries = new Properties();
             //Initialize the input stream to read the values from the M1 manifest file
             FileInputStream m1FileStream = new FileInputStream("./.Manifest/Cataphract/KernelFilesHashes.m1");
-            
+
             //Store the XML values into the Properties object.
             manifestM1Entries.loadFromXML(m1FileStream);
             //Close the file input stream
             m1FileStream.close();
-            
+
             /*
             * DEBUG: List the properties loaded from the M1 Manifest file.
             * manifestM1Entries.list(System.out);
             */
-            
+
             //Iterate through each entry in the list containing the file paths.
             for(String fileName: abraxisFilePathList)
             {
                 //Do not hash the file if it is specified in the ignore list.
                 if(fileIgnoreList(fileName))
                 continue;
-                
+
                 //store the hash of the file present on disk (fileName).
                 String kernelFileHash = Cryptography.fileToSHA3_256(new File(fileName));
-                
+
                 //Added a try-catch block for alerting the user about unknown files.
                 try
                 {
                     //Store the hash of the file present in the manifest.
                     String manifestHash = manifestM1Entries.getProperty(IOStreams.convertToNionSeparator(fileName));
-                    
+
                     //Check if the manifest and the file hashes are equal
                     if(!manifestHash.equals(kernelFileHash))
                     {
@@ -409,11 +429,11 @@ public class Loader
             IOStreams.println("Manifest Parse Error! Unable to continue.");
             kernelIntegrity = false;
         }
-        
+
         //return the status of the kernel integrity
         return kernelIntegrity;
     }
-    
+
     /**
     * Logic to check the file sizes against the Manifest M2 sizes
     *
@@ -425,7 +445,7 @@ public class Loader
         int fileCount = 0;
         //Initialize the return value to be true
         boolean status = true;
-        
+
         //Added a try-catch block for better error handling mechanism.
         try
         {
@@ -433,17 +453,17 @@ public class Loader
             Properties manifestM2Entries = new Properties();
             //Initialize the input stream to read the values from the M2 manifest file
             FileInputStream m2FileStream = new FileInputStream("./.Manifest/Cataphract/KernelFiles.m2");
-            
+
             //Store the XML values into the Properties object.
             manifestM2Entries.loadFromXML(m2FileStream);
             //Close the file input stream
             m2FileStream.close();
-            
+
             /*
             * DEBUG: List the properties loaded from the M1 Manifest file
             * manifestM1Entries.list(System.out);
             */
-            
+
             //Iterate through each entry in the list containing the file paths.
             for(String fileName: abraxisFilePathList)
             {
@@ -454,7 +474,7 @@ public class Loader
                     long fileSizeM2 = Long.parseLong(String.valueOf(manifestM2Entries.get(IOStreams.convertToNionSeparator(fileName))));
                     //Store the file size present on the disk
                     long fileSize = new File(fileName).length();
-                    
+
                     //Check if the file sizes match
                     if(fileSize != fileSizeM2)
                     {
@@ -462,12 +482,12 @@ public class Loader
                         status = false;
                         IOStreams.printError("Integrity Check Failure at " + fileName + "\t" + fileSize + ". Expected " + fileSizeM2);
                     }
-                    
+
                     //Increment the file count for each iteration
                     fileCount++;
                 }
             }
-            
+
             //Check if the number of files on disk is bigger than the number of entries present in the manifest file
             if(fileCount < manifestM2Entries.size())
             {
@@ -483,11 +503,11 @@ public class Loader
             e.printStackTrace();
             IOStreams.printError("File Operations Failure! Unable to continue.");
         }
-        
+
         //return the status of the file size check
         return status;
     }
-    
+
     /**
     * Logic to check if Cataphract has been setup on the system.
     *
@@ -497,7 +517,7 @@ public class Loader
     {
         return new File("./System/Cataphract").exists() & new File("./Users/Cataphract").exists();
     }
-    
+
     /**
     * Logic to provide the user with a guest shell: a shell with limited functionality to be used before login
     */
@@ -508,7 +528,7 @@ public class Loader
         {
             input = console.readLine("> ");
             String[] commandArray = Anvil.splitStringToArray(input);
-            
+
             switch(commandArray[0].toLowerCase())
             {
                 case "exit":
@@ -544,40 +564,40 @@ class Setup
     * Boolean to store status if the user has accepted EULA.
     */
     private boolean prereqInfoStatus = false;
-    
+
     /**
     * Boolean to store status if the Cataphract directories are initialized successfully
     */
     private boolean initDirs = false;
-    
+
     /**
     * Boolean to store status if the Database has been successfully initialized
     */
     private boolean initDB = false;
-    
+
     /**
     * Boolean to store status if the Default Policies have been initialized
     */
     private boolean initPolicies = false;
-    
+
     /**
     * Boolean to store status if the Administrator account has been created
     */
     private boolean initAdminAccount = false;
-    
+
     /**
     * Instantiate Console to get user inputs
     */
     Console console = System.console();
-    
+
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
     */
     protected Setup()
     {
-        
+
     }
-    
+
     /**
     * Display the progress of the setup to the user: what's pending and what's completed
     */
@@ -592,85 +612,87 @@ class Setup
         IOStreams.println("[*] Create Administrator Account : " + (initAdminAccount?"COMPLETED":"PENDING"));
         IOStreams.println("[ ----------------------------- ]\n");
     }
-    
+
     /**
     * The entry point to the setup. Sets the environment up to run Cataphract.
-    * 
+    *
     * @return boolean returnValue - Returns if the setup was successful or not.
     */
     boolean setupCataphract()throws Exception
     {
         boolean returnValue = false;
-        
+
         //A brief introduction to Cataphract and why it is being setup //
         Build.clearScreen();
-        
+
         /**
         * Display a message to give a brief introduction to Cataphract and the reason why it is being setup
         */
         String oobeIntroduction = Build._Branding + """
-        
+
         Welcome to Cataphract!
-        
+
         As this is the first time the program is being run, several setup setup steps need to be completed for normal use.
-        
+
         [*] ACCEPT EULA: Agree to the End User License Agreement to begin the setup.
         [*] CREATE SYSTEM DIRECTORIES: Create directories essential for Cataphract to function as expected.
         [*] INITIALIZE DATABASE: Initialize the user database to store the user credentials.
         [*] CREATE ADMINISTRATOR ACCOUNT: Create the administrator account to engage and maintain the functioning of the system.
-        
+
         These steps are required to be performed by the system administrator. If the current user is an end user,
         please press [ CTRL + C ] keys and contact the System Administrator.
-        
+
         If the current user is a System Administrator,\u00A0""";
-        
+
         IOStreams.confirmReturnToContinue(oobeIntroduction, ".\nSetup> ");
-        
+
         //User needs to accept EULA
         showAndAcceptEULA();
-        
+
         //Program will then setup required directories: /System and /Users
         createSystemDirectories();
-        
+
         //Initialize the database to store the user credentials
         initializeDatabase();
-        
+
         //Initialize the default policy values.
         initializeDefaultPolicies();
-        
+
         //Initialize a default administrator account.
         createAdministratorAccount();
-        
+
         //Show the set of actions undertaken to the user before restarting
         displaySetupProgress();
         IOStreams.confirmReturnToContinue("Setup complete! ", ".\nSetup> ");
-        
-        
+
+
         returnValue = prereqInfoStatus & initAdminAccount & initDB & initDirs & initPolicies;
-        
+
         //force return false until Setup implementation is complete.
         return returnValue;
     }
-    
+
     /**
     * Logic to display the EULA to the user. User must accept it to complete the setup.
     */
-    private void showAndAcceptEULA()
+    private void showAndAcceptEULA()throws Exception
     {
         //Display the setup progress.
         displaySetupProgress();
-        
-        //logic to read EULA; Omitted for now.
-        System.out.println("DUMMY TEXT: EULA");
-        
+
+        //Display the EULA file
+        new FileRead().readHelpFile("EULA");
+
         //Check if the user accepts the EULA
         if(! console.readLine("Do you accept the EULA? [ Y / N ]\nEULA?> ").equalsIgnoreCase("y"))
         System.exit(0);
-        
+
+        new FileRead().readHelpFile("LICENSE");
+
         //Update the EULA completion status to COMPLETE.
         prereqInfoStatus = true;
     }
-    
+
     /**
     * Logic to create directories required by Cataphract.
     */
@@ -679,18 +701,18 @@ class Setup
         //Display the setup progress.
         displaySetupProgress();
         IOStreams.printInfo("Creating Directories...");
-        
+
         //Define a set of directories to be created by Cataphract Setup program.
         String [] directoryNames = {"./System/Cataphract/Public/Logs", "./Users/Cataphract"};
-        
+
         //Iterate through the array and create the specified directories
         for (String dirs: directoryNames)
         new File(dirs).mkdirs();
-        
+
         //Update the Directory Initialization to COMPLETE.
         initDirs = true;
     }
-    
+
     /**
     * Logic to create MUD (Multi User Database) table to store user credentials.
     */
@@ -698,31 +720,31 @@ class Setup
     {
         //Display the setup progress.
         displaySetupProgress();
-        
+
         //Store the database creation status.
         boolean initializeDatabaseStatus = false;
-        
+
         //Added a try-catch block for better error handling mechanism
         try
         {
             //Create Backups directory to store the database backups
             new File("./System/Cataphract/Private/Backups").mkdirs();
-            
+
             //Store the database path that the program will require to access the database
             String databasePath = "jdbc:sqlite:./System/Cataphract/Private/Mud.dbx";
-            
+
             //Check if the Database already exists
             IOStreams.printInfo("Checking for existing Master User Database...");
             if(new File(databasePath).exists())
             //Abort the creation of the database; since it already exists
             IOStreams.printError("Master User Database already exists! Aborting...");
-            
+
             //Else, continue to create the database table and file
             else
             {
                 //Initialize the database driver to be used by Cataphract Setup
                 Class.forName("org.sqlite.JDBC");
-                
+
                 // String that contains the CREATE statement of the database table.
                 String createMUDTable = "CREATE TABLE IF NOT EXISTS MUD (" +
                 "Username TEXT," +
@@ -732,25 +754,25 @@ class Setup
                 "PIN TEXT NOT NULL," +
                 "Privileges TEXT NOT NULL," +
                 "PRIMARY KEY(Username));";
-                
+
                 // Get the connection of the database using the given path
                 Connection dbConnection = DriverManager.getConnection(databasePath);
-                
+
                 // Build the statement using the createMUDTable string
                 Statement statement = dbConnection.createStatement();
-                
+
                 //Execute the SQL statement
                 statement.execute(createMUDTable);
-                
+
                 //Close the statement
                 statement.close();
-                
+
                 //Close the database connection
                 dbConnection.close();
-                
+
                 //Run garbage collector to free any freeable spaces in memory
                 System.gc();
-                
+
                 //Set the database initialization status as true
                 initializeDatabaseStatus = true;
             }
@@ -760,11 +782,11 @@ class Setup
             //Catch any exceptions caught during runtime and pass it on to the ExceptionHandler class
             new ExceptionHandler().handleException(e);
         }
-        
+
         //Update the Database Initialization to COMPLETE or failed
         initDB = (initializeDatabaseStatus?true:false);
     }
-    
+
     /**
     * Logic to initialize the default policies for the users.
     */
@@ -774,7 +796,7 @@ class Setup
         new Cataphract.API.Minotaur.PolicyManager();
         initPolicies = true;
     }
-    
+
     /**
     * Logic to create a default administrator account
     */

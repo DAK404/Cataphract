@@ -42,14 +42,13 @@ help:
 .PHONY: help
 
 # Ensure targets are treated as phony
-.PHONY: all setup kernel launcher docs sign clean
+.PHONY: all setup kernel launcher docs sign clean copy_docs
 
 # Build steps
-all: setup kernel launcher sign
+all: setup kernel launcher sign copy_docs
 
 # Super Build (includes documentations)
-super: setup kernel launcher sign docs
-
+super: setup kernel launcher sign docs copy_docs
 
 # Preliminary setup
 setup:
@@ -75,6 +74,8 @@ setup:
 	@if [ ! -d "$(COMP_LOG_DIR)" ]; then mkdir -p $(COMP_LOG_DIR); fi
 	@echo "->>> Checking for BuildSigner.java"
 	@if [ ! -f "$(BIN_DIR)/$(BUILDSIGNER_FILE)" ]; then cp $(TOOLS_DIR)/$(BUILDSIGNER_FILE) $(BIN_DIR); fi
+	@echo "->>> Checking Binaries/docs directory"
+	@if [ ! -d "$(BIN_DIR)/docs/$(project)/Help" ]; then mkdir -p $(BIN_DIR)/docs/$(project)/Help; fi
 	@echo ""
 	@echo "--- !   PREREQUISITES CHECK DONE   ! ---"
 	@echo ""
@@ -129,6 +130,16 @@ sign: setup
 	@echo "--- !      BUILD SIGNING DONE      ! ---"
 	@echo ""
 
+# Copy documentation to Binaries directory
+copy_docs: setup
+	@echo "[*] Copying Documentation..."
+	@echo ""
+	@echo "->>> Copying contents from docs/$(project)/Help to Binaries/docs/$(project)/Help"
+	@cp -r docs/$(project)/Help $(BIN_DIR)/docs/$(project)
+	@echo ""
+	@echo "--- !   DOCUMENTATION COPIED   ! ---"
+	@echo ""
+
 clean:
 	@echo "[*] Cleaning Up Directories..."
 	@echo ""
@@ -137,4 +148,4 @@ clean:
 	@echo "--- !       CLEANUP COMPLETE       ! ---"
 	@echo ""
 
-.PHONY: default help all setup kernel launcher docs sign clean
+.PHONY: default help all setup kernel launcher docs sign clean copy_docs

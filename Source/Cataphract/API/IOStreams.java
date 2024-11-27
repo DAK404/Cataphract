@@ -1,7 +1,7 @@
 /*
 *                                                      |
 *                                                     ||
-*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
 * |||            ||    |||          ||       || |||  |||       ||       || |||        |||
 * |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
 * |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
@@ -11,6 +11,25 @@
 *
 * A Cross Platform OS Shell
 * Powered By Truncheon Core
+*/
+
+/*
+* This file is part of the Cataphract project.
+* Copyright (C) 2024 DAK404 (https://github.com/DAK404)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
 package Cataphract.API;
@@ -155,7 +174,7 @@ public class IOStreams
     /**
     * Provide a method that will ask the user to press the RETURN key.
     * Useful when there is a long text to be read by the user.
-    * 
+    *
     * @return String The value provided to the input
     */
     public static String confirmReturnToContinue()
@@ -167,8 +186,8 @@ public class IOStreams
     * [ OVERLOAD ] Provide a method that will ask the user to press the RETURN key, with a prefix text and a suffix text.
     *
     * Useful when someone wants to insert text before or after the default "Press RETURN to Continue..." string
-    * You might want to use a unicode escape character \u00A0 to essentially add a non breaking space to multiline Strings.     * 
-     * 
+    * You might want to use a unicode escape character \u00A0 to essentially add a non breaking space to multiline Strings.     *
+     *
      * @param prefix The prefix to be added before displaying the "Press RETURN to Continue" message
      * @param suffix The suffix to be added after displaying the "Press RETURN to Continue" message
      * @return String The value provided to the input
@@ -188,7 +207,7 @@ public class IOStreams
     {
         return nionPath.replaceAll("\\|", Matcher.quoteReplacement(File.separator));
     }
-        
+
     /**
     * Logic to convert from an OS dependent file separator format of file paths to Nion File Separator format.
     *

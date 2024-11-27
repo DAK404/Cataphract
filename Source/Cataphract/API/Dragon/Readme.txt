@@ -1,6 +1,6 @@
                                                       |
                                                      ||
-  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| ||||||||
+  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
  |||            ||    |||          ||       || |||  |||       ||       || |||        |||
  |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
  |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
@@ -52,14 +52,5 @@ The implementation is modular and additional functionalities can be built by pro
 method retrieveDatabaseEntry() with the correct arguments. Please check the documentation
 for a detailed view of the method, and please check the source code for the implementation
 of the functionalities.
-
-
--[ IMPORTANT LINKS ]-
-
-EasyGuide - Nion Directory Specification :
-Developer Program Documentation          : https://dak404.github.io/Cataphract/DeveloperDocumentation/index.html
-Internal Program Documentation           : https://dak404.github.io/Cataphract/InternalDocumentation/index.html
-Website                                  : https://dak404.github.io/Cataphract
-GitHub Repository                        : https://github.com/DAK404/Cataphract
 
 ============================================================================================

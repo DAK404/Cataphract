@@ -44,13 +44,4 @@ https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.htm
 The Astaroth package also provides a feature to display a calendar for a specified month and
 year. If the input values are 0, the calendar for the current month is displayed.
 
-
--[ IMPORTANT LINKS ]-
-
-EasyGuide - Nion Directory Specification :
-Developer Program Documentation          : https://dak404.github.io/Cataphract/DeveloperDocumentation/index.html
-Internal Program Documentation           : https://dak404.github.io/Cataphract/InternalDocumentation/index.html
-Website                                  : https://dak404.github.io/Cataphract
-GitHub Repository                        : https://github.com/DAK404/Cataphract
-
 ============================================================================================

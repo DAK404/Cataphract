@@ -1,3 +1,37 @@
+/*
+*                                                      |
+*                                                     ||
+*  |||||| ||||||||| |||||||| ||||||||| |||||||  |||  ||| ||||||| |||||||||  |||||| |||||||||
+* |||            ||    |||          ||       || |||  |||       ||       || |||        |||
+* |||      ||||||||    |||    ||||||||  ||||||  ||||||||  ||||||  |||||||| |||        |||
+* |||      |||  |||    |||    |||  |||  |||     |||  |||  ||  ||  |||  ||| |||        |||
+*  ||||||  |||  |||    |||    |||  |||  |||     |||  |||  ||   || |||  |||  ||||||    |||
+*                                               ||
+*                                               |
+*
+* A Cross Platform OS Shell
+* Powered By Truncheon Core
+*/
+
+/*
+* This file is part of the Cataphract project.
+* Copyright (C) 2024 DAK404 (https://github.com/DAK404)
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+*/
+
 package Cataphract.API.Wraith.Archive;
 
 import java.io.FileInputStream;
@@ -16,7 +50,7 @@ import Cataphract.API.Wraith.FileWrite;
 
 /**
  * A utility class for unzipping files.
- * 
+ *
  * @author DAK404 (https://github.com/DAK404)
  * @version 1.0.0 (11-October-2023, Cataphract)
  * @since 0.0.1 (Cataphract 0.0.1)
@@ -31,7 +65,7 @@ public class FileUnzip
 
     /**
      * Constructor to check if the current user is an administrator or not.
-     * 
+     *
      * @param username The currently logged in username.
      * @throws Exception Throws any exceptions encountered during runtime.
      */
@@ -42,7 +76,7 @@ public class FileUnzip
 
     /**
      * Unzips a user file in the specified destination directory
-     * 
+     *
      * @param fileName          Name of the file to be unzipped.
      * @param unzipDestination  Destination for the file to be unzipped in.
      * @throws Exception Throws any exceptions encountered during runtime.
@@ -60,7 +94,7 @@ public class FileUnzip
 
     /**
      * Installs an update by unzipping the "Update.zip" file.
-     * 
+     *
      * @throws Exception Throws any exceptions encountered during runtime.
      */
     public void installUpdate() throws Exception
@@ -75,7 +109,7 @@ public class FileUnzip
 
     /**
      * Unzips a given zip file into the specified output directory.
-     * 
+     *
      * @param zipFilePath       Path to the zip file.
      * @param outputDirectory   Directory where the unzipped files will be placed.
      */
