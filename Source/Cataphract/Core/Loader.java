@@ -55,7 +55,6 @@ import Cataphract.API.Astaroth.Calendar;
 import Cataphract.API.Astaroth.Time;
 import Cataphract.API.Minotaur.Cryptography;
 import Cataphract.API.Wraith.FileRead;
-import Cataphract.API.Anvil;
 import Cataphract.API.Build;
 import Cataphract.API.ExceptionHandler;
 
@@ -527,7 +526,7 @@ public class Loader
         do
         {
             input = console.readLine("> ");
-            String[] commandArray = Anvil.splitStringToArray(input);
+            String[] commandArray = IOStreams.splitStringToArray(input);
 
             switch(commandArray[0].toLowerCase())
             {

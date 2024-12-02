@@ -124,7 +124,7 @@ public class AccountDelete
             do
             {
                 // Read user input for command
-                command = Cataphract.API.Anvil.splitStringToArray(console.readLine("AccMgmt-Del!> "));
+                command = IOStreams.splitStringToArray(console.readLine("AccMgmt-Del!> "));
 
                 // Switch statement for different commands
                 switch (command[0].toLowerCase())

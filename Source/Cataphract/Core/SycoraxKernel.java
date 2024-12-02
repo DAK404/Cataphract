@@ -163,7 +163,7 @@ public class SycoraxKernel
     private void commandProcessor(String input) throws Exception
     {
         // Split the input command into array
-        String[] commandArray = Anvil.splitStringToArray(input);
+        String[] commandArray = IOStreams.splitStringToArray(input);
 
         // Process command based on first keyword
         switch(commandArray[0].toLowerCase())

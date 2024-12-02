@@ -35,7 +35,9 @@
 package Cataphract.API.Wraith;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.Console;
@@ -82,26 +84,28 @@ public class FileWrite
     */
     public final void editFile(String fileName, String dir)throws Exception
     {
+        fileName = IOStreams.convertFileSeparator(fileName);
+        dir = IOStreams.convertFileSeparator(dir);
+        System.out.println(dir);
         // Check the policy if file writing is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if (new PolicyCheck().retrievePolicyValue("update").equals("on") || new Login(_username).checkPrivilegeLogic())
         {
             try
             {
+                System.out.println(new File(dir).exists());
                 // Check if the provided file name is valid
-                if (checkFileValidity(fileName))
+                if (new File(dir).exists())
                 {
-                    boolean appendFile = true; // Flag to determine if file content should be appended or overwritten
-                    String message = ""; // Initialize the message variable
-
-                    System.out.println("Wraith Text Editor 1.5");
-                    System.out.println("______________________\n");
+                    // Flag to determine if file content should be appended or overwritten
+                    boolean appendFile = true;
+                    // Initialize the message variable
+                    String message = "";
 
                     // Get the console object to read user input
                     Console console = System.console();
 
                     // Create a File object representing the file to be edited
                     File writeToFile = new File(dir + fileName);
-                    System.out.println("\nEditing File : " + fileName + "\n\n");
 
                     // Check if the file already exists
                     if (writeToFile.exists())
@@ -135,6 +139,11 @@ public class FileWrite
                     BufferedWriter obj = new BufferedWriter(new FileWriter(writeToFile, appendFile));
                     PrintWriter pr = new PrintWriter(obj);
 
+                    System.out.println("Wraith Text Editor 1.5");
+                    System.out.println("______________________\n");
+
+                    System.out.println("\nEditing File : " + fileName + "\n\n");
+
                     // Prompt the user for input and write to the file until "<exit>" is entered
                     do
                     {
@@ -150,6 +159,10 @@ public class FileWrite
                     // Request garbage collection to free up resources
                     System.gc();
                 }
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                IOStreams.printError("File Error - The Specified path is either invalid or is not found.");
             }
             catch (Exception E)
             {
@@ -171,7 +184,7 @@ public class FileWrite
     {
         try
         {
-            String logfilePath = "./System/Cataphract/Public/Logs/";
+            String logfilePath = IOStreams.convertFileSeparator(".|System|Cataphract|Public|Logs|");
             // Check if the provided file name is valid
             if (checkFileValidity(fileName)) {
 

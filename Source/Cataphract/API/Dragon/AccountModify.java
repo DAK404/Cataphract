@@ -159,7 +159,7 @@ public class AccountModify
 
             targetUser = _currentUsername;
 
-            String[] usermgmtModifyCommandArray = Cataphract.API.Anvil.splitStringToArray(tempInput);
+            String[] usermgmtModifyCommandArray = IOStreams.splitStringToArray(tempInput);
 
             // Switch statement for different menu options
             switch(usermgmtModifyCommandArray[0].toLowerCase())

@@ -79,25 +79,13 @@ public class FileRead
     }
 
     /**
-    * Checks the validity of the file name.
-    *
-    * @return {@code true} if the file name is valid, {@code false} otherwise.
-    * @throws Exception Throws any exceptions encountered during runtime.
-    */
-    private final boolean checkFileValidity() throws Exception
-    {
-        // Return false if the file name is null, empty, or starts with a space; otherwise, return true
-        return !(fileName.getName() == null || fileName.getName().equals("") || fileName.getName().startsWith(" "));
-    }
-
-    /**
     * Handles the logic for reading the file.
     *
     * @throws Exception Throws any exceptions encountered during runtime.
     */
     private void readFileLogic() throws Exception
     {
-        if (!checkFileValidity())
+        if (!IOStreams.checkFileValidity(fileName.getName()))
         {
             // If the file name is invalid
             IOStreams.printError("Invalid File Name! Please Enter A Valid File Name.");
@@ -196,7 +184,7 @@ public class FileRead
         if (new PolicyCheck().retrievePolicyValue("update").equals("on") || new Login(_username).checkPrivilegeLogic())
         {
             // Set the file name
-            fileName = new File(userFileName);
+            fileName = new File(IOStreams.convertFileSeparator(userFileName));
             // Perform file reading logic
             readFileLogic();
         }

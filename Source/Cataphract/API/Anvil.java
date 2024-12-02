@@ -34,8 +34,6 @@
 
 package Cataphract.API;
 
-import java.util.regex.Pattern;
-
 import Cataphract.API.Astaroth.Calendar;
 import Cataphract.API.Astaroth.Time;
 
@@ -48,11 +46,6 @@ import Cataphract.API.Astaroth.Time;
 */
 public class Anvil
 {
-    /**
-     * Precompile the regex to split string to array, saves resources by precompilation
-     */
-    private static final Pattern SPLIT_PATTERN = Pattern.compile(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
     */
@@ -165,26 +158,5 @@ public class Anvil
             IOStreams.printError(commandArray[0] + " - Command Not Found");
             break;
         }
-    }
-
-    /**
-    * Method to split an input string to individual words by at the occurrence of a blank space.
-    *
-    * @param command String that will need to be split into an array.
-    * @return String[] The string split into an array.
-    */
-    public static String[] splitStringToArray(String command)
-    {
-        //Regex to split the string at the occurrence of a blank space
-        String[] arr = SPLIT_PATTERN.split(command);
-
-        //Fix to remove the quotes, make the logic to split the input at every space only.
-        //Check the EasyGuide Documentation on why this is implemented the way it is.
-        for(int i = 0; i < arr.length; i++)
-        if(arr[i].startsWith("\"") && arr[i].endsWith("\""))
-            arr[i] = arr[i].substring(1, arr[i].length()-1);
-
-        //return the array of words split.
-        return arr;
     }
 }

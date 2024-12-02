@@ -221,7 +221,7 @@ public class FileManagement
      */
     private final void navPreviousDirectory()throws Exception
     {
-        // Remove the trailing slash from the present working directory
+        // Remove the trailing file separator from the present working directory
         _presentWorkingDirectory = _presentWorkingDirectory.substring(0, _presentWorkingDirectory.length() - 1);
 
         // Replace the last directory in the path with a single slash
@@ -229,7 +229,7 @@ public class FileManagement
             _presentWorkingDirectory.substring(_presentWorkingDirectory.lastIndexOf('|'), _presentWorkingDirectory.length()),"|");
 
         // Check if the present working directory is the restricted user home directory
-        if (_presentWorkingDirectory.equals(IOStreams.convertFileSeparator(".|Users|Cataphract|")))
+        if (_presentWorkingDirectory.equals(".|Users|Cataphract|"))
         {
             // Print an error message if access is denied
             IOStreams.printError("Permission Denied.");
@@ -238,6 +238,7 @@ public class FileManagement
             resetToHomeDirectory();
         }
     }
+
 
     /**
      * Logic to reset the present working directory to the user home directory
@@ -503,8 +504,11 @@ public class FileManagement
      */
     private void grinchInterpreter(String command)throws Exception
     {
+        // Convert present working directory string to Nion File Separator format for compatibility
+        _presentWorkingDirectory = IOStreams.convertToNionSeparator(_presentWorkingDirectory);
+
         // Split the command string into an array of command arguments
-        String[] commandArray = Anvil.splitStringToArray(command);
+        String[] commandArray = IOStreams.splitStringToArray(command);
 
         // Switch statement to handle different commands
         switch (commandArray[0].toLowerCase())

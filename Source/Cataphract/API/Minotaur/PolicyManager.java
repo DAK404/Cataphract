@@ -173,7 +173,7 @@ public class PolicyManager
             input = console.readLine("PolicyEditor)> ");
 
             //Split the contents of "input" at the occurrence of a blank space and store it in an array.
-            String[] policyCommandArray = Cataphract.API.Anvil.splitStringToArray(input);
+            String[] policyCommandArray = IOStreams.splitStringToArray(input);
 
             //Logic to decide which command needs to be executed, and converting the input to lowercase to avoid any discrepancies.
             switch(policyCommandArray[0].toLowerCase())

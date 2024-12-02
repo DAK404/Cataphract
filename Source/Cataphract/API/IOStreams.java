@@ -37,6 +37,7 @@ package Cataphract.API;
 import java.io.Console;
 import java.io.File;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
 * A class implementing console output with prefixes, colors, and a "Press RETURN To Continue" functionality
@@ -55,6 +56,13 @@ public class IOStreams
 
     /** Array that holds the text background values. */
     private final static String[] _textColorBackground = {"40", "41", "42", "43", "44", "45", "46", "47", "49"};
+
+    /** Precompiled pattern to check if a said file is valid or invalid */
+    private static final Pattern INVALID_CHARS_PATTERN = Pattern.compile("[/\\\\|:*?\"<>]");
+
+    /** Precompile the regex to split string to array */
+    private static final Pattern SPLIT_PATTERN = Pattern.compile(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+
 
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
@@ -217,5 +225,37 @@ public class IOStreams
     public static String convertToNionSeparator(String filePath)
     {
         return filePath.replaceAll(Matcher.quoteReplacement(File.separator), "|");
+    }
+
+    /**
+    * Checks the validity of the file name.
+    *
+    * @return {@code true} if the file name is valid, {@code false} otherwise.
+    * @throws Exception Throws any exceptions encountered during runtime.
+    */
+    public static boolean checkFileValidity(String fileName)
+    {
+        return !(fileName == null || fileName.isEmpty() || fileName.startsWith(" ") || fileName.length() > 255 || INVALID_CHARS_PATTERN.matcher(fileName).find());
+    }
+
+    /**
+    * Method to split an input string to individual words by at the occurrence of a blank space.
+    *
+    * @param command String that will need to be split into an array.
+    * @return String[] The string split into an array.
+    */
+    public static String[] splitStringToArray(String command)
+    {
+        //Regex to split the string at the occurrence of a blank space
+        String[] arr = SPLIT_PATTERN.split(command);
+
+        //Fix to remove the quotes, make the logic to split the input at every space only.
+        //Check the EasyGuide Documentation on why this is implemented the way it is.
+        for(int i = 0; i < arr.length; i++)
+        if(arr[i].startsWith("\"") && arr[i].endsWith("\""))
+            arr[i] = arr[i].substring(1, arr[i].length()-1);
+
+        //return the array of words split.
+        return arr;
     }
 }
