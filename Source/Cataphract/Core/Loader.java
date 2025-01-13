@@ -287,7 +287,7 @@ public class Loader
     */
     private boolean manifestFilesCheck()
     {
-        return new File("./.Manifest/Cataphract/KernelFilesHashes.m1").exists() & new File("./.Manifest/Cataphract/KernelFiles.m2").exists();
+        return new File("./.Manifest/Cataphract/KernelFilesHashes.m1").exists() && new File("./.Manifest/Cataphract/KernelFiles.m2").exists();
     }
 
     /**

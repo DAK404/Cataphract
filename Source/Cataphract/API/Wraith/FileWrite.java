@@ -200,7 +200,7 @@ public class FileWrite
                 BufferedWriter obj = new BufferedWriter(new FileWriter(logfilePath + fileName + ".log", true));
                 PrintWriter pr = new PrintWriter(obj);
                 // Write the message along with the timestamp to the log file
-                pr.println(new Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy HH:mm:ss") + ": " + printToFile);
+                pr.println(new Time().getDateTimeUsingSpecifiedFormat("dd-MMMM-yyyy HH:mm:ss") + " (" + new Time().getUnixEpoch() +  "): " + printToFile);
 
                 // Close the streams
                 pr.close();

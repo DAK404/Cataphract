@@ -38,6 +38,7 @@ import Cataphract.API.IOStreams;
 import Cataphract.API.Dragon.Login;
 import Cataphract.API.Minotaur.PolicyCheck;
 import Cataphract.API.Wraith.FileDownload;
+import Cataphract.API.Wraith.FileWrite;
 import Cataphract.API.Wraith.Archive.FileUnzip;
 
 /**
@@ -77,6 +78,8 @@ public class NionUpdate
         // Check the policy if updating is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if(new PolicyCheck().retrievePolicyValue("update").equals("on") || _isUserAdmin)
         {
+            FileWrite.logger("Update initiated by: " + _username, "Update");
+            
             IOStreams.println("---- Wyvern: Program Update Utility 2.0 ----");
             IOStreams.printAttention("[*] This will install the lastest version of Cataphract. Please ensure that there is internet connectivity.");
             IOStreams.printAttention("[*] After updating, Cataphract will require a restart to updated files.\n");

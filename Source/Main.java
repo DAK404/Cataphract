@@ -219,7 +219,12 @@ public class Main
             else
             {
                 //Create a new process and spawn it with the Kernel name and the parameters.
-                ProcessBuilder sessionMonitor=new ProcessBuilder("java", parameters[0]+".Core.Loader", parameters[1]);
+                ProcessBuilder sessionMonitor=new ProcessBuilder("java", parameters[0]+".Core.Loader");
+
+                // Add the remaining parameters from index 1 onward 
+                for (int i = 1; i < parameters.length; i++)
+                    sessionMonitor.command().add(parameters[i]);
+
                 //Allow the process to start and allow the current console window to inherit IO features.
                 Process processMonitor = sessionMonitor.inheritIO().start();
 

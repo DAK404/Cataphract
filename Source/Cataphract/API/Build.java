@@ -76,6 +76,8 @@ public class Build
         clearScreen();
         //print the branding string.
         IOStreams.println(_Branding + "\nVersion " + _BuildInfo[1]);
+
+        debug();
     }
 
     /**
@@ -121,20 +123,22 @@ public class Build
     {
         //int mb = 1024 * 1024;
         // get Runtime instance
+
+        System.out.println("! DEBUG INFORMATION SPEW START !");
+        
         Runtime instance = Runtime.getRuntime();
-        System.out.println("\n*********************************************");
-        System.out.println("        ---   DEBUG INFORMATION   ---        ");
-        System.out.println("*********************************************");
-        System.out.println("\n   - Heap utilization statistics [Bytes] -  \n");
-        System.out.println("      [*]  Process ID   : "+ProcessHandle.current().pid());
-        // available memory
-        System.out.println("      [*]  Total Memory : " + instance.totalMemory() + " Bytes");
-        // free memory
-        System.out.println("      [*]  Free Memory  : " + instance.freeMemory() + " Bytes");
-        // used memory
-        System.out.println("      [*]  Used Memory  : " + (instance.totalMemory() - instance.freeMemory()) + " Bytes");
-        // Maximum available memory
-        System.out.println("      [*]  Max Memory   : " + instance.maxMemory() + " Bytes");
-        System.out.println("\n*********************************************\n\n");
+        
+        long memoryUsed = instance.totalMemory() - instance.freeMemory();
+        
+        System.out.println("\n000000000000000000000000000000");
+        System.out.println("! DEBUG - MEMORY INFORMATION !");
+        System.out.println("000000000000000000000000000000");
+        System.out.println("> Process ID   : " + ProcessHandle.current().pid());
+        System.out.println("> Total Memory : " + instance.totalMemory() + " Bytes");
+        System.out.println("> Free Memory  : " + instance.freeMemory() + " Bytes");
+        System.out.println("> Used Memory  : " + memoryUsed + " Bytes");
+        System.out.println("000000000000000000000000000000\n");
+
+        System.out.println("!  DEBUG INFORMATION SPEW END  !");
     }
 }

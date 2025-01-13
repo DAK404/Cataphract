@@ -56,7 +56,7 @@ public class BuildSigner
     private static final String fileSeparator = System.getProperty("file.separator");
     private static final String MANIFEST_DIR = "./.Manifest/Cataphract";
     private static final String[] IGNORE_LIST = {
-        ".Manifest", "System", "Users", "org", "docs" , "JRE", "BootShell.cmd",
+        ".Manifest", "System", "Users", "org", "JRE", "BootShell.cmd",
         "BuildSigner.java", "Logs"
     };
 
