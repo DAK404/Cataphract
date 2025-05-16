@@ -52,7 +52,7 @@ public class IOStreams
     private static Console console = System.console();
 
     /** Array that holds the text foreground values. */
-    private final static String[] _textColorForeground = {"[30", "[31", "[32", "[33", "[34", "[35", "[36", "[37", "[39"};
+    private final static String[] _textColorForeground = {"30", "31", "32", "33", "34", "35", "36", "37", "39"};
 
     /** Array that holds the text background values. */
     private final static String[] _textColorBackground = {"40", "41", "42", "43", "44", "45", "46", "47", "49"};
@@ -153,7 +153,7 @@ public class IOStreams
         try
         {
             //Print the text with the specified indices correlating with the table specified
-            System.out.print((char)27 + _textColorForeground[foregroundIndex] + ";" + _textColorBackground[backgroundIndex] + "m" + message + (char)27 + "[0m");
+            System.out.print((char)27 + "[" + _textColorForeground[foregroundIndex] + ";" + _textColorBackground[backgroundIndex] + "m" + message + (char)27 + "[0m");
         }
         catch(ArrayIndexOutOfBoundsException e)
         {

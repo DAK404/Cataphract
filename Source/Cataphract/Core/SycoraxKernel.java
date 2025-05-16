@@ -381,11 +381,10 @@ public class SycoraxKernel
                 scriptFileName = IOStreams.convertFileSeparator(".|Users|Cataphract|" + _username + "|" + scriptFileName);
 
                 // Check if the script file exists
-                if(!new File(scriptFileName).exists())
+                if(!new File(scriptFileName).exists() || new File(scriptFileName).isDirectory())
                 {
                     StringBuilder errorBuilder = new StringBuilder();
-                    errorBuilder.append("Script file ").append(scriptFileName.replace(_username, _accountName))
-                            .append(" has not been found.\nPlease check the directory of the script file and try again.");
+                    errorBuilder.append("The specified script file is invalid or has not been found.\nPlease check the script file name and try again.");
                     IOStreams.printAttention(errorBuilder.toString());
                 }
                 else

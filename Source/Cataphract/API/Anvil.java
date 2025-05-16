@@ -36,6 +36,7 @@ package Cataphract.API;
 
 import Cataphract.API.Astaroth.Calendar;
 import Cataphract.API.Astaroth.Time;
+import Cataphract.API.Wraith.FileRead;
 
 /**
 * A class that provides a set of built in commands for all classes. Also provides a utility to split a string into an array for processing.
@@ -111,7 +112,10 @@ public class Anvil
             case "echo":
             //Display an error message if the entered syntax is incorrect
             if(commandArray.length < 2)
-            IOStreams.println("echo <STRING> \n\nOR\n\necho \"<STRING_WITH_SPACES>\"");
+            {
+                IOStreams.printError("Invalid Syntax.");
+            IOStreams.printInfo("Expected Syntax: echo <String> OR echo \"<String With Spaces>\"");
+            }
             else
             {
                 try
@@ -126,20 +130,34 @@ public class Anvil
             }
             break;
 
+            case "help":
+            if(commandArray.length < 2)
+            {
+                new FileRead().readHelpFile("API|Anvil.help");
+            }
+            else
+                new FileRead().readHelpFile(commandArray[1]);
+            break;
+
 
             //Wait: Waits for the specified value (milliseconds) for the shell to wait for a second
             case "wait":
             try
             {
                 //Display an error message if the entered syntax is incorrect
-                if(Integer.parseInt(commandArray[1]) < 1)
-                IOStreams.println("This will make the prompt wait for a given number of milliseconds.\nSyntax: wait 1000\n\nPrompt shall wait for 1 second.");
+                if(commandArray.length < 2 || Integer.parseInt(commandArray[1]) < 1)
+                {
+                    IOStreams.printError("Invalid Syntax.");
+                    IOStreams.printInfo("Expected Syntax: wait <milliseconds> (Integer > 0)");
+                }
+
                 else
                 Thread.sleep(Integer.parseInt(commandArray[1]));
             }
             catch(NumberFormatException e)
             {
-                IOStreams.printError("Please provide a numeric input for the wait timer!");
+                IOStreams.printError("Invalid Argument!\nExpected Argument: milliseconds (Integer)");
+                IOStreams.printInfo("Expected Syntax: wait <milliseconds> (Integer)");
             }
             catch(Exception e)
             {

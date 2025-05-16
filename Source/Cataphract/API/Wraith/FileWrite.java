@@ -86,13 +86,12 @@ public class FileWrite
     {
         fileName = IOStreams.convertFileSeparator(fileName);
         dir = IOStreams.convertFileSeparator(dir);
-        System.out.println(dir);
         // Check the policy if file writing is allowed in the policy file, can be bypassed by the accounts with administrator privileges
         if (new PolicyCheck().retrievePolicyValue("update").equals("on") || new Login(_username).checkPrivilegeLogic())
         {
             try
             {
-                System.out.println(new File(dir).exists());
+
                 // Check if the provided file name is valid
                 if (new File(dir).exists())
                 {
@@ -115,19 +114,22 @@ public class FileWrite
                             // If the user chooses to overwrite the file
                             case "overwrite":
                             appendFile = false; // Set appendFile flag to false to overwrite the file content
-                            System.out.println("The new content will overwrite the previous content present in the file!");
+                            IOStreams.printAttention("The new content will overwrite the previous content present in the file!");
                             break;
                             // If the user chooses to append to the file
                             case "append":
-                            System.out.println("The new content will be added to the end of the file! Previous data will remain unchanged.");
+                            IOStreams.println("The new content will be added to the end of the file! Previous data will remain unchanged.");
                             break;
-                            // If the user chooses to return without making any changes
-                            case "return":
-                            return;
+
                             // If the user requests help
                             case "help":
                             System.out.println("Work in Progress");
                             break;
+                            
+                            // If the user chooses to return without making any changes
+                            case "return":
+                            return;
+                            
                             // If the user enters an invalid choice
                             default:
                             System.out.println("Invalid choice. Exiting...");

@@ -34,6 +34,7 @@
 
 package Cataphract.API.Astaroth;
 
+import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -50,8 +51,6 @@ import Cataphract.API.IOStreams;
 */
 public class Time
 {
-
-
     /** Store the current date and time as a LocalDateTime object*/
     private LocalDateTime currentDateTime = LocalDateTime.now();
 
@@ -78,6 +77,14 @@ public class Time
             result = currentDateTime.format(DateTimeFormatter.ofPattern(format));
         }
         catch(DateTimeParseException e)
+        {
+            IOStreams.printError("Invalid Date/Time Format Detected! Please enter a valid Date/Time format.");
+        }
+        catch(IllegalArgumentException e)
+        {
+            IOStreams.printError("Invalid Date/Time Format Detected! Please enter a valid Date/Time format.");
+        }
+        catch(DateTimeException e)
         {
             IOStreams.printError("Invalid Date/Time Format Detected! Please enter a valid Date/Time format.");
         }

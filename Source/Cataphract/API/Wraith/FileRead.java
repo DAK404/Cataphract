@@ -35,6 +35,7 @@
 package Cataphract.API.Wraith;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
@@ -62,17 +63,17 @@ public class FileRead
     private static File fileName = null;
 
     /**
-     * Constructor to be used for reading help files
-     */
+    * Constructor to be used for reading help files
+    */
     public FileRead()
     {
     }
 
     /**
-     * Constructor to be used for reading user generated files
-     *
-     * @param username The username of the currently logged in user
-     */
+    * Constructor to be used for reading user generated files
+    *
+    * @param username The username of the currently logged in user
+    */
     public FileRead(String username)
     {
         _username = username;
@@ -85,90 +86,103 @@ public class FileRead
     */
     private void readFileLogic() throws Exception
     {
-        if (!IOStreams.checkFileValidity(fileName.getName()))
+        try
         {
-            // If the file name is invalid
-            IOStreams.printError("Invalid File Name! Please Enter A Valid File Name.");
-        }
-        else if (!fileName.exists())
-        {
-            // If the specified file does not exist
-            IOStreams.printError("The Specified File Does Not Exist. Please Enter A Valid File Name.");
-        }
-        else
-        {
-            // Flag to control file reading loop
-            boolean continueFileRead = true;
-
-            // Display build information
-            Build.viewBuildInfo();
-
-            // Create a BufferedReader to read from the file
-            BufferedReader bufferObject = new BufferedReader(new FileReader(fileName));
-
-            // Variable to store file contents
-            String fileContents = "";
-
-            // If help mode is enabled
-            if (helpMode)
+            if (!IOStreams.checkFileValidity(fileName.getName()))
             {
-                // Continue until the end of file or instructed to stop
-                while (fileContents != null && continueFileRead)
-                {
-                    // Read a line from the file
-                    fileContents = bufferObject.readLine();
+                // If the file name is invalid
+                IOStreams.printError("Invalid File Name! Please Enter A Valid File Name.");
+            }
+            else if (!fileName.exists())
+            {
+                // If the specified file does not exist
+                IOStreams.printError("The Specified File Does Not Exist. Please Enter A Valid File Name.");
+            }
+            else
+            {
+                // Flag to control file reading loop
+                boolean continueFileRead = true;
 
-                    if (fileContents != null && fileContents.equalsIgnoreCase("<end of page>"))
+                // Display build information
+                Build.viewBuildInfo();
+
+                // Create a BufferedReader to read from the file
+                BufferedReader bufferObject = new BufferedReader(new FileReader(fileName));
+
+                // Variable to store file contents
+                String fileContents = "";
+
+                // If help mode is enabled
+                if (helpMode)
+                {
+                    // Continue until the end of file or instructed to stop
+                    while (fileContents != null && continueFileRead)
                     {
-                        // If it reaches the end of the page marker, prompt the user to continue or exit the help viewer
-                        if (IOStreams.confirmReturnToContinue("", "else type EXIT to quit Help Viewer.\\n" + "~DOC_HLP?> ").equalsIgnoreCase("exit"))
+                        // Read a line from the file
+                        fileContents = bufferObject.readLine();
+
+                        if (fileContents != null && fileContents.equalsIgnoreCase("<end of page>"))
+                        {
+                            // If it reaches the end of the page marker, prompt the user to continue or exit the help viewer
+                            if (IOStreams.confirmReturnToContinue("", "else type EXIT to quit Help Viewer.\\n" + "~DOC_HLP?> ").equalsIgnoreCase("exit"))
                             // Set flag to stop reading
                             continueFileRead = false;
-                        else
+                            else
+                            {
+                                // Clear the screen and display build information and continue reading the file
+                                Build.viewBuildInfo();
+                                continue;
+                            }
+                        }
+                        // If it reaches the end of the help file marker
+                        else if (fileContents != null && fileContents.equalsIgnoreCase("<end of help>"))
                         {
-                            // Clear the screen and display build information and continue reading the file
-                            Build.viewBuildInfo();
+                            // Print end of help file message
+                            IOStreams.println("\n\nEnd of Help File.");
+                            break;
+                        }
+                        // If it encounters a comment line, skip this line
+                        else if (fileContents != null && fileContents.startsWith("#"))
+                        {
                             continue;
                         }
+                        // Print the file contents
+                        if (fileContents != null)
+                        {
+                            IOStreams.println(fileContents);
+                        }
                     }
-                    // If it reaches the end of the help file marker
-                    else if (fileContents != null && fileContents.equalsIgnoreCase("<end of help>"))
+                }
+                // If help mode is not enabled
+                else
+                {
+                    // Read the file until the end of file is reached
+                    while ((fileContents = bufferObject.readLine()) != null)
                     {
-                        // Print end of help file message
-                        IOStreams.println("\n\nEnd of Help File.");
-                        break;
-                    }
-                    // If it encounters a comment line, skip this line
-                    else if (fileContents != null && fileContents.startsWith("#"))
-                    {
-                        continue;
-                    }
-                    // Print the file contents
-                    if (fileContents != null)
-                    {
+                        // Print the file contents
                         IOStreams.println(fileContents);
                     }
                 }
+
+                // Close the streams
+                bufferObject.close();
+
+                // Request garbage collection to free up resources
+                System.gc();
+
+                // Prompt to return to continue
+                IOStreams.confirmReturnToContinue();
             }
-            // If help mode is not enabled
-            else
-            {
-                // Read the file until the end of file is reached
-                while ((fileContents = bufferObject.readLine()) != null)
-                {
-                    // Print the file contents
-                    IOStreams.println(fileContents);
-                }
-            }
-
-            // Close the streams
-            bufferObject.close();
-
-            // Request garbage collection to free up resources
-            System.gc();
-
-            // Prompt to return to continue
-            IOStreams.confirmReturnToContinue();
+        }
+        catch (FileNotFoundException fnfe)
+        {
+            IOStreams.printError("The specified file " + fileName + "does not exist.");
+        }
+        catch (Exception e)
+        {
+            // Print error message if an exception occurs
+            IOStreams.printError("An Error Occurred While Reading The File: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -189,7 +203,7 @@ public class FileRead
             readFileLogic();
         }
         else
-            IOStreams.printError("Policy Management System - Permission Denied.");
+        IOStreams.printError("Policy Management System - Permission Denied.");
     }
 
     /**
