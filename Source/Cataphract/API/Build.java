@@ -58,7 +58,7 @@ public class Build
     """;
 
     /** An array that holds the values for Kernel Name, version, build date, build ID and the kernel branch/build type. */
-    public final static String[] _BuildInfo = {"Cataphract", "1.3.0", "14-August-2024", "20240814-003624_NION", "Development"};
+    public final static String[] _BuildInfo = {"Cataphract", "2.1.0", "28-May-2026", "20260528-195124_NION", "Development"};
 
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)

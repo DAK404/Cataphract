@@ -63,12 +63,13 @@ import Cataphract.API.Minotaur.Cryptography;
 import Cataphract.API.Minotaur.PolicyCheck;
 import Cataphract.API.Minotaur.PolicyManager;
 
+import Cataphract.API.Wraith.FileManagement;
+
 /**
  * Main class for the Sycorax operating system kernel.
  */
 public class SycoraxKernel
 {
-
     // Default account details and system settings
     /** Store the account name */
     private String _accountName = "DEFAULT_USER";
@@ -96,6 +97,9 @@ public class SycoraxKernel
     // Console object for input/output
     /** Instantiate Console to get user inputs. */
     private Console console = System.console();
+
+    // Object required to access File Management system
+    FileManagement fm = null;
 
     /**
     * Sole constructor. (For invocation by subclass constructors, typically implicit.)
@@ -128,6 +132,10 @@ public class SycoraxKernel
         _loginAttemptsRemaining = 5;
         // Fetch user details after login
         fetchUserDetails();
+
+        // Initialize the file management object
+        fm = new FileManagement(_username);
+
         // Start the user command shell
         userShell();
     }
@@ -144,10 +152,13 @@ public class SycoraxKernel
         do
         {
             // Build the command prompt string dynamically
-            StringBuilder promptBuilder = new StringBuilder();
-            promptBuilder.append(_accountName).append("@").append(_systemName).append(_prompt).append("> ");
+            //StringBuilder promptBuilder = new StringBuilder();
+            //promptBuilder.append(_accountName).append("@").append(_systemName).append(_prompt).append(" in ").append(new FileManagement(_username).presentWorkingDirectory()).append("> ");
             // Read user input
-            input = console.readLine(promptBuilder.toString());
+            //input = console.readLine(promptBuilder.toString());
+            
+            input = console.readLine(_accountName + "@" + _systemName + _prompt + " in "+ fm.presentWorkingDirectory() + "> ");
+            
             // Process the user command
             commandProcessor(input);
             // Exit loop on logout
@@ -187,8 +198,9 @@ public class SycoraxKernel
             case "grinch":
             case "filemanagement":
             case "files":
-                new Cataphract.API.Wraith.FileManagement(_username).fileManagementLogic();
-            break;
+                //new Cataphract.API.Wraith.FileManagement(_username).fileManagementLogic();
+                IOStreams.printAttention("Command Deprecated. Feature not available.");
+                break;
 
             // Exit the system
             case "exit":
@@ -250,7 +262,8 @@ public class SycoraxKernel
 
             // Interpret other commands through Anvil API
             default:
-                Anvil.anvilInterpreter(commandArray);
+                //Anvil.anvilInterpreter(commandArray);
+                fm.grinchInterpreter(commandArray);
             break;
         }
     }

@@ -60,13 +60,13 @@ import Cataphract.API.Wraith.Archive.FileUnzip;
 public class FileManagement
 {
     /** Store the username of the current user */
-    private String _username = "";
+    private static String _username = "";
     /** Store the name of the current user */
-    private String _name = "";
+    private static String _name = "";
     /** Store the present working directory during file management */
-    private String _presentWorkingDirectory = "";
+    private static String _presentWorkingDirectory = "";
     /** Store the default user home directory */
-    private String _userHomeDirectory = "";
+    private static String _userHomeDirectory = "";
 
     /** Instantiate Console to get user inputs. */
     private Console console = System.console();
@@ -86,22 +86,7 @@ public class FileManagement
         // Initialize the present working directory
         _userHomeDirectory = ".|Users|Cataphract|" + _username + "|";
         _presentWorkingDirectory = _userHomeDirectory;
-    }
-
-    /*****************************************
-     *      AUTHENTICATION/LOGIN METHOD      *
-     *****************************************/
-
-    /**
-     * Logic to authenticate the current user logged in.
-     *
-     * @return {@code true} if the user creation was successful, {@code false} otherwise.
-     * @throws Exception Throws any exceptions encountered during runtime.
-     */
-    private final boolean login()throws Exception
-    {
-        IOStreams.println("> Username: " + _name);
-        return new Login(_username).authenticationLogic(Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Password: "))), Cryptography.stringToSHA3_256(String.valueOf(console.readPassword("> Security Key: ")))) ;
+        IOStreams.println("Once.");
     }
 
     /*****************************************
@@ -115,7 +100,7 @@ public class FileManagement
      * @return {@code true} if the file/directory exists, else {@code false} if the file/directory does not exist
      * @throws Exception Throws any exceptions encountered during runtime.
      */
-    private boolean checkEntityExistence(String fileName)throws Exception
+    private static boolean checkEntityExistence(String fileName)throws Exception
     {
         return new File(IOStreams.convertFileSeparator(fileName)).exists();
     }
@@ -126,7 +111,7 @@ public class FileManagement
      * @param fileName The name of the file/directory to be deleted
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private final void deleteEntity(String fileName)throws Exception
+    private final static void deleteEntity(String fileName)throws Exception
     {
         try
         {
@@ -156,7 +141,7 @@ public class FileManagement
      * @param fileName The name of the file/directory to be checked
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private final void deleteEntityHelper(File fileName)throws Exception
+    private static void deleteEntityHelper(File fileName)throws Exception
     {
         if (fileName.listFiles() != null)
         {
@@ -171,7 +156,7 @@ public class FileManagement
      *
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private void viewDirectoryTree()throws Exception
+    private static void viewDirectoryTree()throws Exception
     {
         // Create a File object for the present working directory
         File treeView = new File(IOStreams.convertFileSeparator(_presentWorkingDirectory));
@@ -192,7 +177,7 @@ public class FileManagement
      * @param indent The level at which a file or directory is within a sub-directory
      * @param file The file or directory which will be displayed in the tree view
      */
-    private final void viewDirTreeHelper(int indent, File file)
+    private static void viewDirTreeHelper(int indent, File file)
     {
         // Print the tree structure line prefix
         System.out.print("|");
@@ -219,7 +204,7 @@ public class FileManagement
      *
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private final void navPreviousDirectory()throws Exception
+    private static void navPreviousDirectory()throws Exception
     {
         // Remove the trailing file separator from the present working directory
         _presentWorkingDirectory = _presentWorkingDirectory.substring(0, _presentWorkingDirectory.length() - 1);
@@ -243,7 +228,7 @@ public class FileManagement
     /**
      * Logic to reset the present working directory to the user home directory
      */
-    private final void resetToHomeDirectory()
+    private static void resetToHomeDirectory()
     {
         _presentWorkingDirectory = _userHomeDirectory;
     }
@@ -254,7 +239,7 @@ public class FileManagement
      * @param fileName The name of the directory to be created
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private final void makeDirectory(String fileName) throws Exception
+    private static final void makeDirectory(String fileName) throws Exception
     {
         new File(IOStreams.convertFileSeparator(_presentWorkingDirectory) + fileName).mkdirs();
     }
@@ -266,7 +251,7 @@ public class FileManagement
      * @param newFileName The new name of the file or directory
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private final void renameEntity(String fileName, String newFileName) throws Exception
+    private final static void renameEntity(String fileName, String newFileName) throws Exception
     {
         // Concatenate the present working directory with the file name
         fileName = _presentWorkingDirectory + fileName;
@@ -289,7 +274,7 @@ public class FileManagement
      * @param move Determines if the source file or directory needs to be deleted after copying
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private final void copyMoveEntity(String fileName, String destination, boolean move)throws Exception
+    private static void copyMoveEntity(String fileName, String destination, boolean move)throws Exception
     {
         // Convert paths from Nion paths to OS specific paths
         fileName = IOStreams.convertFileSeparator(fileName);
@@ -311,7 +296,7 @@ public class FileManagement
      * @param move Determines if the source file or directory needs to be deleted after copying
      * @throws Exception Throws any exceptions encountered during runtime
      */
-    private final void copyMoveHelper(File source, File destination, boolean move)throws Exception
+    private static void copyMoveHelper(File source, File destination, boolean move)throws Exception
     {
         // Check if the source is a directory
         if (source.isDirectory())
@@ -344,7 +329,7 @@ public class FileManagement
      *
      * @throws Exception Throws any exceptions encountered during runtime.
      */
-    private final void listEntities() throws Exception
+    private static void listEntities() throws Exception
     {
         // Define the format for displaying the directory/file information
         String format = "%1$-32s| %2$-24s| %3$-10s| %4$-32s\n";
@@ -384,7 +369,7 @@ public class FileManagement
      * @param destination The name of the directory to navigate to
      * @throws Exception Throws any exceptions encountered during runtime.
      */
-    private final void changeDirectory(String destination)throws Exception
+    private static void changeDirectory(String destination)throws Exception
     {
         // Check if the destination is the parent directory
         if (destination.equals(".."))
@@ -400,6 +385,7 @@ public class FileManagement
             {
                 // Update the present working directory to the new destination
                 _presentWorkingDirectory = _presentWorkingDirectory + destination + "|";
+                IOStreams.println(_presentWorkingDirectory);
             }
             else
             {
@@ -409,92 +395,14 @@ public class FileManagement
         }
     }
 
+    public static String presentWorkingDirectory()
+    {
+        return IOStreams.convertFileSeparator(_presentWorkingDirectory.replace(_username, _name));
+    }
+
     /*****************************************
      * GRINCH FILE MANAGEMENT & SCRIPT LOGIC *
      *****************************************/
-
-    /**
-     * Logic to perform policy check, login and the file management actions
-     *
-     * @throws Exception Throws any exceptions encountered during runtime.
-     */
-    public void fileManagementLogic()throws Exception
-    {
-        // Check if file management policy is enabled or if the user has the necessary privileges
-        if (new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") || new Login(_username).checkPrivilegeLogic())
-        {
-            // Check if the user is logged in
-            if (login())
-            {
-                String inputValue = "";
-                // Loop to continuously read and execute commands until 'exit' is entered
-                do
-                {
-                    // Read a line of input from the console
-                    inputValue = console.readLine(_name + "@" + IOStreams.convertFileSeparator(_presentWorkingDirectory).replace(_username, _name) + "> ");
-
-                    // Interpret and execute the command
-                    grinchInterpreter(inputValue);
-                }
-                while (!inputValue.equalsIgnoreCase("exit"));
-            }
-            else
-                IOStreams.printError("Invalid Credentials.");
-        }
-        else
-            IOStreams.printError("Policy Management System - Permission Denied.");
-    }
-
-    /**
-     * [ OVERLOAD ] Provide a method to execute file management actions from a script file
-     *
-     * @param scriptFileName The name of the script file
-     * @throws Exception Throws any exceptions encountered during runtime.
-     */
-    public void fileManagementLogic(String scriptFileName)throws Exception
-    {
-        // Check if file management and script policies are enabled or if the user has the necessary privileges
-        if ((new PolicyCheck().retrievePolicyValue("filemgmt").equals("on") && new PolicyCheck().retrievePolicyValue("script").equals("on")) || new Login(_username).checkPrivilegeLogic())
-        {
-            // Validate the script file name
-            if (scriptFileName == null || scriptFileName.equalsIgnoreCase("") || scriptFileName.startsWith(" ") || new File(scriptFileName).isDirectory() || !(new File(IOStreams.convertFileSeparator(".|Users|Cataphract|" + _username + "|" + scriptFileName + ".fmx")).exists()))
-                IOStreams.printError("Invalid Script File!");
-            else
-            {
-                // Check if the user is logged in
-                if (login())
-                {
-                    // Initialize a stream to read the given file
-                    BufferedReader br = new BufferedReader(new FileReader(scriptFileName));
-
-                    // Initialize a string to hold the contents of the script file being executed
-                    String scriptLine;
-
-                    // Read the script file, line by line
-                    while (!(scriptLine = br.readLine()).equalsIgnoreCase("End Grinch"))
-                    {
-                        // Check if the line is a comment or is blank in the script file and skip the line
-                        if (scriptLine.startsWith("#") || scriptLine.equalsIgnoreCase(""))
-                            continue;
-
-                        // Check if End Script command is encountered, which will stop the execution of the script
-                        else if (scriptLine.equalsIgnoreCase("End Script"))
-                            break;
-
-                        // Read the command in the script file, and pass it on to menuLogic(<command>) for it to be processed
-                        grinchInterpreter(scriptLine);
-                    }
-
-                    // Close the streams, run the garbage collector and clean
-                    br.close();
-                }
-                else
-                    IOStreams.printError("Invalid Credentials.");
-            }
-        }
-        else
-            IOStreams.printError("Policy Management System - Permission Denied.");
-    }
 
     /**
      * Logic to process user input and perform the necessary actions
@@ -502,13 +410,10 @@ public class FileManagement
      * @param command The command string input provided by the user
      * @throws Exception Throws any exceptions encountered during runtime.
      */
-    private void grinchInterpreter(String command)throws Exception
+    public static void grinchInterpreter(String[] commandArray)throws Exception
     {
         // Convert present working directory string to Nion File Separator format for compatibility
         _presentWorkingDirectory = IOStreams.convertToNionSeparator(_presentWorkingDirectory);
-
-        // Split the command string into an array of command arguments
-        String[] commandArray = IOStreams.splitStringToArray(command);
 
         // Switch statement to handle different commands
         switch (commandArray[0].toLowerCase())
@@ -584,7 +489,7 @@ public class FileManagement
 
             case "pwd":
                 // Print the present working directory
-                IOStreams.println((_presentWorkingDirectory).replace(_username, _name));
+                IOStreams.println(presentWorkingDirectory());
             break;
 
             case "cd":
