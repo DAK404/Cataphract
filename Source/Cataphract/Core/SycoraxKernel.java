@@ -48,7 +48,6 @@ import java.io.Console;
 import java.io.File;
 import java.io.FileReader;
 
-import Cataphract.API.Anvil;
 import Cataphract.API.Build;
 import Cataphract.API.IOStreams;
 
@@ -157,7 +156,7 @@ public class SycoraxKernel
             // Read user input
             //input = console.readLine(promptBuilder.toString());
             
-            input = console.readLine(_accountName + "@" + _systemName + _prompt + " in "+ fm.presentWorkingDirectory() + "> ");
+            input = console.readLine(_accountName + "@" + _systemName + _prompt + " in "+ FileManagement.presentWorkingDirectory() + "> ");
             
             // Process the user command
             commandProcessor(input);
@@ -263,7 +262,7 @@ public class SycoraxKernel
             // Interpret other commands through Anvil API
             default:
                 //Anvil.anvilInterpreter(commandArray);
-                fm.grinchInterpreter(commandArray);
+                FileManagement.grinchInterpreter(commandArray);
             break;
         }
     }

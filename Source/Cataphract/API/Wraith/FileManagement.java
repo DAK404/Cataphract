@@ -34,10 +34,7 @@
 
 package Cataphract.API.Wraith;
 
-import java.io.BufferedReader;
-import java.io.Console;
 import java.io.File;
-import java.io.FileReader;
 
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -46,7 +43,6 @@ import Cataphract.API.Anvil;
 import Cataphract.API.IOStreams;
 import Cataphract.API.Dragon.Login;
 import Cataphract.API.Minotaur.Cryptography;
-import Cataphract.API.Minotaur.PolicyCheck;
 import Cataphract.API.Wraith.Archive.FileZip;
 import Cataphract.API.Wraith.Archive.FileUnzip;
 
@@ -68,9 +64,6 @@ public class FileManagement
     /** Store the default user home directory */
     private static String _userHomeDirectory = "";
 
-    /** Instantiate Console to get user inputs. */
-    private Console console = System.console();
-
     /**
      * Constructor for FileManagement class.
      *
@@ -86,7 +79,6 @@ public class FileManagement
         // Initialize the present working directory
         _userHomeDirectory = ".|Users|Cataphract|" + _username + "|";
         _presentWorkingDirectory = _userHomeDirectory;
-        IOStreams.println("Once.");
     }
 
     /*****************************************
